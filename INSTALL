@@ -1,0 +1,33 @@
+written by Helmut K. C. Tessarek
+
+Last Update: 2012-04-13
+
+http://mod-auth-ibmdb2.sourceforge.net/
+
+Contents:
+---------
+
+1) Building the library
+2) Registering the routines in the database as UDFs and SPs
+
+1) Building the library
+-----------------------
+
+Please change the PATH settings in the makeudf scripts for your environment.
+
+AIX / Linux  : ./makertn
+Win32        : makertn.bat
+Other        : see below
+
+The routines are written in ANSI C and should compile on all platforms.
+You can use the bldrtn script in your sqllib/samples/c directory as a good start.
+The only thing that you have to do is to install APR and APR-util.
+You can get APR and APR-util at http://apr.apache.org/
+Furthermore you need to add the compiler and linker flags for APR (see makertn).
+
+2) Registering the UDFs and SPs in the database
+-----------------------------------------------
+
+You have to connect to the database first.
+
+db2 -tvf register.ddl
