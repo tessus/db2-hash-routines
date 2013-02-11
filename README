@@ -1,0 +1,48 @@
+written by Helmut K. C. Tessarek
+
+Last Update: 2012-04-13
+
+http://mod-auth-ibmdb2.sourceforge.net/
+
+Contents:
+---------
+
+1) Description of the library
+2) File Description
+
+1) Description of the library
+-----------------------------
+
+This library delivers the following functions as UDFs and SPs:
+
+function in library          UDF / SP
+
+md5                          md5
+aprmd5                       apr_md5
+aprcrypt                     apr_crypt
+aprsha1                      apr_sha1
+validate                     validate_pw
+
+The md5 function is compatible to the PHP md5 function.
+The aprmd5, aprcrypt and aprsha1 functions are compatible to the Apache
+functions that are used in the htpasswd utility.
+The validate function validates a password against a hash.
+
+In win32 environments apr_crypt returns the output of apr_md5.
+
+2) File Description
+-------------------
+
+hash.c          the SQL API stuff
+hash.h          the c code for the functions
+register.ddl    script to register the UDFs and SPs
+drop.ddl        script to drop the UDFs and SPs
+makertn         bash script to compile the library (Linux/AIX)
+test_hash.c     test program for the functions
+hash.exp        function export file for AIX
+hash.def        definition file for Windows
+makertn.bat     script to compile the library (win32)
+maketest.bat    script to compile test program
+INSTALL         compiling and installing instructions
+CHANGES         change log
+README          this file

@@ -1,0 +1,65 @@
+.TH validate_pw "8" "February 2013" "validate_pw" "DB2 User Defined Function and Stored Procedure"
+.SH NAME
+validate_pw \- DB2 UDF and SP to validate a password against a hash
+.SH SYNOPSIS
+>>-VALIDATE_PW--(--password--,--hash--)------------------------><
+.PP
+>>-VALIDATE_PW--(--password--,--hash--,--is_valid--)-----------><
+.SH DESCRIPTION
+This routine can be used to validate a password against a hash.
+.PP
+The two input arguments can be character strings that are either a CHAR or VARCHAR not exceeding 120 bytes. The second parameter (hash) must not be 
+empty, otherwise an SQLSTATE 39701 is returned.
+.PP
+The result of the routine is an INTEGER. If the password is valid, 1 is returned. If the password is not valid, 0 is returned. The result can be null; if the argument is null, the result is the null value.
+.SH EXAMPLES
+\fBExample 1:\fR
+
+.br
+Validating the password \fItestpwd\fR against the crypt hash \fIcqs7uOvz8KBlk\fR.
+.PP
+.nf
+SELECT validate_pw('testpwd', 'cqs7uOvz8KBlk') FROM SYSIBM.SYSDUMMY1"
+
+1          
+-----------
+          1
+
+  1 record(s) selected.
+.fi
+.PP
+\fBExample 2:\fR
+
+.br
+.nf
+CALL validate_pw('testpwd', 'cqs7uOvz8KBlk', ?)
+
+  Value of output parameters
+  --------------------------
+  Parameter Name  : IS_VALID
+  Parameter Value : 1
+
+  Return Status = 0
+.fi
+.PP
+\fBExample 3:\fR
+
+.br
+.nf
+CALL validate_pw('testpwd', '0123456789abcdef', ?)
+
+  Value of output parameters
+  --------------------------
+  Parameter Name  : IS_VALID
+  Parameter Value : 0
+
+  Return Status = 0
+.fi
+.SH AUTHOR
+Written by Helmut K. C. Tessarek.
+.SH "BUGS"
+Hopefully none :-) But if you find one, please report it at:
+.br
+http://sourceforge.net/p/mod-auth-ibmdb2/bugs
+.SH "WEB SITE"
+http://mod-auth-ibmdb2.sourceforge.net

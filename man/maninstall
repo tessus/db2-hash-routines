@@ -1,0 +1,61 @@
+#! /bin/sh
+
+# $Id: maninstall,v 1.3 2012/04/19 19:56:34 tessus Exp $
+
+# SCRIPT: maninstall
+# Installs the manpages for db2-auth-routines
+# Usage: maninstall [/path/to/manpages]
+
+if [ -n "$1" ]
+then
+	path=$1
+fi
+
+if [ -d /usr/share/man ]
+then
+	path=/usr/share/man
+else
+	if [ -n "$1" ]
+	then
+        	path=$1
+	else
+		echo ""
+		echo "Ooops, cannot find a manpages directory!"
+		echo "Please specify the manpages directory - Do NOT specify the section!"
+		echo ""
+		echo "maninstall /path/to/manpages"
+		echo ""
+		exit
+	fi
+fi
+
+if [ ! -d "$path" ]
+then
+        echo ""
+        echo "Sorry, directory $path does not exist!"
+        echo ""
+        exit
+fi
+
+if [ -d $path/man8 ]
+then
+	path=$path/man8
+else
+	echo "section man8 does not exist ... creating."
+	path=$path/man8
+	mkdir $path
+	echo "directory $path created."
+fi
+
+if [ "`uname`" == "Linux" ]
+then
+	gzip ./man8/*.8
+	cp ./man8/*.gz $path
+	gunzip ./man8/*.gz
+else
+	cp ./man8/*.8 $path
+fi
+
+echo "Manpages installed in directory $path"
+
+exit

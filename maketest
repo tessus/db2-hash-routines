@@ -1,0 +1,53 @@
+#!/bin/sh
+
+# SCRIPT: maketest
+# Builds the test program for the hashing routines
+# Usage: maketest
+
+# Set DB2PATH to where DB2 will be accessed.
+# The default is the standard instance path.
+# Set APRPATH to where apr-1-config and apu-1-config are located
+
+OS=`uname`
+
+#Default paths for Linux, AIX and Darwin
+
+if [ "$OS" == "AIX" -o "$OS" == "Linux" ]
+then
+	DB2PATH=/home/db2inst1/sqllib
+	APRPATH=/usr/local/apache/bin
+	APUPATH=$APRPATH
+elif [ "$OS" == "Darwin" ]
+then
+	DB2PATH=/Users/db2inst1/sqllib
+	APRPATH=/usr/bin
+	APUPATH=/usr/bin
+fi
+
+# Uncomment the next 3 lines, if you set the paths manually
+#DB2PATH=
+#APRPATH=
+#APUPATH=	
+
+APR_FLAGS="`$APRPATH/apr-1-config --cppflags --includes --libs --link-ld`"
+APU_FLAGS="`$APUPATH/apu-1-config --link-ld --libs`"
+APRR="`$APRPATH/apr-1-config --link-ld |awk '{print $1}'|cut -c3-`"
+APUR="`$APUPATH/apu-1-config --link-ld |awk '{print $1}'|cut -c3-`"
+
+# Set the runtime path since routines run as setuid.
+if [ "`uname`" == "AIX" ]
+then
+	EXTRA_LFLAG="-Wl,-G,-blibpath:$APRR:$APUR"
+else
+	EXTRA_LFLAG="-Wl,-rpath,$APRR -Wl,-rpath,$APUR"
+fi
+
+# additional flags for Darwin
+if [ "$OS" == "Darwin" ]
+then
+	D_C_FLAGS="-arch x86_64"
+	D_L_FLAGS="-arch x86_64 -dynamiclib"
+fi
+
+# Compile the program.
+gcc -o test_hash test_hash.c $APR_FLAGS $APU_FLAGS $D_C_FLAGS

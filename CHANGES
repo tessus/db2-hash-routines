@@ -1,0 +1,39 @@
+db2-hash-routines 1.1
+
+ - renamed package to db2-hash-routines
+ - changed man pages
+
+db2-auth-routines 1.1
+
+ - renamed package to db2-auth-routines
+ - added man pages
+ - added stored procedures
+ - renamed several files (see README)
+ - changed makertn script to optionally compile with xlc on AIX
+ 
+db2-auth-udfs 1.3
+
+ - allow empty input parameters (empty strings)
+ - changed reg_udfs.ddl to register the functions as NOT FENCED
+
+db2-auth-udfs 1.2
+
+ - changed the code to use the APR library
+ - renamed the files
+ - changed makeudf.bat to compile with MS compiler
+ - added maketest[.bat] to compile test program
+
+db2-auth-udfs 1.1.1
+
+ - changed the makemod script to use it on AIX as well
+
+db2-auth-udfs 1.1
+
+ - added script for compiling the library on Windows
+ - rewrote the README file for better understanding
+
+db2-auth-udfs 1.0
+
+ - initial release
+
+http://mod-auth-ibmdb2.sourceforge.net/

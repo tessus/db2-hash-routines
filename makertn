@@ -1,0 +1,92 @@
+#!/bin/sh
+
+# $Id: makertn,v 1.2 2012/05/02 04:38:57 tessus Exp $
+
+# SCRIPT: makertn
+# Builds the hashing library
+# Usage: makertn
+
+# Set DB2PATH to where DB2 will be accessed. 
+# The default is the standard instance path.
+# Set APRPATH to where apr-1-config is located
+# Set APUPATH to where apu-1-config is located
+
+OS=`uname`
+
+#Default paths for Linux, AIX and Darwin
+
+if [ "$OS" == "AIX" -o "$OS" == "Linux" ]
+then
+	DB2PATH=/home/db2inst1/sqllib
+	APRPATH=/usr/local/apache/bin
+	APUPATH=$APRPATH
+elif [ "$OS" == "Darwin" ]
+then
+	DB2PATH=/Users/db2inst1/sqllib
+	APRPATH=/usr/bin
+	APUPATH=/usr/bin
+fi
+
+# Uncomment the next 3 lines, if you set the paths manually
+#DB2PATH=
+#APRPATH=
+#APUPATH=	
+
+# Uncomment the next line, if you want to use xlc on AIX
+#COMPILER=xlc
+
+copy_lib() {
+	# Copy the shared library to the function subdirectory.
+	# The user must have write permission to this directory.
+	if [ -f $DB2PATH/function/hash ]
+	then
+		rm -f $DB2PATH/function/hash
+	fi
+	
+	cp hash $DB2PATH/function
+	
+	if [ ! -L $DB2PATH/function/unfenced/hash ]
+	then
+		ln -s $DB2PATH/function/hash $DB2PATH/function/unfenced/hash
+	fi
+}
+
+APR_CFLAGS="`$APRPATH/apr-1-config --cppflags --includes`"
+APU_CFLAGS="`$APUPATH/apu-1-config --includes`"
+APR_LFLAGS="`$APRPATH/apr-1-config --link-ld --libs`"
+APU_LFLAGS="`$APUPATH/apu-1-config --link-ld --libs`"
+APRR="`$APRPATH/apr-1-config --link-ld |awk '{print $1}'|cut -c3-`"
+APUR="`$APUPATH/apu-1-config --link-ld |awk '{print $1}'|cut -c3-`"
+
+if [ "$OS" == "AIX" -a "$COMPILER" == "xlc" ]
+then
+	EXTRA_CFLAG=-q64
+	LIB=lib64
+	xlc_r $EXTRA_CFLAG -c hash.c -I$DB2PATH/include $APR_CFLAGS $APU_CFLAGS
+	xlc_r $EXTRA_CFLAG -qmkshrobj -o hash hash.o -L$DB2PATH/$LIB -ldb2 $APR_LFLAGS $APU_LFLAGS -bE:hash.exp
+	copy_lib
+	exit
+fi
+
+# Set the runtime path since routines run as setuid.
+if [ "$OS" == "AIX" ]
+then
+	EXTRA_LFLAG="-Wl,-G,-blibpath:$DB2PATH/lib:$APRR:$APUR"
+else
+	EXTRA_LFLAG="-Wl,-rpath,$DB2PATH/lib -Wl,-rpath,$APRR -Wl,-rpath,$APUR"
+fi
+
+# additional flags for Darwin
+if [ "$OS" == "Darwin" ]
+then
+	D_C_FLAGS="-arch x86_64"
+	D_L_FLAGS="-arch x86_64 -dynamiclib"
+fi
+
+# Compile the program.
+gcc -I$DB2PATH/include -c hash.c $APR_CFLAGS $APU_CFLAGS $D_C_FLAGS
+
+# Link the program and create a shared library
+gcc -shared -o hash hash.o $EXTRA_LFLAG -L$DB2PATH/lib -ldb2 $APR_LFLAGS $APU_LFLAGS $D_L_FLAGS
+
+copy_lib
