@@ -30,7 +30,7 @@ fi
 #APUPATH=	
 
 APR_FLAGS="`$APRPATH/apr-1-config --cppflags --includes --libs --link-ld`"
-APU_FLAGS="`$APUPATH/apu-1-config --link-ld --libs`"
+APU_FLAGS="`$APUPATH/apu-1-config --includes --link-ld --libs`"
 APRR="`$APRPATH/apr-1-config --link-ld |awk '{print $1}'|cut -c3-`"
 APUR="`$APUPATH/apu-1-config --link-ld |awk '{print $1}'|cut -c3-`"
 
