@@ -1,7 +1,5 @@
 #!/bin/sh
 
-# $Id: makertn,v 1.2 2012/05/02 04:38:57 tessus Exp $
-
 # SCRIPT: makertn
 # Builds the hashing library
 # Usage: makertn
