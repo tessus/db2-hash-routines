@@ -21,6 +21,7 @@ phpmd5                       php_md5
 aprmd5                       apr_md5
 aprcrypt                     apr_crypt
 aprsha1                      apr_sha1
+aprsha256                    apr_sha256
 validate                     validate_pw
 
 The phpmd5 function is compatible to the PHP md5 function.
@@ -36,6 +37,7 @@ In win32 environments apr_crypt returns the output of apr_md5.
 db2hash.c       the SQL API stuff
 hash.c          the c code for the hash functions
 hash.h          include file
+sha2.h          include file for APR sha256
 register.ddl    script to register the UDFs and SPs
 drop.ddl        script to drop the UDFs and SPs
 makertn         bash script to compile the library (Linux/AIX)

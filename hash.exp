@@ -2,4 +2,5 @@ phpmd5
 aprmd5
 aprcrypt
 aprsha1
+aprsha256
 validate
