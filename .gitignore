@@ -19,3 +19,7 @@
 
 # Misc
 .DS_Store
+
+#binaries
+hash
+test_hash
