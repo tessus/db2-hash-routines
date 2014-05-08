@@ -4,21 +4,27 @@
 
 int main( void )
 {
+	char clear[6];
 	char *hash;
 
-	printf( "\nUsing word Test\n" );
+	strcpy(clear, "test");
 
-	hash = mk_hash( "Test", ALG_PHPMD5 );
-	printf( "\nmd5       -> %s", hash);
+	printf( "\nUsing word 'test' (without the quotes)\n" );
 
-	hash = mk_hash( "Test", ALG_APMD5 );
-	printf( "\napr_md5   -> %s", hash);
+	hash = mk_hash( clear, ALG_PHPMD5 );
+	printf( "\nphp_md5     -> %s", hash);
 
-	hash = mk_hash( "Test", ALG_CRYPT );
-	printf( "\napr_crypt -> %s", hash);
+	hash = mk_hash( clear, ALG_APMD5 );
+	printf( "\napr_md5     -> %s", hash);
 
-	hash = mk_hash( "Test", ALG_APSHA );
-	printf( "\napr_sha1  -> %s\n\n", hash);
+	hash = mk_hash( clear, ALG_CRYPT );
+	printf( "\napr_crypt   -> %s", hash);
+
+	hash = mk_hash( clear, ALG_APSHA );
+	printf( "\napr_sha1    -> %s", hash);
+
+	hash = mk_hash( clear, ALG_APSHA256 );
+	printf( "\napr_sha256  -> %s\n\n", hash);
 
 	free(hash);
 

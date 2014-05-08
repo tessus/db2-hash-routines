@@ -24,6 +24,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "hash.h"
+#include "sha2.h"
 
 static void to64(char *s, unsigned long v, int n)
 {
@@ -35,6 +36,22 @@ static void to64(char *s, unsigned long v, int n)
 		*s++ = itoa64[v&0x3f];
 		v >>= 6;
 	}
+}
+
+void sha256_base64( const char *clear, int len, char *out )
+{
+	int l;
+	SHA256_CTX context;
+	apr_byte_t digest[SHA256_DIGEST_LENGTH];
+
+	apr__SHA256_Init( &context );
+	apr__SHA256_Update( &context, clear, len );
+	apr__SHA256_Final( digest, &context );
+
+	apr_cpystrn( out, APR_SHA256PW_ID, APR_SHA256PW_IDLEN + 1 );
+
+	l = apr_base64_encode_binary( out + APR_SHA256PW_IDLEN, digest, sizeof(digest) );
+	out[l + APR_SHA256PW_IDLEN] = '\0';
 }
 
 char* mk_hash( const char *passwd, int alg )
@@ -53,9 +70,12 @@ char* mk_hash( const char *passwd, int alg )
 
 	switch (alg)
 	{
+		case ALG_APSHA256:
+			sha256_base64(passwd, strlen(passwd), cpw);
+			break;
 
 		case ALG_APSHA:
-			apr_sha1_base64(passwd,strlen(passwd),cpw);
+			apr_sha1_base64(passwd, strlen(passwd), cpw);
 			break;
 
 		case ALG_APMD5:
@@ -64,8 +84,7 @@ char* mk_hash( const char *passwd, int alg )
 			to64(&salt[0], rand(), 8);
 			salt[8] = '\0';
 
-			apr_md5_encode((const char *)passwd, (const char *)salt,
-			cpw, sizeof(cpw));
+			apr_md5_encode((const char *)passwd, (const char *)salt, cpw, sizeof(cpw));
 			break;
 
 #if !(defined(WIN32) || defined(NETWARE))

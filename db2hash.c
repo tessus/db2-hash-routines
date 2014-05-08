@@ -28,7 +28,7 @@
 #include "hash.h"
 
 /*--------------------------------------------------*/
-/* function md5: MD5 Hashing                        */
+/* function php_md5: MD5 Hashing                    */
 /*                                                  */
 /*        input : varchar                           */
 /*        output: varchar                           */
@@ -159,6 +159,39 @@ void SQL_API_FN aprsha1(	SQLUDF_CHAR      *in,
 }
 
 /*--------------------------------------------------*/
+/* function apr_sha256: SHA1 fuction as in the      */
+/*                    htpasswd program from Apache  */
+/*                                                  */
+/*        input : varchar                           */
+/*        output: varchar                           */
+/*--------------------------------------------------*/
+
+#ifdef __cplusplus
+extern "C"
+#endif
+void SQL_API_FN aprsha256(	SQLUDF_CHAR      *in,
+							SQLUDF_CHAR      out[53],
+							SQLUDF_SMALLINT  *innull,
+							SQLUDF_SMALLINT  *outnull,
+							SQLUDF_TRAIL_ARGS)
+{
+	char *t;
+
+	if( *innull != 0 )
+	{
+		*outnull = -1;
+		return;
+	}
+
+	t = mk_hash( in, ALG_APSHA256 );
+	strcpy( out, t );
+	free( t );
+
+	*outnull = 0;
+	return;
+}
+
+/*--------------------------------------------------*/
 /* function validate : validates the hash           */
 /*                                                  */
 /*        input1: varchar                           */
@@ -178,7 +211,7 @@ SQL_API_RC SQL_API_FN validate(	SQLUDF_CHAR      *password,
 								SQLUDF_TRAIL_ARGS)
 {
 	apr_status_t status;
-	char *md5, *result;
+	char *tmphash, *phpmd5, *result;
 
 	*out = -1;
 	*outNullInd = -1;
@@ -197,11 +230,26 @@ SQL_API_RC SQL_API_FN validate(	SQLUDF_CHAR      *password,
 		return(0);
 	}
 
-	if( strlen(hash) == 32 )
+	if( !strncmp( hash, APR_SHA256PW_ID, APR_SHA256PW_IDLEN ) )
 	{
-		md5 = mk_hash( password, ALG_PHPMD5 );
+		tmphash = mk_hash( password, ALG_APSHA256 );
 
-		if( apr_strnatcmp( hash, md5 ) == 0 )
+		if( strcmp( hash, tmphash ) == 0 )
+			*out = 1;
+		else
+			*out = 0;
+
+		free(tmphash);
+
+		*outNullInd = 0;
+		return(0);
+	}
+
+	if( strlen(hash) == 32 && (hash[0] != '$') )
+	{
+		phpmd5 = mk_hash( password, ALG_PHPMD5 );
+
+		if( apr_strnatcmp( hash, phpmd5 ) == 0 )
 		{
 			*out = 1;
 		}
@@ -210,7 +258,7 @@ SQL_API_RC SQL_API_FN validate(	SQLUDF_CHAR      *password,
 			*out = 0;
 		}
 
-		free(md5);
+		free(phpmd5);
 
 		*outNullInd = 0;
 		return(0);

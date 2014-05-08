@@ -49,7 +49,11 @@
 #define ALG_APSHA    4
 #define ALG_APSHA256 5
 
+#define APR_SHA256PW_ID        "{SHA256}"
+#define APR_SHA256PW_IDLEN     8
+
 static void to64(char *s, unsigned long v, int n);
+void sha256_base64( const char *clear, int len, char *out );
 char* mk_hash( const char *passwd, int alg );
 
 #endif
