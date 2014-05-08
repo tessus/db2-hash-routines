@@ -1,8 +1,8 @@
 /*
   +----------------------------------------------------------------------+
-  | hash: hashing library for IBM DB2                                    |
+  | db2hash.c: hashing library for IBM DB2                               |
   +----------------------------------------------------------------------+
-  | Copyright (c) 2007-2012 Helmut K. C. Tessarek                        |
+  | Copyright (c) 2007-2014 Helmut K. C. Tessarek                        |
   +----------------------------------------------------------------------+
   | Licensed under the Apache License, Version 2.0 (the "License"); you  |
   | may not use this file except in compliance with the License. You may |
@@ -37,21 +37,21 @@
 #ifdef __cplusplus
 extern "C"
 #endif
-void SQL_API_FN md5(	SQLUDF_CHAR      *in,
+void SQL_API_FN phpmd5(	SQLUDF_CHAR      *in,
 						SQLUDF_CHAR      out[33],
 						SQLUDF_SMALLINT  *innull,
 						SQLUDF_SMALLINT  *outnull,
-						SQLUDF_TRAIL_ARGS) 
+						SQLUDF_TRAIL_ARGS)
 {
 	char *t;
-	
+
 	if( *innull != 0 )
 	{
 		*outnull = -1;
 		return;
 	}
 
-	t = mk_hash( in, ALG_MD5 );
+	t = mk_hash( in, ALG_PHPMD5 );
 	strcpy( out, t );
 	free( t );
 
@@ -74,7 +74,7 @@ void SQL_API_FN aprmd5(	SQLUDF_CHAR      *in,
 						SQLUDF_CHAR      out[38],
 						SQLUDF_SMALLINT  *innull,
 						SQLUDF_SMALLINT  *outnull,
-						SQLUDF_TRAIL_ARGS) 
+						SQLUDF_TRAIL_ARGS)
 {
 	char *t;
 
@@ -107,7 +107,7 @@ void SQL_API_FN aprcrypt(	SQLUDF_CHAR      *in,
 							SQLUDF_CHAR      out[14],
 							SQLUDF_SMALLINT  *innull,
 							SQLUDF_SMALLINT  *outnull,
-							SQLUDF_TRAIL_ARGS) 
+							SQLUDF_TRAIL_ARGS)
 {
 	char *t;
 
@@ -140,7 +140,7 @@ void SQL_API_FN aprsha1(	SQLUDF_CHAR      *in,
 							SQLUDF_CHAR      out[34],
 							SQLUDF_SMALLINT  *innull,
 							SQLUDF_SMALLINT  *outnull,
-							SQLUDF_TRAIL_ARGS) 
+							SQLUDF_TRAIL_ARGS)
 {
 	char *t;
 
@@ -157,7 +157,7 @@ void SQL_API_FN aprsha1(	SQLUDF_CHAR      *in,
 	*outnull = 0;
 	return;
 }
-   
+
 /*--------------------------------------------------*/
 /* function validate : validates the hash           */
 /*                                                  */
@@ -175,14 +175,14 @@ SQL_API_RC SQL_API_FN validate(	SQLUDF_CHAR      *password,
 								SQLUDF_SMALLINT  *passwordNullInd,
 								SQLUDF_SMALLINT  *hashNullInd,
 								SQLUDF_SMALLINT  *outNullInd,
-								SQLUDF_TRAIL_ARGS) 
+								SQLUDF_TRAIL_ARGS)
 {
 	apr_status_t status;
 	char *md5, *result;
-	
+
 	*out = -1;
 	*outNullInd = -1;
-	
+
 	if( *passwordNullInd != 0 || *hashNullInd != 0 )
 	{
 		*outNullInd = -1;
@@ -199,8 +199,8 @@ SQL_API_RC SQL_API_FN validate(	SQLUDF_CHAR      *password,
 
 	if( strlen(hash) == 32 )
 	{
-		md5 = mk_hash( password, ALG_MD5 );
-		
+		md5 = mk_hash( password, ALG_PHPMD5 );
+
 		if( apr_strnatcmp( hash, md5 ) == 0 )
 		{
 			*out = 1;
@@ -209,9 +209,9 @@ SQL_API_RC SQL_API_FN validate(	SQLUDF_CHAR      *password,
 		{
 			*out = 0;
 		}
-		
+
 		free(md5);
-		
+
 		*outNullInd = 0;
 		return(0);
 	}
@@ -235,7 +235,7 @@ SQL_API_RC SQL_API_FN validate(	SQLUDF_CHAR      *password,
 			*out = 0;
 		}
 	}
-	
+
 	*outNullInd = 0;
 	return(0);
 }
