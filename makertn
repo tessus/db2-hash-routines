@@ -4,7 +4,7 @@
 # Builds the hashing library
 # Usage: makertn
 
-# Set DB2PATH to where DB2 will be accessed. 
+# Set DB2PATH to where DB2 will be accessed.
 # The default is the standard instance path.
 # Set APRPATH to where apr-1-config is located
 # Set APUPATH to where apu-1-config is located
@@ -28,7 +28,7 @@ fi
 # Uncomment the next 3 lines, if you set the paths manually
 #DB2PATH=
 #APRPATH=
-#APUPATH=	
+#APUPATH=
 
 # Uncomment the next line, if you want to use xlc on AIX
 #COMPILER=xlc
@@ -40,9 +40,9 @@ copy_lib() {
 	then
 		rm -f $DB2PATH/function/hash
 	fi
-	
+
 	cp hash $DB2PATH/function
-	
+
 	if [ ! -L $DB2PATH/function/unfenced/hash ]
 	then
 		ln -s $DB2PATH/function/hash $DB2PATH/function/unfenced/hash
@@ -60,8 +60,8 @@ if [ "$OS" == "AIX" -a "$COMPILER" == "xlc" ]
 then
 	EXTRA_CFLAG=-q64
 	LIB=lib64
-	xlc_r $EXTRA_CFLAG -c hash.c -I$DB2PATH/include $APR_CFLAGS $APU_CFLAGS
-	xlc_r $EXTRA_CFLAG -qmkshrobj -o hash hash.o -L$DB2PATH/$LIB -ldb2 $APR_LFLAGS $APU_LFLAGS -bE:hash.exp
+	xlc_r $EXTRA_CFLAG -c db2hash.c hash.c -I$DB2PATH/include $APR_CFLAGS $APU_CFLAGS
+	xlc_r $EXTRA_CFLAG -qmkshrobj -o hash db2hash.o hash.o -L$DB2PATH/$LIB -ldb2 $APR_LFLAGS $APU_LFLAGS -bE:hash.exp
 	copy_lib
 	exit
 fi
@@ -82,9 +82,9 @@ then
 fi
 
 # Compile the program.
-gcc -I$DB2PATH/include -c hash.c $APR_CFLAGS $APU_CFLAGS $D_C_FLAGS
+gcc -I$DB2PATH/include -c db2hash.c hash.c $APR_CFLAGS $APU_CFLAGS $D_C_FLAGS
 
 # Link the program and create a shared library
-gcc -shared -o hash hash.o $EXTRA_LFLAG -L$DB2PATH/lib -ldb2 $APR_LFLAGS $APU_LFLAGS $D_L_FLAGS
+gcc -shared -o hash db2hash.o hash.o $EXTRA_LFLAG -L$DB2PATH/lib -ldb2 $APR_LFLAGS $APU_LFLAGS $D_L_FLAGS
 
 copy_lib

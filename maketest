@@ -50,4 +50,4 @@ then
 fi
 
 # Compile the program.
-gcc -o test_hash test_hash.c $APR_FLAGS $APU_FLAGS $D_C_FLAGS
+gcc -o test_hash test_hash.c hash.c $APR_FLAGS $APU_FLAGS $D_C_FLAGS

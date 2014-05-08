@@ -1,6 +1,6 @@
 LIBRARY HASH
 EXPORTS
-md5
+phpmd5
 aprmd5
 aprcrypt
 aprsha1
