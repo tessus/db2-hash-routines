@@ -27,12 +27,14 @@
 #include <sqlda.h>
 #include "hash.h"
 
-/*--------------------------------------------------*/
-/* function php_md5: MD5 Hashing                    */
-/*                                                  */
-/*        input : varchar                           */
-/*        output: varchar                           */
-/*--------------------------------------------------*/
+/*
+  +----------------------------------------------------------------------+
+  | function phpmd5: MD5 hashing (as in PHP)                             |
+  |                                                                      |
+  |          input : varchar             (password)                      |
+  |          output: char                (hash)                          |
+  +----------------------------------------------------------------------+
+*/
 
 #ifdef __cplusplus
 extern "C"
@@ -59,13 +61,14 @@ void SQL_API_FN phpmd5(	SQLUDF_CHAR      *in,
 	return;
 }
 
-/*--------------------------------------------------*/
-/* function apr_md5: MD5 Hashing as in the htpasswd */
-/*                   program from Apache            */
-/*                                                  */
-/*        input : varchar                           */
-/*        output: varchar                           */
-/*--------------------------------------------------*/
+/*
+  +----------------------------------------------------------------------+
+  | function aprmd5: MD5 hashing (as in Apache's htpasswd program)       |
+  |                                                                      |
+  |          input : varchar             (password)                      |
+  |          output: char                (hash)                          |
+  +----------------------------------------------------------------------+
+*/
 
 #ifdef __cplusplus
 extern "C"
@@ -92,13 +95,14 @@ void SQL_API_FN aprmd5(	SQLUDF_CHAR      *in,
 	return;
 }
 
-/*--------------------------------------------------*/
-/* function apr_crypt: Crypt function as in the     */
-/*                     htpasswd program from Apache */
-/*                                                  */
-/*        input : varchar                           */
-/*        output: varchar                           */
-/*--------------------------------------------------*/
+/*
+  +----------------------------------------------------------------------+
+  | function aprcrypt: crypt function (as in Apache's htpasswd program)  |
+  |                                                                      |
+  |          input : varchar             (password)                      |
+  |          output: char                (hash)                          |
+  +----------------------------------------------------------------------+
+*/
 
 #ifdef __cplusplus
 extern "C"
@@ -125,13 +129,14 @@ void SQL_API_FN aprcrypt(	SQLUDF_CHAR      *in,
 	return;
 }
 
-/*--------------------------------------------------*/
-/* function apr_sha1: SHA1 function as in the       */
-/*                    htpasswd program from Apache  */
-/*                                                  */
-/*        input : varchar                           */
-/*        output: varchar                           */
-/*--------------------------------------------------*/
+/*
+  +----------------------------------------------------------------------+
+  | function aprsha1: SHA1 hashing (as in Apache's htpasswd program)     |
+  |                                                                      |
+  |          input : varchar             (password)                      |
+  |          output: char                (hash)                          |
+  +----------------------------------------------------------------------+
+*/
 
 #ifdef __cplusplus
 extern "C"
@@ -158,14 +163,15 @@ void SQL_API_FN aprsha1(	SQLUDF_CHAR      *in,
 	return;
 }
 
-/*--------------------------------------------------*/
-/* function apr_sha256: SHA256 function, similar to */
-/*                      the SHA1 function in the    */
-/*                      htpasswd program from Apache*/
-/*                                                  */
-/*        input : varchar                           */
-/*        output: varchar                           */
-/*--------------------------------------------------*/
+/*
+  +----------------------------------------------------------------------+
+  | function aprsha256: SHA256 hashing (similar to the algorithm used    |
+  |                                     in Apache's htpasswd program)    |
+  |                                                                      |
+  |          input : varchar             (password)                      |
+  |          output: char                (hash)                          |
+  +----------------------------------------------------------------------+
+*/
 
 #ifdef __cplusplus
 extern "C"
@@ -192,13 +198,15 @@ void SQL_API_FN aprsha256(	SQLUDF_CHAR      *in,
 	return;
 }
 
-/*--------------------------------------------------*/
-/* function validate: validates the hash            */
-/*                                                  */
-/*        input1: varchar                           */
-/*        input2: varchar                           */
-/*        output: integer                           */
-/*--------------------------------------------------*/
+/*
+  +----------------------------------------------------------------------+
+  | function validate: validates the hash                                |
+  |                                                                      |
+  |          input1: varchar             (password)                      |
+  |          input2: varchar             (hash)                          |
+  |          output: integer             (status)                        |
+  +----------------------------------------------------------------------+
+*/
 
 #ifdef __cplusplus
 extern "C"
