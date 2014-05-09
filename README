@@ -1,6 +1,6 @@
 written by Helmut K. C. Tessarek
 
-Last Update: 2014-05-07
+Last Update: 2014-05-09
 
 http://mod-auth-ibmdb2.sourceforge.net/
 
@@ -22,14 +22,18 @@ aprmd5                       apr_md5
 aprcrypt                     apr_crypt
 aprsha1                      apr_sha1
 aprsha256                    apr_sha256
+bcrypt                       bcrypt
 validate                     validate_pw
 
 The phpmd5 function is compatible to the PHP md5 function.
-The aprmd5, aprcrypt and aprsha1 functions are compatible to the Apache
-functions that are used in the htpasswd utility.
+The aprmd5, aprcrypt, aprsha1, bcrypt functions are compatible to the
+functions used in Apache's htpasswd utility.
+The aprsha256 routine returns the identifier {SHA256} plus the base64
+encoded sha256 hash.
 The validate function validates a password against a hash.
 
-In win32 environments apr_crypt returns the output of apr_md5.
+In win32 environments apr_crypt returns the output of bcrypt, if available.
+If bcrypt is not available, the output of apr_md5 is returned.
 
 2) File Description
 -------------------

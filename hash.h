@@ -28,6 +28,7 @@
 #include "apr_md5.h"
 #include "apr_sha1.h"
 #include "apr_strings.h"
+#include "apu_version.h"
 #include <time.h>
 
 #if APR_HAVE_CRYPT_H
@@ -43,16 +44,23 @@
 #include <unistd.h>
 #endif
 
+#if APU_MAJOR_VERSION == 1 && APU_MINOR_VERSION >= 5
+#define BCRYPT_ALGO_SUPPORTED 1
+#else
+#define BCRYPT_ALGO_SUPPORTED 0
+#endif
+
 #define ALG_CRYPT    1
 #define ALG_PHPMD5   2
 #define ALG_APMD5    3
 #define ALG_APSHA    4
 #define ALG_APSHA256 5
+#define ALG_BCRYPT   7
 
 #define APR_SHA256PW_ID        "{SHA256}"
 #define APR_SHA256PW_IDLEN     8
 
-static void to64(char *s, unsigned long v, int n);
+static int generate_salt(char *s, size_t size);
 void sha256_base64( const char *clear, int len, char *out );
 char* mk_hash( const char *passwd, int alg );
 

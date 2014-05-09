@@ -24,7 +24,14 @@ int main( void )
 	printf( "\napr_sha1    -> %s", hash);
 
 	hash = mk_hash( clear, ALG_APSHA256 );
-	printf( "\napr_sha256  -> %s\n\n", hash);
+	printf( "\napr_sha256  -> %s", hash);
+
+#if BCRYPT_ALGO_SUPPORTED
+	hash = mk_hash( clear, ALG_BCRYPT );
+	printf( "\nbcrypt      -> %s", hash);
+#endif
+
+	printf("\n\n");
 
 	free(hash);
 

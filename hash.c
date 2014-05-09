@@ -26,16 +26,40 @@
 #include "hash.h"
 #include "sha2.h"
 
-static void to64(char *s, unsigned long v, int n)
+static int generate_salt(char *s, size_t size)
 {
-	static unsigned char itoa64[] =         /* 0 ... 63 => ASCII - 64 */
-	"./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+	unsigned char rnd[32];
+	static const char itoa64[] =
+		"./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+	apr_size_t n;
+	unsigned int val = 0, bits = 0;
+	apr_status_t rv;
 
-	while (--n >= 0)
+	n = (size * 6 + 7)/8;
+	if (n > sizeof(rnd))
 	{
-		*s++ = itoa64[v&0x3f];
-		v >>= 6;
+		return -1;
 	}
+	rv = apr_generate_random_bytes(rnd, n);
+	if (rv)
+	{
+		return -1;
+	}
+	n = 0;
+	while (size > 0)
+	{
+		if (bits < 6)
+		{
+			val |= (rnd[n++] << bits);
+			bits += 8;
+		}
+		*s++ = itoa64[val & 0x3f];
+		size--;
+		val >>= 6;
+		bits -= 6;
+	}
+	*s = '\0';
+	return 0;
 }
 
 void sha256_base64( const char *clear, int len, char *out )
@@ -58,7 +82,10 @@ char* mk_hash( const char *passwd, int alg )
 {
 	char *result;
 	char cpw[120];
-	char salt[9];
+	char salt[16];
+	int ret = 0;
+
+	int cost = 5;
 
 	unsigned char digest[APR_MD5_DIGESTSIZE];
 	apr_md5_ctx_t context;
@@ -70,6 +97,21 @@ char* mk_hash( const char *passwd, int alg )
 
 	switch (alg)
 	{
+#if BCRYPT_ALGO_SUPPORTED
+		case ALG_BCRYPT:
+		default:
+			ret = apr_generate_random_bytes((unsigned char*)salt, 16);
+			if (ret != 0)
+				break;
+
+			ret = apr_bcrypt_encode(passwd, cost, (unsigned char*)salt, 16,
+								   cpw, sizeof(cpw));
+			if (ret != 0)
+				break;
+
+			break;
+#endif
+
 		case ALG_APSHA256:
 			sha256_base64(passwd, strlen(passwd), cpw);
 			break;
@@ -79,19 +121,21 @@ char* mk_hash( const char *passwd, int alg )
 			break;
 
 		case ALG_APMD5:
+#if !BCRYPT_ALGO_SUPPORTED
 		default:
-			(void) srand((int) time((time_t *) NULL));
-			to64(&salt[0], rand(), 8);
-			salt[8] = '\0';
+#endif
+			ret = generate_salt(salt, 8);
+			if (ret != 0)
+				break;
 
 			apr_md5_encode((const char *)passwd, (const char *)salt, cpw, sizeof(cpw));
 			break;
 
 #if !(defined(WIN32) || defined(NETWARE))
 		case ALG_CRYPT:
-			(void) srand((int) time((time_t *) NULL));
-			to64(&salt[0], rand(), 8);
-			salt[8] = '\0';
+			ret = generate_salt(salt, 8);
+			if (ret != 0)
+				break;
 
 			apr_cpystrn(cpw, (char *)crypt(passwd, salt), sizeof(cpw) - 1);
 			break;
@@ -115,6 +159,7 @@ char* mk_hash( const char *passwd, int alg )
 
 	result = (char*)malloc(strlen(cpw)*sizeof(char));
 	strcpy( result, cpw );
+	memset(cpw, '\0', strlen(cpw));
 
 	return result;
 }

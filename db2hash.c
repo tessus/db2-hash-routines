@@ -200,6 +200,42 @@ void SQL_API_FN aprsha256(	SQLUDF_CHAR      *in,
 
 /*
   +----------------------------------------------------------------------+
+  | function bcrypt: bcrypt (as in Apache's htpasswd program)            |
+  |                                                                      |
+  |          input : varchar             (password)                      |
+  |          output: char                (hash)                          |
+  +----------------------------------------------------------------------+
+*/
+
+#if BCRYPT_ALGO_SUPPORTED
+#ifdef __cplusplus
+extern "C"
+#endif
+void SQL_API_FN bcrypt(	SQLUDF_CHAR      *in,
+						SQLUDF_CHAR      out[61],
+						SQLUDF_SMALLINT  *innull,
+						SQLUDF_SMALLINT  *outnull,
+						SQLUDF_TRAIL_ARGS)
+{
+	char *t;
+
+	if( *innull != 0 )
+	{
+		*outnull = -1;
+		return;
+	}
+
+	t = mk_hash( in, ALG_BCRYPT );
+	strcpy( out, t );
+	free( t );
+
+	*outnull = 0;
+	return;
+}
+#endif
+
+/*
+  +----------------------------------------------------------------------+
   | function validate: validates the hash                                |
   |                                                                      |
   |          input1: varchar             (password)                      |
