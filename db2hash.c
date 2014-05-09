@@ -93,7 +93,7 @@ void SQL_API_FN aprmd5(	SQLUDF_CHAR      *in,
 }
 
 /*--------------------------------------------------*/
-/* function apr_crypt: Crypt fuction as in the      */
+/* function apr_crypt: Crypt function as in the     */
 /*                     htpasswd program from Apache */
 /*                                                  */
 /*        input : varchar                           */
@@ -126,7 +126,7 @@ void SQL_API_FN aprcrypt(	SQLUDF_CHAR      *in,
 }
 
 /*--------------------------------------------------*/
-/* function apr_sha1: SHA1 fuction as in the        */
+/* function apr_sha1: SHA1 function as in the       */
 /*                    htpasswd program from Apache  */
 /*                                                  */
 /*        input : varchar                           */
@@ -159,8 +159,9 @@ void SQL_API_FN aprsha1(	SQLUDF_CHAR      *in,
 }
 
 /*--------------------------------------------------*/
-/* function apr_sha256: SHA1 fuction as in the      */
-/*                    htpasswd program from Apache  */
+/* function apr_sha256: SHA256 function, similar to */
+/*                      the SHA1 function in the    */
+/*                      htpasswd program from Apache*/
 /*                                                  */
 /*        input : varchar                           */
 /*        output: varchar                           */
@@ -192,7 +193,7 @@ void SQL_API_FN aprsha256(	SQLUDF_CHAR      *in,
 }
 
 /*--------------------------------------------------*/
-/* function validate : validates the hash           */
+/* function validate: validates the hash            */
 /*                                                  */
 /*        input1: varchar                           */
 /*        input2: varchar                           */
