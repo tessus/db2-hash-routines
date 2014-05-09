@@ -270,6 +270,7 @@ SQL_API_RC SQL_API_FN validate(	SQLUDF_CHAR      *password,
 	{
 		*out = 1;
 	}
+#ifndef WIN32
 	else
 	{
 		// maybe a different encrypted password (glibc2 crypt)?
@@ -283,6 +284,7 @@ SQL_API_RC SQL_API_FN validate(	SQLUDF_CHAR      *password,
 			*out = 0;
 		}
 	}
+#endif
 
 	*outNullInd = 0;
 	return(0);
