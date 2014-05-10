@@ -1,0 +1,58 @@
+.TH bcrypt "8" "May 2014" "bcrypt" "DB2 User Defined Function and Stored Procedure"
+.SH NAME
+bcrypt \- DB2 UDF and SP to generate an SHA1 hash
+.SH SYNOPSIS
+>>-BCRYPT--(--expression--)------------------------------------><
+.PP
+>>-BCRYPT--(--expression--,--hash--)---------------------------><
+.SH DESCRIPTION
+bcrypt algorithm. The bcrypt routine is compatible to the function used in Apache's htpasswd utility.
+.PP
+The argument can be a character string that is either a CHAR or VARCHAR not exceeding 120 bytes.
+.PP
+The result of the function is CHAR(60). The result can be null; if the argument is null, the result is the null value.
+.SH EXAMPLES
+\fBExample 1:\fR
+
+.br
+Inserting the user \fItest\fR and the sha1 crypted clear text \fItestpwd\fR to the table \fIusers\fR.
+.PP
+.nf
+INSERT INTO USERS (username, password)
+  VALUES ('test', bcrypt('testpwd'))
+.fi
+.PP
+\fBExample 2:\fR
+
+.br
+.nf
+SELECT bcrypt('testpwd') FROM SYSIBM.SYSDUMMY1
+
+1
+------------------------------------------------------------
+$2y$05$2jb66aPElSkNLT1t8e6dQepuCY2BP3JnYUh0xeV9r1PEoOGyOLkym
+
+  1 record(s) selected.
+.fi
+.PP
+\fBExample 3:\fR
+
+.br
+.nf
+CALL bcrypt('testpwd', ?)
+
+  Value of output parameters
+  --------------------------
+  Parameter Name  : HASH
+  Parameter Value : $2y$05$WYSu1X6PVA0Ra.aPSjrdv.S6hOp.AYSnNRT521rmLRjD4Mj9UY6ve
+
+  Return Status = 0
+.fi
+.SH AUTHOR
+Written by Helmut K. C. Tessarek.
+.SH "BUGS"
+Hopefully none :-) But if you find one, please report it at:
+.br
+http://sourceforge.net/p/mod-auth-ibmdb2/bugs
+.SH "WEB SITE"
+http://mod-auth-ibmdb2.sourceforge.net
