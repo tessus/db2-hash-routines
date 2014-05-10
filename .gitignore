@@ -23,6 +23,9 @@
 # my local make files
 mymake*
 
+# html
+*.html
+
 # binaries
 hash
 test_hash
