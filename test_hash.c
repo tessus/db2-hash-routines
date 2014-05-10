@@ -2,14 +2,21 @@
 #include <string.h>
 #include "hash.h"
 
-int main( void )
+int main( int argc, char *argv[] )
 {
-	char clear[6];
+	char clear[121];
 	char *hash;
 
-	strcpy(clear, "test");
+	if (argc < 2 || strlen(argv[1]) > 120)
+	{
+		strcpy(clear, "test");
+	}
+	else
+	{
+		strcpy(clear, argv[1]);
+	}
 
-	printf( "\nUsing word 'test' (without the quotes)\n" );
+	printf( "\nUsing word '%s' (without the quotes)\n", clear );
 
 	hash = mk_hash( clear, ALG_PHPMD5 );
 	printf( "\nphp_md5     -> %s", hash);
