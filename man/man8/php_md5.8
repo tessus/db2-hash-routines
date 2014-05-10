@@ -1,12 +1,12 @@
-.TH md5 "8" "February 2013" "md5" "DB2 User Defined Function and Stored Procedure"
+.TH php_md5 "8" "May 2014" "php_md5" "DB2 User Defined Function and Stored Procedure"
 .SH NAME
-md5 \- DB2 UDF and SP to generate an MD5 hash
+php_md5 \- DB2 UDF and SP to generate an MD5 hash
 .SH SYNOPSIS
->>-MD5--(--expression--)---------------------------------------><
+>>-PHP_MD5--(--expression--)-----------------------------------><
 .PP
->>-MD5--(--expression--,--hash--)------------------------------><
+>>-PHP_MD5--(--expression--,--hash--)--------------------------><
 .SH DESCRIPTION
-MD5 hash. The md5 routine is compatible to the PHP md5 function.
+MD5 hash. The php_md5 routine is compatible to the PHP md5 function.
 .PP
 The argument can be a character string that is either a CHAR or VARCHAR not exceeding 120 bytes.
 .PP
@@ -18,15 +18,15 @@ The result of the function is CHAR(32). The result can be null; if the argument 
 Inserting the user \fItest\fR and the md5 hash of the clear text \fItestpwd\fR to the table \fIusers\fR.
 .PP
 .nf
-INSERT INTO USERS (username, password) 
-  VALUES ('test', md5('testpwd'))
+INSERT INTO USERS (username, password)
+  VALUES ('test', php_md5('testpwd'))
 .fi
 .PP
 \fBExample 2:\fR
 
 .br
 .nf
-SELECT md5( 'testpwd' ) FROM SYSIBM.SYSDUMMY1
+SELECT php_md5( 'testpwd' ) FROM SYSIBM.SYSDUMMY1
 
 1
 --------------------------------
@@ -39,7 +39,7 @@ SELECT md5( 'testpwd' ) FROM SYSIBM.SYSDUMMY1
 
 .br
 .nf
-CALL md5('testpwd', ?)
+CALL php_md5('testpwd', ?)
 
   Value of output parameters
   --------------------------
