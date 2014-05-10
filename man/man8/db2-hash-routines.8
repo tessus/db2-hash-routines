@@ -4,6 +4,8 @@ db2-hash-routines \- DB2 UDFs and SPs to generate and validate hashes
 .SH SYNOPSIS
 \fBUser Defined Functions:\fR
 .PP
+>>-BCRYPT--(--expression--)------------------------------------><
+.PP
 >>-PHP_MD5--(--expression--)-----------------------------------><
 .PP
 >>-APR_MD5--(--expression--)-----------------------------------><
@@ -12,9 +14,13 @@ db2-hash-routines \- DB2 UDFs and SPs to generate and validate hashes
 .PP
 >>-APR_SHA1--(--expression--)----------------------------------><
 .PP
+>>-APR_SHA256--(--expression--)--------------------------------><
+.PP
 >>-VALIDATE_PW--(--password--,--hash--)------------------------><
 .PP
 \fBStored Procedures:\fR
+.PP
+>>-BCRYPT--(--expression--,--hash--)---------------------------><
 .PP
 >>-PHP_MD5--(--expression--,--hash--)--------------------------><
 .PP
@@ -24,9 +30,23 @@ db2-hash-routines \- DB2 UDFs and SPs to generate and validate hashes
 .PP
 >>-APR_SHA1--(--expression--,--hash--)-------------------------><
 .PP
+>>-APR_SHA256--(--expression--,--hash--)-----------------------><
+.PP
 >>-VALIDATE_PW--(--password--,--hash--,--is_valid--)-----------><
 .SH DESCRIPTION
 These functions and procedures can be used to generate hashes in DB2.
+.TP
+\fBbcrypt( '\fR\fIcleartext\fR\fB' )\fR
+.RS 0
+\fBbcrypt( '\fR\fIcleartext\fR\fB', \fR\fI:hash\fR\fB )\fR
+.PD 0
+.IP
+bcrypt algorithm. The bcrypt routine is compatible to the function used in Apache's htpasswd utility.
+.PD
+.IP
+The argument can be a character string that is either a CHAR or VARCHAR not exceeding 120 bytes.
+.IP
+The result of the routine is CHAR(60). The result can be null; if the argument is null, the result is the null value.
 .TP
 \fBphp_md5( '\fR\fIcleartext\fR\fB' )\fR
 .RS 0
@@ -45,7 +65,7 @@ The result of the routine is CHAR(32). The result can be null; if the argument i
 \fBapr_md5( '\fR\fIcleartext\fR\fB', \fR\fI:hash\fR\fB )\fR
 .PD 0
 .IP
-Seeded MD5 hash. The apr_md5 routine is compatible to the Apache function that is used in the htpasswd utility.
+Seeded MD5 hash. The apr_md5 routine is compatible to the function used in Apache's htpasswd utility.
 .PD
 .IP
 The argument can be a character string that is either a CHAR or VARCHAR not exceeding 120 bytes.
@@ -57,7 +77,7 @@ The result of the routine is CHAR(37). The result can be null; if the argument i
 \fBapr_crypt( '\fR\fIcleartext\fR\fB', \fR\fI:hash\fR\fB )\fR
 .PD 0
 .IP
-Unix crypt. The apr_crypt routine is compatible to the Apache function that is used in the htpasswd utility.
+Unix crypt. The apr_crypt routine is compatible to the function used in Apache's htpasswd utility.
 .PD
 .IP
 The argument can be a character string that is either a CHAR or VARCHAR not exceeding 120 bytes.
@@ -69,12 +89,24 @@ The result of the routine is CHAR(13). The result can be null; if the argument i
 \fBapr_sha1( '\fR\fIcleartext\fR\fB', \fR\fI:hash\fR\fB )\fR
 .PD 0
 .IP
-SHA1 algorithm. The apr_sha1 routine is compatible to the Apache function that is used in the htpasswd utility.
+SHA1 algorithm. The apr_sha1 routine is compatible to the function used in Apache's htpasswd utility.
 .PD
 .IP
 The argument can be a character string that is either a CHAR or VARCHAR not exceeding 120 bytes.
 .IP
 The result of the routine is CHAR(33). The result can be null; if the argument is null, the result is the null value.
+.TP
+\fBapr_sha256( '\fR\fIcleartext\fR\fB' )\fR
+.RS 0
+\fBapr_sha256( '\fR\fIcleartext\fR\fB', \fR\fI:hash\fR\fB )\fR
+.PD 0
+.IP
+SHA256 algorithm. The apr_sha256 routine returns the identifier {SHA256} plus the base64 encoded sha256 hash.
+.PD
+.IP
+The argument can be a character string that is either a CHAR or VARCHAR not exceeding 120 bytes.
+.IP
+The result of the routine is CHAR(52). The result can be null; if the argument is null, the result is the null value.
 .TP
 \fBvalidate_pw( '\fR\fIpassword\fR\fB', '\fR\fIhash\fR\fB' )\fR
 .RS 0
@@ -89,6 +121,40 @@ empty, otherwise an SQLSTATE 39701 is returned.
 .IP
 The result of the routine is an INTEGER. If the password is valid, 1 is returned. If the password is not valid, 0 is returned. The result can be null; if the argument is null, the result is the null value.
 .SH EXAMPLES
+\fBbcrypt (1):\fR
+.br
+Inserting the user \fItest\fR and the sha1 crypted clear text \fItestpwd\fR to the table \fIusers\fR.
+.PP
+.nf
+INSERT INTO USERS (username, password)
+  VALUES ('test', bcrypt('testpwd'))
+.fi
+.PP
+\fBbcrypt (2):\fR
+.br
+.nf
+SELECT bcrypt('testpwd') FROM SYSIBM.SYSDUMMY1
+
+1
+------------------------------------------------------------
+$2y$05$2jb66aPElSkNLT1t8e6dQepuCY2BP3JnYUh0xeV9r1PEoOGyOLkym
+
+  1 record(s) selected.
+.fi
+.PP
+\fBbcrypt (3):\fR
+.br
+.nf
+CALL bcrypt('testpwd', ?)
+
+  Value of output parameters
+  --------------------------
+  Parameter Name  : HASH
+  Parameter Value : $2y$05$WYSu1X6PVA0Ra.aPSjrdv.S6hOp.AYSnNRT521rmLRjD4Mj9UY6ve
+
+  Return Status = 0
+.fi
+.PP
 \fBphp_md5 (1)\fR
 .br
 Inserting the user \fItest\fR and the md5 hash of the clear text \fItestpwd\fR to the table \fIusers\fR.
@@ -223,6 +289,40 @@ CALL apr_sha1('testpwd', ?)
   --------------------------
   Parameter Name  : HASH
   Parameter Value : {SHA}mO8HWOaqxvmp4Rl1SMgZC3LJWB0=
+
+  Return Status = 0
+.fi
+.PP
+\fBapr_sha256 (1):\fR
+.br
+Inserting the user \fItest\fR and the sha1 crypted clear text \fItestpwd\fR to the table \fIusers\fR.
+.PP
+.nf
+INSERT INTO USERS (username, password)
+  VALUES ('test', apr_sha256('testpwd'))
+.fi
+.PP
+\fBapr_sha256 (2):\fR
+.br
+.nf
+SELECT apr_sha256('testpwd') FROM SYSIBM.SYSDUMMY1
+
+1
+----------------------------------------------------
+{SHA256}qFtqIIE8Maixs/NhjaeWJxyaopOz+AmHMFOyGuxQEIc=
+
+  1 record(s) selected.
+.fi
+.PP
+\fBapr_sha256 (3):\fR
+.br
+.nf
+CALL apr_sha256('testpwd', ?)
+
+  Value of output parameters
+  --------------------------
+  Parameter Name  : HASH
+  Parameter Value : {SHA256}qFtqIIE8Maixs/NhjaeWJxyaopOz+AmHMFOyGuxQEIc=
 
   Return Status = 0
 .fi
