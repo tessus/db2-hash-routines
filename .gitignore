@@ -20,6 +20,9 @@
 # Misc
 .DS_Store
 
-#binaries
+# my local make files
+mymake*
+
+# binaries
 hash
 test_hash
