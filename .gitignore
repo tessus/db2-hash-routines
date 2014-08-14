@@ -29,3 +29,7 @@ mymake*
 # binaries
 hash
 test_hash
+
+# Eclipse - Data Studio
+.project
+
