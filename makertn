@@ -16,7 +16,7 @@ OS=`uname`
 if [ "$OS" == "AIX" -o "$OS" == "Linux" ]
 then
 	DB2PATH=/home/db2inst1/sqllib
-	APRPATH=/usr/local/apache/bin
+	APRPATH=/usr/local/bin
 	APUPATH=$APRPATH
 elif [ "$OS" == "Darwin" ]
 then
@@ -82,7 +82,7 @@ then
 fi
 
 # Compile the program.
-gcc -I$DB2PATH/include -c db2hash.c hash.c $APR_CFLAGS $APU_CFLAGS $D_C_FLAGS
+gcc -fPIC -I$DB2PATH/include -c db2hash.c hash.c $APR_CFLAGS $APU_CFLAGS $D_C_FLAGS
 
 # Link the program and create a shared library
 gcc -shared -o hash db2hash.o hash.o $EXTRA_LFLAG -L$DB2PATH/lib -ldb2 $APR_LFLAGS $APU_LFLAGS $D_L_FLAGS
