@@ -13,11 +13,8 @@ before_install:
 
   # Retrieves and extract db2unit
   - cd
-  #- wget https://github.com/angoca/db2unit/releases/download/db2unit-1-Beta/db2unit.tar.gz
-  #- tar zxvf db2unit.tar.gz
-  # TODO Delete next lines. They are temporal for the next db2unit release.
-  - git clone https://github.com/angoca/db2unit.git
-  - cd db2unit ; mvn
+  - wget https://github.com/angoca/db2unit/releases/download/db2unit-1/db2unit.tar.gz
+  - tar zxvf db2unit.tar.gz
 
   # Retrieves the apr
   - cd /tmp ; wget http://www.us.apache.org/dist/apr/apr-1.5.1.tar.gz ; tar zxf apr-1.5.1.tar.gz ; cd apr-1.5.1 ;
@@ -47,9 +44,7 @@ before_install:
   - cd ; cd log4db2 ; . ./install
 
   # Install db2unit
-  #- cd ; cd db2unit ; . ./install
-  # TODO Next line is temporal until next db2unit release
-  - cd ; cd db2unit/target/db2unit/db2unit ; . ./install
+  - cd ; cd db2unit ; . ./install
 
 install:
   - cd ${TRAVIS_BUILD_DIR}
