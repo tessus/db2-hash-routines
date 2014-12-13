@@ -5,8 +5,8 @@ before_install:
 
   # Retrieves and extracts the DB2 binaries
   # If it does not work, change it according to the next page:
-  # http://www.ibm.com/support/fixcentral/swg/quickorder?product=ibm/Information+Management/DB2&release=10.5.*&platform=Linux+64-bit,x86_64&function=fixId&fixids=DB2-linuxx64-server_t-10.5.0.4-FP004&includeRequisites=1&includeSupersedes=0&downloadMethod=http&source=fc
-  - cd /tmp ; aria2c -x 16 https://delivery04.dhe.ibm.com/sdfdl/v2/sar/CM/IM/04qts/0/Xa.2/Xb.jusyLTSp44S03o2rKJAIIHTSHjR7jEtWsOopTWF4imRBe4yn7z1lmbDdnLk/Xc.CM/IM/04qts/0/v10.5fp4_linuxx64_server_t.tar.gz/Xd./Xf.LPR.D1vk/Xg.7853874/Xi.habanero/XY.habanero/XZ.M5piObix2MPFnz5l3J4mj1qPz_s/v10.5fp4_linuxx64_server_t.tar.gz ; tar zxvf v10.5fp4_linuxx64_server_t.tar.gz
+  # http://www.ibm.com/support/fixcentral/swg/quickorder?parent=ibm%7EInformation%2BManagement&product=ibm/Information+Management/DB2&release=10.5.*&platform=Linux+64-bit,x86_64&function=fixId&fixids=DB2-linuxx64-server_t-10.5.0.5-FP005&includeRequisites=1&includeSupersedes=0&downloadMethod=http&source=fc
+  - cd /tmp ; aria2c -x 16 https://delivery04.dhe.ibm.com/sdfdl/v2/sar/CM/IM/04yrx/0/Xa.2/Xb.jusyLTSp44S03sPo7e1meB909-w18mbUGWhinsH7kTg2JfQpFVqLP0R2hp4/Xc.CM/IM/04yrx/0/v10.5fp5_linuxx64_server_t.tar.gz/Xd./Xf.LPR.D1vk/Xg.7883721/Xi.habanero/XY.habanero/XZ.az3z2FyJT3gQVjl8b4bZqcLTDmU/v10.5fp5_linuxx64_server_t.tar.gzJ; tar zxvf v10.5fp4_linuxx64_server_t.tar.gz
 
   # Retrieves and extract log4db2
   - cd ; wget https://github.com/angoca/log4db2/releases/download/log4db2-1-Beta-A/log4db2.tar.gz ; tar zxvf log4db2.tar.gz
