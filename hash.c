@@ -23,6 +23,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <apr_base64.h>
 #include "hash.h"
 #include "sha2.h"
 
@@ -69,7 +70,7 @@ void sha256_base64( const char *clear, int len, char *out )
 	apr_byte_t digest[SHA256_DIGEST_LENGTH];
 
 	apr__SHA256_Init( &context );
-	apr__SHA256_Update( &context, clear, len );
+	apr__SHA256_Update( &context, (const unsigned char *)clear, len );
 	apr__SHA256_Final( digest, &context );
 
 	apr_cpystrn( out, APR_SHA256PW_ID, APR_SHA256PW_IDLEN + 1 );
