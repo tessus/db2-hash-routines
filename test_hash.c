@@ -4,10 +4,10 @@
 
 int main( int argc, char *argv[] )
 {
-	char clear[121];
+	char clear[4096+1];
 	char *hash;
 
-	if (argc < 2 || strlen(argv[1]) > 120)
+	if (argc < 2 || strlen(argv[1]) > 4096)
 	{
 		strcpy(clear, "test");
 	}
