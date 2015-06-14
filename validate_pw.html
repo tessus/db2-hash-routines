@@ -25,11 +25,12 @@
        This routine can be used to validate a password against a hash.
 
        The two input arguments can be character strings that are either a CHAR
-       or VARCHAR not exceeding 4096 bytes. The second parameter  (hash)  must
-       not be empty, otherwise an SQLSTATE 39701 is returned.
+       or VARCHAR not exceeding 4096 bytes (password) and  120  bytes  (hash).
+       The  second  parameter  (hash) must not be empty, otherwise an SQLSTATE
+       39701 is returned.
 
        The result of the routine is an INTEGER. If the password is valid, 1 is
-       returned. If the password is not valid, 0 is returned. The  result  can
+       returned.  If  the password is not valid, 0 is returned. The result can
        be null; if the argument is null, the result is the null value.
 
 
