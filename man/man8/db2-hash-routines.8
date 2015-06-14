@@ -1,4 +1,4 @@
-.TH db2-hash-routines "8" "May 2014" "db2-hash-routines 1.2" "DB2 UDFs and Stored Procedures"
+.TH db2-hash-routines "8" "June 2015" "db2-hash-routines 1.3" "DB2 UDFs and Stored Procedures"
 .SH NAME
 db2-hash-routines \- DB2 UDFs and SPs to generate and validate hashes
 .SH SYNOPSIS
@@ -44,7 +44,7 @@ These functions and procedures can be used to generate hashes in DB2.
 bcrypt algorithm. The bcrypt routine is compatible to the function used in Apache's htpasswd utility.
 .PD
 .IP
-The argument can be a character string that is either a CHAR or VARCHAR not exceeding 120 bytes.
+The argument can be a character string that is either a CHAR or VARCHAR not exceeding 4096 bytes.
 .IP
 The result of the routine is CHAR(60). The result can be null; if the argument is null, the result is the null value.
 .TP
@@ -56,7 +56,7 @@ The result of the routine is CHAR(60). The result can be null; if the argument i
 MD5 hash. The php_md5 routine is compatible to the PHP md5 function.
 .PD
 .IP
-The argument can be a character string that is either a CHAR or VARCHAR not exceeding 120 bytes.
+The argument can be a character string that is either a CHAR or VARCHAR not exceeding 4096 bytes.
 .IP
 The result of the routine is CHAR(32). The result can be null; if the argument is null, the result is the null value.
 .TP
@@ -68,7 +68,7 @@ The result of the routine is CHAR(32). The result can be null; if the argument i
 Seeded MD5 hash. The apr_md5 routine is compatible to the function used in Apache's htpasswd utility.
 .PD
 .IP
-The argument can be a character string that is either a CHAR or VARCHAR not exceeding 120 bytes.
+The argument can be a character string that is either a CHAR or VARCHAR not exceeding 4096 bytes.
 .IP
 The result of the routine is CHAR(37). The result can be null; if the argument is null, the result is the null value.
 .TP
@@ -80,7 +80,7 @@ The result of the routine is CHAR(37). The result can be null; if the argument i
 Unix crypt. The apr_crypt routine is compatible to the function used in Apache's htpasswd utility.
 .PD
 .IP
-The argument can be a character string that is either a CHAR or VARCHAR not exceeding 120 bytes.
+The argument can be a character string that is either a CHAR or VARCHAR not exceeding 4096 bytes.
 .IP
 The result of the routine is CHAR(13). The result can be null; if the argument is null, the result is the null value.
 .TP
@@ -92,7 +92,7 @@ The result of the routine is CHAR(13). The result can be null; if the argument i
 SHA1 algorithm. The apr_sha1 routine is compatible to the function used in Apache's htpasswd utility.
 .PD
 .IP
-The argument can be a character string that is either a CHAR or VARCHAR not exceeding 120 bytes.
+The argument can be a character string that is either a CHAR or VARCHAR not exceeding 4096 bytes.
 .IP
 The result of the routine is CHAR(33). The result can be null; if the argument is null, the result is the null value.
 .TP
@@ -104,7 +104,7 @@ The result of the routine is CHAR(33). The result can be null; if the argument i
 SHA256 algorithm. The apr_sha256 routine returns the identifier {SHA256} plus the base64 encoded sha256 hash.
 .PD
 .IP
-The argument can be a character string that is either a CHAR or VARCHAR not exceeding 120 bytes.
+The argument can be a character string that is either a CHAR or VARCHAR not exceeding 4096 bytes.
 .IP
 The result of the routine is CHAR(52). The result can be null; if the argument is null, the result is the null value.
 .TP
@@ -116,7 +116,7 @@ The result of the routine is CHAR(52). The result can be null; if the argument i
 This routine can be used to validate a password against a hash.
 .PD
 .IP
-The two input arguments can be character strings that are either a CHAR or VARCHAR not exceeding 120 bytes. The second parameter (hash) must not be
+The two input arguments can be character strings that are either a CHAR or VARCHAR not exceeding 4096 bytes. The second parameter (hash) must not be
 empty, otherwise an SQLSTATE 39701 is returned.
 .IP
 The result of the routine is an INTEGER. If the password is valid, 1 is returned. If the password is not valid, 0 is returned. The result can be null; if the argument is null, the result is the null value.
@@ -371,6 +371,6 @@ Written by Helmut K. C. Tessarek.
 .SH "BUGS"
 Hopefully none :-) But if you find one, please report it at:
 .br
-http://sourceforge.net/p/mod-auth-ibmdb2/bugs
+https://github.com/tessus/db2-hash-routines/issues
 .SH "WEB SITE"
-http://mod-auth-ibmdb2.sourceforge.net
+http://tessus.github.io/db2-hash-routines

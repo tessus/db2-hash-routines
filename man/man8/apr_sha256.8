@@ -1,4 +1,4 @@
-.TH apr_sha256 "8" "May 2014" "apr_sha256" "DB2 User Defined Function and Stored Procedure"
+.TH apr_sha256 "8" "June 2015" "apr_sha256" "DB2 User Defined Function and Stored Procedure"
 .SH NAME
 apr_sha256 \- DB2 UDF and SP to generate an SHA1 hash
 .SH SYNOPSIS
@@ -8,7 +8,7 @@ apr_sha256 \- DB2 UDF and SP to generate an SHA1 hash
 .SH DESCRIPTION
 SHA256 algorithm. The apr_sha256 routine returns the identifier {SHA256} plus the base64 encoded sha256 hash.
 .PP
-The argument can be a character string that is either a CHAR or VARCHAR not exceeding 120 bytes.
+The argument can be a character string that is either a CHAR or VARCHAR not exceeding 4096 bytes.
 .PP
 The result of the function is CHAR(52). The result can be null; if the argument is null, the result is the null value.
 .SH EXAMPLES
@@ -53,6 +53,6 @@ Written by Helmut K. C. Tessarek.
 .SH "BUGS"
 Hopefully none :-) But if you find one, please report it at:
 .br
-http://sourceforge.net/p/mod-auth-ibmdb2/bugs
+https://github.com/tessus/db2-hash-routines/issues
 .SH "WEB SITE"
-http://mod-auth-ibmdb2.sourceforge.net
+http://tessus.github.io/db2-hash-routines

@@ -1,4 +1,4 @@
-.TH apr_crypt "8" "February 2013" "apr_crypt" "DB2 User Defined Function and Stored Procedure"
+.TH apr_crypt "8" "June 2015" "apr_crypt" "DB2 User Defined Function and Stored Procedure"
 .SH NAME
 apr_crypt \- DB2 UDF and SP to generate a seeded CRYPT
 .SH SYNOPSIS
@@ -8,7 +8,7 @@ apr_crypt \- DB2 UDF and SP to generate a seeded CRYPT
 .SH DESCRIPTION
 Unix crypt. The apr_crypt routine is compatible to the function used in Apache's htpasswd utility.
 .PP
-The argument can be a character string that is either a CHAR or VARCHAR not exceeding 120 bytes.
+The argument can be a character string that is either a CHAR or VARCHAR not exceeding 4096 bytes.
 .PP
 The result of the function is CHAR(13). The result can be null; if the argument is null, the result is the null value.
 .SH EXAMPLES
@@ -53,6 +53,6 @@ Written by Helmut K. C. Tessarek.
 .SH "BUGS"
 Hopefully none :-) But if you find one, please report it at:
 .br
-http://sourceforge.net/p/mod-auth-ibmdb2/bugs
+https://github.com/tessus/db2-hash-routines/issues
 .SH "WEB SITE"
-http://mod-auth-ibmdb2.sourceforge.net
+http://tessus.github.io/db2-hash-routines
