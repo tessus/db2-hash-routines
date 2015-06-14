@@ -1,17 +1,17 @@
-written by Helmut K. C. Tessarek
-
-Last Update: 2014-05-09
-
-http://mod-auth-ibmdb2.sourceforge.net/
-
-Contents:
----------
++----------------------------------------------------------------------+
+| db2-hash-routines                                             README |
++----------------------------------------------------------------------+
+| Author: Helmut K. C. Tessarek                                        |
++----------------------------------------------------------------------+
+| Website: http://tessus.github.io/db2-hash-routines                   |
++----------------------------------------------------------------------+
 
 1) Description of the library
 2) File Description
 
-1) Description of the library
------------------------------
++----------------------------------------------------------------------+
+| 1. Description of the librarys                                       |
++----------------------------------------------------------------------+
 
 This library delivers the following functions as UDFs and SPs:
 
@@ -35,8 +35,9 @@ The validate function validates a password against a hash.
 In win32 environments apr_crypt returns the output of bcrypt, if available.
 If bcrypt is not available, the output of apr_md5 is returned.
 
-2) File Description
--------------------
++----------------------------------------------------------------------+
+| 2. File Description                                                  |
++----------------------------------------------------------------------+
 
 db2hash.c       the SQL API stuff
 hash.c          the c code for the hash functions

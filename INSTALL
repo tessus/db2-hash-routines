@@ -1,17 +1,17 @@
-written by Helmut K. C. Tessarek
-
-Last Update: 2012-04-13
-
-http://mod-auth-ibmdb2.sourceforge.net/
-
-Contents:
----------
++----------------------------------------------------------------------+
+| db2-hash-routines                                            INSTALL |
++----------------------------------------------------------------------+
+| Author: Helmut K. C. Tessarek                                        |
++----------------------------------------------------------------------+
+| Website: http://tessus.github.io/db2-hash-routines                   |
++----------------------------------------------------------------------+
 
 1) Building the library
 2) Registering the routines in the database as UDFs and SPs
 
-1) Building the library
------------------------
++----------------------------------------------------------------------+
+| 1. Building the library                                              |
++----------------------------------------------------------------------+
 
 Please change the PATH settings in the makeudf scripts for your environment.
 
@@ -25,8 +25,9 @@ The only thing that you have to do is to install APR and APR-util.
 You can get APR and APR-util at http://apr.apache.org/
 Furthermore you need to add the compiler and linker flags for APR (see makertn).
 
-2) Registering the UDFs and SPs in the database
------------------------------------------------
++----------------------------------------------------------------------+
+| 2. Registering the routines in the database as UDFs and SPs          |
++----------------------------------------------------------------------+
 
 You have to connect to the database first.
 
