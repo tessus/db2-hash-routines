@@ -1,13 +1,13 @@
 ###Status [![Build Status](https://travis-ci.org/tessus/db2-hash-routines.svg?branch=master)](https://travis-ci.org/tessus/db2-hash-routines)
 
 ###Source
-[db2-hash-routines-1.2.tar.gz](http://sourceforge.net/projects/mod-auth-ibmdb2/files/db2-hash-routines/1.2/db2-hash-routines-1.2.tar.gz/download) [[GPG](http://sourceforge.net/projects/mod-auth-ibmdb2/files/db2-hash-routines/1.2/db2-hash-routines-1.2.tar.gz.asc/download)]
+[db2-hash-routines-X.Y.tar.gz](https://github.com/tessus/db2-hash-routines/releases/latest)
 <br>
 signing key [0xC11F128D](http://sks.pkqs.net/pks/lookup?op=get&search=0xF7832007C11F128D)
 
 ###Documentation
 
-[Manual](http://sourceforge.net/projects/mod-auth-ibmdb2/files/db2-hash-routines/1.2/db2-hash-routines.pdf/download) (PDF)
+[Manual](http://tessus.github.io/documentation/db2-hash-routines.pdf) (PDF)
 <br>
 [README](README)
 <br>
@@ -15,18 +15,18 @@ signing key [0xC11F128D](http://sks.pkqs.net/pks/lookup?op=get&search=0xF7832007
 
 #####man pages
 
-[db2-hash-routines](http://mod-auth-ibmdb2.sourceforge.net/manpages/db2-hash-routines.html)
+[db2-hash-routines](http://tessus.github.io/db2-hash-routines/db2-hash-routines.html)
 <br>
-[bcrypt](http://mod-auth-ibmdb2.sourceforge.net/manpages/bcrypt.html)
+[bcrypt](http://tessus.github.io/db2-hash-routines/bcrypt.html)
 <br>
-[apr_crypt](http://mod-auth-ibmdb2.sourceforge.net/manpages/apr_crypt.html)
+[apr_crypt](http://tessus.github.io/db2-hash-routines/apr_crypt.html)
 <br>
-[apr_md5](http://mod-auth-ibmdb2.sourceforge.net/manpages/apr_md5.html)
+[apr_md5](http://tessus.github.io/db2-hash-routines/apr_md5.html)
 <br>
-[apr_sha1](http://mod-auth-ibmdb2.sourceforge.net/manpages/apr_sha1.html)
+[apr_sha1](http://tessus.github.io/db2-hash-routines/apr_sha1.html)
 <br>
-[apr_sha256](http://mod-auth-ibmdb2.sourceforge.net/manpages/apr_sha256.html)
+[apr_sha256](http://tessus.github.io/db2-hash-routines/apr_sha256.html)
 <br>
-[php_md5](http://mod-auth-ibmdb2.sourceforge.net/manpages/php_md5.html)
+[php_md5](http://tessus.github.io/db2-hash-routines/php_md5.html)
 <br>
-[validate_pw](http://mod-auth-ibmdb2.sourceforge.net/manpages/validate_pw.html)
+[validate_pw](http://tessus.github.io/db2-hash-routines/validate_pw.html)
