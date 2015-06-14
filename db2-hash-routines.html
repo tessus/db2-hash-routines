@@ -1,0 +1,346 @@
+<HTML>
+<HEAD><TITLE>db2-hash-routines</TITLE></HEAD>
+<BODY>
+<PRE>
+<!-- Manpage converted by man2html 3.0.1 -->
+<B>db2-hash-routines(8)</B>    DB2 UDFs and Stored Procedures    <B>db2-hash-routines(8)</B>
+
+
+
+
+</PRE>
+<H2>NAME</H2><PRE>
+       db2-hash-routines - DB2 UDFs and SPs to generate and validate hashes
+
+
+</PRE>
+<H2>SYNOPSIS</H2><PRE>
+       <B>User</B> <B>Defined</B> <B>Functions:</B>
+
+       &gt;&gt;-BCRYPT--(--expression--)------------------------------------&gt;&lt;
+
+       &gt;&gt;-PHP_MD5--(--expression--)-----------------------------------&gt;&lt;
+
+       &gt;&gt;-APR_MD5--(--expression--)-----------------------------------&gt;&lt;
+
+       &gt;&gt;-APR_CRYPT--(--expression--)---------------------------------&gt;&lt;
+
+       &gt;&gt;-APR_SHA1--(--expression--)----------------------------------&gt;&lt;
+
+       &gt;&gt;-APR_SHA256--(--expression--)--------------------------------&gt;&lt;
+
+       &gt;&gt;-VALIDATE_PW--(--password--,--hash--)------------------------&gt;&lt;
+
+       <B>Stored</B> <B>Procedures:</B>
+
+       &gt;&gt;-BCRYPT--(--expression--,--hash--)---------------------------&gt;&lt;
+
+       &gt;&gt;-PHP_MD5--(--expression--,--hash--)--------------------------&gt;&lt;
+
+       &gt;&gt;-APR_MD5--(--expression--,--hash--)--------------------------&gt;&lt;
+
+       &gt;&gt;-APR_CRYPT--(--expression--,--hash--)------------------------&gt;&lt;
+
+       &gt;&gt;-APR_SHA1--(--expression--,--hash--)-------------------------&gt;&lt;
+
+       &gt;&gt;-APR_SHA256--(--expression--,--hash--)-----------------------&gt;&lt;
+
+       &gt;&gt;-VALIDATE_PW--(--password--,--hash--,--is_valid--)-----------&gt;&lt;
+
+
+</PRE>
+<H2>DESCRIPTION</H2><PRE>
+       These functions and procedures can be used to generate hashes in DB2.
+
+       <B>bcrypt(</B> <B>'</B><I>cleartext</I><B>'</B> <B>)</B>
+       <B>bcrypt(</B> <B>'</B><I>cleartext</I><B>',</B> <I>:hash</I> <B>)</B>
+              bcrypt  algorithm. The bcrypt routine is compatible to the func-
+              tion used in Apache's htpasswd utility.
+
+              The argument can be a character string that is either a CHAR  or
+              VARCHAR not exceeding 4096 bytes.
+
+              The  result  of the routine is <B>CHAR(60)</B>. The result can be null;
+              if the argument is null, the result is the null value.
+
+       <B>php_md5(</B> <B>'</B><I>cleartext</I><B>'</B> <B>)</B>
+       <B>php_md5(</B> <B>'</B><I>cleartext</I><B>',</B> <I>:hash</I> <B>)</B>
+              MD5 hash. The php_md5 routine is compatible to the PHP md5 func-
+              tion.
+
+              The  argument can be a character string that is either a CHAR or
+              VARCHAR not exceeding 4096 bytes.
+
+              The result of the routine is <B>CHAR(32)</B>. The result can  be  null;
+              if the argument is null, the result is the null value.
+
+       <B>apr_md5(</B> <B>'</B><I>cleartext</I><B>'</B> <B>)</B>
+       <B>apr_md5(</B> <B>'</B><I>cleartext</I><B>',</B> <I>:hash</I> <B>)</B>
+              Seeded  MD5 hash. The apr_md5 routine is compatible to the func-
+              tion used in Apache's htpasswd utility.
+
+              The argument can be a character string that is either a CHAR  or
+              VARCHAR not exceeding 4096 bytes.
+
+              The  result  of the routine is <B>CHAR(37)</B>. The result can be null;
+              if the argument is null, the result is the null value.
+
+       <B>apr_crypt(</B> <B>'</B><I>cleartext</I><B>'</B> <B>)</B>
+       <B>apr_crypt(</B> <B>'</B><I>cleartext</I><B>',</B> <I>:hash</I> <B>)</B>
+              Unix crypt. The apr_crypt routine is compatible to the  function
+              used in Apache's htpasswd utility.
+
+              The  argument can be a character string that is either a CHAR or
+              VARCHAR not exceeding 4096 bytes.
+
+              The result of the routine is <B>CHAR(13)</B>. The result can  be  null;
+              if the argument is null, the result is the null value.
+
+       <B>apr_sha1(</B> <B>'</B><I>cleartext</I><B>'</B> <B>)</B>
+       <B>apr_sha1(</B> <B>'</B><I>cleartext</I><B>',</B> <I>:hash</I> <B>)</B>
+              SHA1  algorithm. The apr_sha1 routine is compatible to the func-
+              tion used in Apache's htpasswd utility.
+
+              The argument can be a character string that is either a CHAR  or
+              VARCHAR not exceeding 4096 bytes.
+
+              The  result  of the routine is <B>CHAR(33)</B>. The result can be null;
+              if the argument is null, the result is the null value.
+
+       <B>apr_sha256(</B> <B>'</B><I>cleartext</I><B>'</B> <B>)</B>
+       <B>apr_sha256(</B> <B>'</B><I>cleartext</I><B>',</B> <I>:hash</I> <B>)</B>
+              SHA256 algorithm. The apr_sha256 routine returns the  identifier
+              {SHA256} plus the base64 encoded sha256 hash.
+
+              The  argument can be a character string that is either a CHAR or
+              VARCHAR not exceeding 4096 bytes.
+
+              The result of the routine is <B>CHAR(52)</B>. The result can  be  null;
+              if the argument is null, the result is the null value.
+
+       <B>validate_pw(</B> <B>'</B><I>password</I><B>',</B> <B>'</B><I>hash</I><B>'</B> <B>)</B>
+       <B>validate_pw(</B> <B>'</B><I>password</I><B>',</B> <B>'</B><I>hash</I><B>',</B> <I>:is</I><B>_</B><I>valid</I> <B>)</B>
+              This  routine can be used to validate a password against a hash.
+
+              The two input arguments can be character strings that are either
+              a CHAR or VARCHAR not exceeding 4096 bytes. The second parameter
+              (hash) must  not  be  empty,  otherwise  an  SQLSTATE  39701  is
+              returned.
+
+              The  result  of  the  routine  is an INTEGER. If the password is
+              valid, 1 is returned.  If  the  password  is  not  valid,  0  is
+              returned.  The  result can be null; if the argument is null, the
+              result is the null value.
+
+
+</PRE>
+<H2>EXAMPLES</H2><PRE>
+       <B>bcrypt</B> <B>(1):</B>
+       Inserting the user <I>test</I> and the sha1 crypted clear text <I>testpwd</I> to  the
+       table <I>users</I>.
+
+       INSERT INTO USERS (username, password)
+         VALUES ('test', bcrypt('testpwd'))
+
+       <B>bcrypt</B> <B>(2):</B>
+       SELECT bcrypt('testpwd') FROM SYSIBM.SYSDUMMY1
+
+       1
+       ------------------------------------------------------------
+       $2y$05$2jb66aPElSkNLT1t8e6dQepuCY2BP3JnYUh0xeV9r1PEoOGyOLkym
+
+         1 record(s) selected.
+
+       <B>bcrypt</B> <B>(3):</B>
+       CALL bcrypt('testpwd', ?)
+
+         Value of output parameters
+         --------------------------
+         Parameter Name  : HASH
+         Parameter Value : $2y$05$WYSu1X6PVA0Ra.aPSjrdv.S6hOp.AYSnNRT521rmLRjD4Mj9UY6ve
+
+         Return Status = 0
+
+       <B>php_md5</B> <B>(1)</B>
+       Inserting  the  user <I>test</I> and the md5 hash of the clear text <I>testpwd</I> to
+       the table <I>users</I>.
+
+       INSERT INTO USERS (username, password)
+         VALUES ('test', md5('testpwd'))
+
+       <B>php_md5</B> <B>(2)</B>
+       SELECT php_md5( 'testpwd' ) FROM SYSIBM.SYSDUMMY1
+
+       1
+       --------------------------------
+       342df5b036b2f28184536820af6d1caf
+
+         1 record(s) selected.
+
+       <B>php_md5</B> <B>(3)</B>
+       CALL php_md5('testpwd', ?)
+
+         Value of output parameters
+         --------------------------
+         Parameter Name  : HASH
+         Parameter Value : 342df5b036b2f28184536820af6d1caf
+
+         Return Status = 0
+
+       <B>apr_md5</B> <B>(1)</B>
+       Inserting the user <I>test</I> and the seeded md5 hash of the clear text
+       <I>testpwd</I> to the table <I>users</I>.
+
+       INSERT INTO USERS (username, password)
+         VALUES ('test', apr_md5('testpwd'))
+
+       <B>apr_md5</B> <B>(2)</B>
+       SELECT apr_md5('testpwd') FROM SYSIBM.SYSDUMMY1
+
+       1
+       -------------------------------------
+       $apr1$HsTNH...$bmlPUSoPOF/Qhznl.sAq6/
+
+         1 record(s) selected.
+
+       <B>apr_md5</B> <B>(3)</B>
+       CALL apr_md5('testpwd', ?)
+
+         Value of output parameters
+         --------------------------
+         Parameter Name  : HASH
+         Parameter Value : $apr1$HsTNH...$bmlPUSoPOF/Qhznl.sAq6/
+
+         Return Status = 0
+
+       <B>apr_crypt</B> <B>(1)</B>
+       Inserting the user <I>test</I> and the crypted clear text <I>testpwd</I> to the table
+       <I>users</I>.
+
+       INSERT INTO USERS (username, password)
+         VALUES ('test', apr_crypt('testpwd'))
+
+       <B>apr_crypt</B> <B>(2)</B>
+       SELECT apr_crypt('testpwd') FROM SYSIBM.SYSDUMMY1
+
+       1
+       -------------
+       cqs7uOvz8KBlk
+
+         1 record(s) selected.
+
+       <B>apr_crypt</B> <B>(3)</B>
+       CALL apr_crypt('testpwd', ?)
+
+         Value of output parameters
+         --------------------------
+         Parameter Name  : HASH
+         Parameter Value : cqs7uOvz8KBlk
+
+         Return Status = 0
+
+       <B>apr_sha1</B> <B>(1)</B>
+       Inserting  the user <I>test</I> and the sha1 crypted clear text <I>testpwd</I> to the
+       table <I>users</I>.
+
+       INSERT INTO USERS (username, password)
+         VALUES ('test', apr_sha1('testpwd'))
+
+       <B>apr_sha1</B> <B>(2)</B>
+       SELECT apr_sha1( 'testpwd' ) FROM SYSIBM.SYSDUMMY1
+
+       1
+       ---------------------------------
+       {SHA}mO8HWOaqxvmp4Rl1SMgZC3LJWB0=
+
+         1 record(s) selected.
+
+       <B>apr_sha1</B> <B>(3)</B>
+       CALL apr_sha1('testpwd', ?)
+
+         Value of output parameters
+         --------------------------
+         Parameter Name  : HASH
+         Parameter Value : {SHA}mO8HWOaqxvmp4Rl1SMgZC3LJWB0=
+
+         Return Status = 0
+
+       <B>apr_sha256</B> <B>(1):</B>
+       Inserting the user <I>test</I> and the sha1 crypted clear text <I>testpwd</I> to  the
+       table <I>users</I>.
+
+       INSERT INTO USERS (username, password)
+         VALUES ('test', apr_sha256('testpwd'))
+
+       <B>apr_sha256</B> <B>(2):</B>
+       SELECT apr_sha256('testpwd') FROM SYSIBM.SYSDUMMY1
+
+       1
+       ----------------------------------------------------
+       {SHA256}qFtqIIE8Maixs/NhjaeWJxyaopOz+AmHMFOyGuxQEIc=
+
+         1 record(s) selected.
+
+       <B>apr_sha256</B> <B>(3):</B>
+       CALL apr_sha256('testpwd', ?)
+
+         Value of output parameters
+         --------------------------
+         Parameter Name  : HASH
+         Parameter Value : {SHA256}qFtqIIE8Maixs/NhjaeWJxyaopOz+AmHMFOyGuxQEIc=
+
+         Return Status = 0
+
+       <B>validate_pw</B> <B>(1)</B>
+       Validating the password <I>testpwd</I> against the crypt hash <I>cqs7uOvz8KBlk</I>.
+
+       SELECT validate_pw('testpwd', 'cqs7uOvz8KBlk') FROM SYSIBM.SYSDUMMY1"
+
+       1
+       -----------
+                 1
+
+         1 record(s) selected.
+
+       <B>validate_pw</B> <B>(2)</B>
+       CALL validate_pw('testpwd', 'cqs7uOvz8KBlk', ?)
+
+         Value of output parameters
+         --------------------------
+         Parameter Name  : IS_VALID
+         Parameter Value : 1
+
+         Return Status = 0
+
+       <B>validate_pw</B> <B>(3)</B>
+       CALL validate_pw('testpwd', '0123456789abcdef', ?)
+
+         Value of output parameters
+         --------------------------
+         Parameter Name  : IS_VALID
+         Parameter Value : 0
+
+         Return Status = 0
+
+
+</PRE>
+<H2>AUTHOR</H2><PRE>
+       Written by Helmut K. C. Tessarek.
+
+
+</PRE>
+<H2>BUGS</H2><PRE>
+       Hopefully none :-) But if you find one, please report it at:
+       https://github.com/tessus/db2-hash-routines/issues
+
+
+</PRE>
+<H2>WEB SITE</H2><PRE>
+       http://tessus.github.io/db2-hash-routines
+
+
+
+db2-hash-routines 1.3              June 2015              <B>db2-hash-routines(8)</B>
+</PRE>
+</BODY>
+</HTML>

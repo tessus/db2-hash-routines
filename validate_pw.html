@@ -1,0 +1,93 @@
+<HTML>
+<HEAD><TITLE>validate_pw</TITLE></HEAD>
+<BODY>
+<PRE>
+<!-- Manpage converted by man2html 3.0.1 -->
+<B>validate_pw(8)</B>  DB2 User Defined Function and Stored Procedure  <B>validate_pw(8)</B>
+
+
+
+
+</PRE>
+<H2>NAME</H2><PRE>
+       validate_pw - DB2 UDF and SP to validate a password against a hash
+
+
+</PRE>
+<H2>SYNOPSIS</H2><PRE>
+       &gt;&gt;-VALIDATE_PW--(--password--,--hash--)------------------------&gt;&lt;
+
+       &gt;&gt;-VALIDATE_PW--(--password--,--hash--,--is_valid--)-----------&gt;&lt;
+
+
+</PRE>
+<H2>DESCRIPTION</H2><PRE>
+       This routine can be used to validate a password against a hash.
+
+       The two input arguments can be character strings that are either a CHAR
+       or VARCHAR not exceeding 4096 bytes. The second parameter  (hash)  must
+       not be empty, otherwise an SQLSTATE 39701 is returned.
+
+       The result of the routine is an INTEGER. If the password is valid, 1 is
+       returned. If the password is not valid, 0 is returned. The  result  can
+       be null; if the argument is null, the result is the null value.
+
+
+</PRE>
+<H2>EXAMPLES</H2><PRE>
+       <B>Example</B> <B>1:</B>
+
+       Validating the password <I>testpwd</I> against the crypt hash <I>cqs7uOvz8KBlk</I>.
+
+       SELECT validate_pw('testpwd', 'cqs7uOvz8KBlk') FROM SYSIBM.SYSDUMMY1"
+
+       1
+       -----------
+                 1
+
+         1 record(s) selected.
+
+       <B>Example</B> <B>2:</B>
+
+       CALL validate_pw('testpwd', 'cqs7uOvz8KBlk', ?)
+
+         Value of output parameters
+         --------------------------
+         Parameter Name  : IS_VALID
+         Parameter Value : 1
+
+         Return Status = 0
+
+       <B>Example</B> <B>3:</B>
+
+       CALL validate_pw('testpwd', '0123456789abcdef', ?)
+
+         Value of output parameters
+         --------------------------
+         Parameter Name  : IS_VALID
+         Parameter Value : 0
+
+         Return Status = 0
+
+
+</PRE>
+<H2>AUTHOR</H2><PRE>
+       Written by Helmut K. C. Tessarek.
+
+
+</PRE>
+<H2>BUGS</H2><PRE>
+       Hopefully none :-) But if you find one, please report it at:
+       https://github.com/tessus/db2-hash-routines/issues
+
+
+</PRE>
+<H2>WEB SITE</H2><PRE>
+       http://tessus.github.io/db2-hash-routines
+
+
+
+validate_pw                        June 2015                    <B>validate_pw(8)</B>
+</PRE>
+</BODY>
+</HTML>

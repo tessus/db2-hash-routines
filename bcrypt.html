@@ -1,0 +1,87 @@
+<HTML>
+<HEAD><TITLE>bcrypt</TITLE></HEAD>
+<BODY>
+<PRE>
+<!-- Manpage converted by man2html 3.0.1 -->
+<B>bcrypt(8)</B>       DB2 User Defined Function and Stored Procedure       <B>bcrypt(8)</B>
+
+
+
+
+</PRE>
+<H2>NAME</H2><PRE>
+       bcrypt - DB2 UDF and SP to generate an SHA1 hash
+
+
+</PRE>
+<H2>SYNOPSIS</H2><PRE>
+       &gt;&gt;-BCRYPT--(--expression--)------------------------------------&gt;&lt;
+
+       &gt;&gt;-BCRYPT--(--expression--,--hash--)---------------------------&gt;&lt;
+
+
+</PRE>
+<H2>DESCRIPTION</H2><PRE>
+       bcrypt algorithm. The bcrypt routine is compatible to the function used
+       in Apache's htpasswd utility.
+
+       The argument can be a character string that is either a CHAR or VARCHAR
+       not exceeding 4096 bytes.
+
+       The  result of the function is <B>CHAR(60)</B>. The result can be null; if the
+       argument is null, the result is the null value.
+
+
+</PRE>
+<H2>EXAMPLES</H2><PRE>
+       <B>Example</B> <B>1:</B>
+
+       Inserting the user <I>test</I> and the sha1 crypted clear text <I>testpwd</I> to  the
+       table <I>users</I>.
+
+       INSERT INTO USERS (username, password)
+         VALUES ('test', bcrypt('testpwd'))
+
+       <B>Example</B> <B>2:</B>
+
+       SELECT bcrypt('testpwd') FROM SYSIBM.SYSDUMMY1
+
+       1
+       ------------------------------------------------------------
+       $2y$05$2jb66aPElSkNLT1t8e6dQepuCY2BP3JnYUh0xeV9r1PEoOGyOLkym
+
+         1 record(s) selected.
+
+       <B>Example</B> <B>3:</B>
+
+       CALL bcrypt('testpwd', ?)
+
+         Value of output parameters
+         --------------------------
+         Parameter Name  : HASH
+         Parameter Value : $2y$05$WYSu1X6PVA0Ra.aPSjrdv.S6hOp.AYSnNRT521rmLRjD4Mj9UY6ve
+
+         Return Status = 0
+
+
+</PRE>
+<H2>AUTHOR</H2><PRE>
+       Written by Helmut K. C. Tessarek.
+
+
+</PRE>
+<H2>BUGS</H2><PRE>
+       Hopefully none :-) But if you find one, please report it at:
+       https://github.com/tessus/db2-hash-routines/issues
+
+
+</PRE>
+<H2>WEB SITE</H2><PRE>
+       http://tessus.github.io/db2-hash-routines
+
+
+
+bcrypt                             June 2015                         <B>bcrypt(8)</B>
+</PRE>
+</BODY>
+</HTML>
