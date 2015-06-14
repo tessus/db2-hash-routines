@@ -46,11 +46,12 @@ sha2.h          include file for APR sha256
 register.ddl    script to register the UDFs and SPs
 drop.ddl        script to drop the UDFs and SPs
 makertn         bash script to compile the library (Linux/AIX)
+man/maninstall  script to install the man pages
 test_hash.c     test program for the functions
 hash.exp        function export file for AIX
 hash.def        definition file for Windows
 makertn.bat     script to compile the library (win32)
 maketest.bat    script to compile test program
 INSTALL         compiling and installing instructions
-CHANGES         change log
+ChangeLog       change log
 README          this file

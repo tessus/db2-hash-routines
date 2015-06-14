@@ -12,6 +12,8 @@ signing key [0xC11F128D](http://sks.pkqs.net/pks/lookup?op=get&search=0xF7832007
 [README](README)
 <br>
 [INSTALL](INSTALL)
+<br>
+[ChangeLog](ChangeLog)
 
 #####man pages
 
