@@ -2,7 +2,7 @@
   +----------------------------------------------------------------------+
   | db2hash.c: hashing library for IBM DB2                               |
   +----------------------------------------------------------------------+
-  | Copyright (c) 2007-2014 Helmut K. C. Tessarek                        |
+  | Copyright (c) 2007-2015 Helmut K. C. Tessarek                        |
   +----------------------------------------------------------------------+
   | Licensed under the Apache License, Version 2.0 (the "License"); you  |
   | may not use this file except in compliance with the License. You may |
@@ -320,9 +320,16 @@ SQL_API_RC SQL_API_FN validate(	SQLUDF_CHAR      *password,
 	{
 		// maybe a different encrypted password (glibc2 crypt)?
 		result = crypt( password, hash );
-		if( strcmp( hash, result ) == 0 )
+		if( result != NULL )
 		{
-			*out = 1;
+			if( strcmp( hash, result ) == 0 )
+			{
+				*out = 1;
+			}
+			else
+			{
+				*out = 0;
+			}
 		}
 		else
 		{
