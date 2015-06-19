@@ -17,7 +17,7 @@
  *+----------------------------------------------------------------------+
  *| Author: Andres Gomez Casanova (AngocA)                               |
  *+----------------------------------------------------------------------+
- *| Website: http://mod-auth-ibmdb2.sourceforge.net                      |
+ *| Website: http://tessus.github.io/db2-hash-routines                   |
  *+----------------------------------------------------------------------+
  */
 
@@ -170,5 +170,5 @@ CREATE OR REPLACE PROCEDURE TEST_VALIDATE_PW()
  END @
 
 CALL DB2UNIT.REGISTER_MESSAGE(CURRENT SCHEMA) @
-  
+
 
