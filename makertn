@@ -4,27 +4,6 @@
 # Builds the hashing library
 # Usage: makertn
 
-# Set DB2PATH to where DB2 will be accessed.
-# The default is the standard instance path.
-# Set APRPATH to where apr-1-config is located
-# Set APUPATH to where apu-1-config is located
-
-OS=`uname`
-
-#Default paths for Linux, AIX and Darwin
-
-if [ "$OS" == "AIX" -o "$OS" == "Linux" ]
-then
-	DB2PATH=/home/db2inst1/sqllib
-	APRPATH=/usr/local/bin
-	APUPATH=$APRPATH
-elif [ "$OS" == "Darwin" ]
-then
-	DB2PATH=/Users/db2inst1/sqllib
-	APRPATH=/usr/bin
-	APUPATH=/usr/bin
-fi
-
 # Uncomment the next 3 lines, if you set the paths manually
 #DB2PATH=
 #APRPATH=
@@ -33,31 +12,77 @@ fi
 # Uncomment the next line, if you want to use xlc on AIX
 #COMPILER=xlc
 
+# Set DB2PATH to the DB2 instance home
+# Set APRPATH to where apr-1-config is located
+# Set APUPATH to where apu-1-config is located
+
+OS=`uname`
+
+# Some variable magic
+
+if [ -z $DB2_HOME ] && [ -z $DB2PATH ] || [ ! -e $DB2PATH ]; then
+	echo "DB2 instance directory not found. Please set DB2PATH at the beginning of the script."
+	exit 1
+else
+	if [ -z $DB2PATH ]; then
+		DB2PATH=$DB2_HOME
+	fi
+fi
+
+if [ -z $APRPATH ]; then
+	APRCFG=`which apr-1-config`
+else
+	APRCFG=$APRPATH/apr-1-config
+fi
+
+if [ -z $APRCFG ] || [ ! -e $APRCFG ]; then
+	echo "apr-1-config not found. Please set APRPATH at the beginning of the script."
+	exit 1
+fi
+
+if [ -z $APUPATH ]; then
+	APUCFG=`which apu-1-config`
+else
+	APUCFG=$APUPATH/apu-1-config
+fi
+
+if [ -z $APUCFG ] || [ ! -e $APUCFG ]; then
+	echo "apu-1-config not found. Please set APUPATH at the beginning of the script."
+	exit 1
+fi
+
 copy_lib() {
 	# Copy the shared library to the function subdirectory.
 	# The user must have write permission to this directory.
-	if [ -f $DB2PATH/function/hash ]
-	then
+
+	if [ ! -w $DB2PATH/function/ ]; then
+		echo "no write permissions for $DB2PATH/function. Are you running this script as the instance user?"
+		exit 1
+	fi
+
+	if [ -f $DB2PATH/function/hash ]; then
 		rm -f $DB2PATH/function/hash
 	fi
 
 	cp hash $DB2PATH/function
 
-	if [ ! -L $DB2PATH/function/unfenced/hash ]
-	then
+	if [ "$?" == "0" ]; then
+		echo "libary installed successfully."
+	fi
+
+	if [ ! -L $DB2PATH/function/unfenced/hash ]; then
 		ln -s $DB2PATH/function/hash $DB2PATH/function/unfenced/hash
 	fi
 }
 
-APR_CFLAGS="`$APRPATH/apr-1-config --cppflags --includes`"
-APU_CFLAGS="`$APUPATH/apu-1-config --includes`"
-APR_LFLAGS="`$APRPATH/apr-1-config --link-ld --libs`"
-APU_LFLAGS="`$APUPATH/apu-1-config --link-ld --libs`"
-APRR="`$APRPATH/apr-1-config --link-ld |awk '{print $1}'|cut -c3-`"
-APUR="`$APUPATH/apu-1-config --link-ld |awk '{print $1}'|cut -c3-`"
+APR_CFLAGS="`$APRCFG --cppflags --includes`"
+APU_CFLAGS="`$APUCFG --includes`"
+APR_LFLAGS="`$APRCFG --link-ld --libs`"
+APU_LFLAGS="`$APUCFG --link-ld --libs`"
+APRR="`$APRCFG --link-ld |cut -f2 -d' '`"
+APUR="`$APUCFG --link-ld |cut -f2 -d' '`"
 
-if [ "$OS" == "AIX" -a "$COMPILER" == "xlc" ]
-then
+if [ "$OS" == "AIX" -a "$COMPILER" == "xlc" ]; then
 	EXTRA_CFLAG=-q64
 	LIB=lib64
 	xlc_r $EXTRA_CFLAG -c db2hash.c hash.c -I$DB2PATH/include $APR_CFLAGS $APU_CFLAGS
@@ -66,22 +91,20 @@ then
 	exit
 fi
 
-# Set the runtime path since routines run as setuid.
-if [ "$OS" == "AIX" ]
-then
+# Set the runtime path since routines run as setuid
+if [ "$OS" == "AIX" ]; then
 	EXTRA_LFLAG="-Wl,-G,-blibpath:$DB2PATH/lib:$APRR:$APUR"
 else
 	EXTRA_LFLAG="-Wl,-rpath,$DB2PATH/lib -Wl,-rpath,$APRR -Wl,-rpath,$APUR"
 fi
 
 # additional flags for Darwin
-if [ "$OS" == "Darwin" ]
-then
+if [ "$OS" == "Darwin" ]; then
 	D_C_FLAGS="-arch x86_64"
 	D_L_FLAGS="-arch x86_64 -dynamiclib"
 fi
 
-# Compile the program.
+# Compile the program
 gcc -fPIC -I$DB2PATH/include -c db2hash.c hash.c $APR_CFLAGS $APU_CFLAGS $D_C_FLAGS
 
 # Link the program and create a shared library

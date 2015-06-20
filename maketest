@@ -4,49 +4,65 @@
 # Builds the test program for the hashing routines
 # Usage: maketest
 
-# Set DB2PATH to where DB2 will be accessed.
-# The default is the standard instance path.
-# Set APRPATH to where apr-1-config and apu-1-config are located
-
-OS=`uname`
-
-#Default paths for Linux, AIX and Darwin
-
-if [ "$OS" == "AIX" -o "$OS" == "Linux" ]
-then
-	DB2PATH=/home/db2inst1/sqllib
-	APRPATH=/usr/local/apache/bin
-	APUPATH=$APRPATH
-elif [ "$OS" == "Darwin" ]
-then
-	DB2PATH=/Users/db2inst1/sqllib
-	APRPATH=/usr/bin
-	APUPATH=/usr/bin
-fi
-
 # Uncomment the next 3 lines, if you set the paths manually
 #DB2PATH=
 #APRPATH=
-#APUPATH=	
+#APUPATH=
 
-APR_FLAGS="`$APRPATH/apr-1-config --cppflags --includes --libs --link-ld`"
-APU_FLAGS="`$APUPATH/apu-1-config --includes --link-ld --libs`"
-APRR="`$APRPATH/apr-1-config --link-ld |awk '{print $1}'|cut -c3-`"
-APUR="`$APUPATH/apu-1-config --link-ld |awk '{print $1}'|cut -c3-`"
+# Set DB2PATH to the DB2 instance home
+# Set APRPATH to where apr-1-config is located
+# Set APUPATH to where apu-1-config is located
+
+OS=`uname`
+
+# Some variable magic
+
+if [ -z $DB2_HOME ] && [ -z $DB2PATH ] || [ ! -e $DB2PATH ]; then
+	echo "DB2 instance directory not found. Please set DB2PATH at the beginning of the script."
+	exit 1
+else
+	if [ -z $DB2PATH ]; then
+		DB2PATH=$DB2_HOME
+	fi
+fi
+
+if [ -z $APRPATH ]; then
+	APRCFG=`which apr-1-config`
+else
+	APRCFG=$APRPATH/apr-1-config
+fi
+
+if [ -z $APRCFG ] || [ ! -e $APRCFG ]; then
+	echo "apr-1-config not found. Please set APRPATH at the beginning of the script."
+	exit 1
+fi
+
+if [ -z $APUPATH ]; then
+	APUCFG=`which apu-1-config`
+else
+	APUCFG=$APUPATH/apu-1-config
+fi
+
+if [ -z $APUCFG ] || [ ! -e $APUCFG ]; then
+	echo "apu-1-config not found. Please set APUPATH at the beginning of the script."
+	exit 1
+fi
+
+APR_FLAGS="`$APRCFG --cppflags --includes --libs --link-ld`"
+APU_FLAGS="`$APUCFG --includes --link-ld --libs`"
+APRR="`$APRCFG --link-ld |cut -f2 -d' '`"
+APUR="`$APUCFG --link-ld |cut -f2 -d' '`"
 
 # Set the runtime path since routines run as setuid.
-if [ "`uname`" == "AIX" ]
-then
+if [ "`uname`" == "AIX" ]; then
 	EXTRA_LFLAG="-Wl,-G,-blibpath:$APRR:$APUR"
 else
 	EXTRA_LFLAG="-Wl,-rpath,$APRR -Wl,-rpath,$APUR"
 fi
 
 # additional flags for Darwin
-if [ "$OS" == "Darwin" ]
-then
+if [ "$OS" == "Darwin" ]; then
 	D_C_FLAGS="-arch x86_64"
-	D_L_FLAGS="-arch x86_64 -dynamiclib"
 fi
 
 # Compile the program.
