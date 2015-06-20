@@ -1,3 +1,6 @@
+branches:
+  except:
+    - /^(\d)+(\.(\d)+)*[a-z]*$/
 
 before_install:
   # Retrieves and extracts the DB2 binaries
