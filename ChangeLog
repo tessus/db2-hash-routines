@@ -1,3 +1,10 @@
+db2-hash-routines 1.5
+
+ - improved the make scripts (makertn, maketest)
+   - apr config binaries and db2 instance home are now detected automatically
+   - print informational and error messages
+ - fix typo in apr_sha256 man page
+
 db2-hash-routines 1.4
 
  - fixed a potential segfault
