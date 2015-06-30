@@ -17,18 +17,18 @@ signing key [0xC11F128D](http://sks.pkqs.net/pks/lookup?op=get&search=0xF7832007
 
 #####man pages
 
-[db2-hash-routines](http://tessus.github.io/db2-hash-routines/db2-hash-routines.html)
+[db2-hash-routines](http://tessus.github.io/db2-hash-routines/man/db2-hash-routines.html)
 <br>
-[bcrypt](http://tessus.github.io/db2-hash-routines/bcrypt.html)
+[bcrypt](http://tessus.github.io/db2-hash-routines/man/bcrypt.html)
 <br>
-[apr_crypt](http://tessus.github.io/db2-hash-routines/apr_crypt.html)
+[apr_crypt](http://tessus.github.io/db2-hash-routines/man/apr_crypt.html)
 <br>
-[apr_md5](http://tessus.github.io/db2-hash-routines/apr_md5.html)
+[apr_md5](http://tessus.github.io/db2-hash-routines/man/apr_md5.html)
 <br>
-[apr_sha1](http://tessus.github.io/db2-hash-routines/apr_sha1.html)
+[apr_sha1](http://tessus.github.io/db2-hash-routines/man/apr_sha1.html)
 <br>
-[apr_sha256](http://tessus.github.io/db2-hash-routines/apr_sha256.html)
+[apr_sha256](http://tessus.github.io/db2-hash-routines/man/apr_sha256.html)
 <br>
-[php_md5](http://tessus.github.io/db2-hash-routines/php_md5.html)
+[php_md5](http://tessus.github.io/db2-hash-routines/man/php_md5.html)
 <br>
-[validate_pw](http://tessus.github.io/db2-hash-routines/validate_pw.html)
+[validate_pw](http://tessus.github.io/db2-hash-routines/man/validate_pw.html)
