@@ -1,3 +1,9 @@
+db2-hash-routines 1.6
+
+ - additional improvements to the make scripts (makertn, maketest)
+   - better linker flag handling (EXTRA_LFLAG)
+   - verbose output option (-v)
+
 db2-hash-routines 1.5
 
  - improved the make scripts (makertn, maketest)
