@@ -50,19 +50,21 @@ fi
 
 APR_FLAGS="`$APRCFG --cppflags --includes --libs --link-ld`"
 APU_FLAGS="`$APUCFG --includes --link-ld --libs`"
-APRR="`$APRCFG --link-ld |cut -f2 -d' '`"
-APUR="`$APUCFG --link-ld |cut -f2 -d' '`"
-
-# Set the runtime path since routines run as setuid.
-if [ "`uname`" == "AIX" ]; then
-	EXTRA_LFLAG="-Wl,-G,-blibpath:$APRR:$APUR"
-else
-	EXTRA_LFLAG="-Wl,-rpath,$APRR -Wl,-rpath,$APUR"
-fi
 
 # additional flags for Darwin
 if [ "$OS" == "Darwin" ]; then
 	D_C_FLAGS="-arch x86_64"
+fi
+
+if [ "$1" == "-v" ]; then
+	echo "DB2PATH    : " $DB2PATH
+	echo
+	echo "APR_FLAGS  : " $APR_FLAGS
+	echo "APU_FLAGS  : " $APU_FLAGS
+	echo
+	echo "APRCFG     : " $APRCFG
+	echo "APUCFG     : " $APUCFG
+	echo
 fi
 
 # Compile the program.
