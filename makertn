@@ -79,8 +79,20 @@ APR_CFLAGS="`$APRCFG --cppflags --includes`"
 APU_CFLAGS="`$APUCFG --includes`"
 APR_LFLAGS="`$APRCFG --link-ld --libs`"
 APU_LFLAGS="`$APUCFG --link-ld --libs`"
-APRR="`$APRCFG --link-ld |cut -f2 -d' '`"
-APUR="`$APUCFG --link-ld |cut -f2 -d' '`"
+APRRTMP="`$APRCFG --link-ld |cut -f2 -d' '`"
+APURTMP="`$APUCFG --link-ld |cut -f2 -d' '`"
+
+if [ "${APRRTMP:1:1}" == "L" ]; then
+	APRR=${APRRTMP:2}
+	ELOPT1="-Wl,-rpath,$APRR"
+	ELOPT1A=":$APRR"
+fi
+
+if [ "${APURTMP:1:1}" == "L" ]; then
+	APUR=${APURTMP:2}
+	ELOPT2="-Wl,-rpath,$APUR"
+	ELOPT2A=":$APUR"
+fi
 
 if [ "$OS" == "AIX" -a "$COMPILER" == "xlc" ]; then
 	EXTRA_CFLAG=-q64
@@ -93,15 +105,33 @@ fi
 
 # Set the runtime path since routines run as setuid
 if [ "$OS" == "AIX" ]; then
-	EXTRA_LFLAG="-Wl,-G,-blibpath:$DB2PATH/lib:$APRR:$APUR"
+	EXTRA_LFLAG="-Wl,-G,-blibpath:$DB2PATH/lib${ELOPT1A}${ELOPT2A}"
 else
-	EXTRA_LFLAG="-Wl,-rpath,$DB2PATH/lib -Wl,-rpath,$APRR -Wl,-rpath,$APUR"
+	EXTRA_LFLAG="-Wl,-rpath,$DB2PATH/lib $ELOPT1 $ELOPT2"
 fi
 
 # additional flags for Darwin
 if [ "$OS" == "Darwin" ]; then
 	D_C_FLAGS="-arch x86_64"
 	D_L_FLAGS="-arch x86_64 -dynamiclib"
+fi
+
+if [ "$1" == "-v" ]; then
+	echo "DB2PATH    : " $DB2PATH
+	echo "COMPILER   : " $COMPILER
+	echo
+	echo "APR_CFLAGS : " $APR_CFLAGS
+	echo "APU_CFLAGS : " $APU_CFLAGS
+	echo "APR_LFLAGS : " $APR_LFLAGS
+	echo "APU_LFLAGS : " $APU_LFLAGS
+	echo
+	echo "APRCFG     : " $APRCFG
+	echo "APUCFG     : " $APUCFG
+	echo "APRR       : " $APRR
+	echo "APUR       : " $APUR
+	echo
+	echo "EXTRA_LFLAG: " $EXTRA_LFLAG
+	echo
 fi
 
 # Compile the program
