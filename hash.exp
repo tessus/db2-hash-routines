@@ -4,4 +4,6 @@ aprcrypt
 aprsha1
 aprsha256
 bcrypt
+sha256
+sha512
 validate

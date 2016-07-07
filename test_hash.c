@@ -33,6 +33,18 @@ int main( int argc, char *argv[] )
 	hash = mk_hash( clear, ALG_APSHA256 );
 	printf( "\napr_sha256  -> %s", hash);
 
+	if (supported(ALG_SHA256))
+	{
+		hash = mk_hash( clear, ALG_SHA256 );
+		printf( "\nsha256      -> %s", hash);
+	}
+
+	if (supported(ALG_SHA256))
+	{
+		hash = mk_hash( clear, ALG_SHA512 );
+		printf( "\nsha512      -> %s", hash);
+	}
+
 #if BCRYPT_ALGO_SUPPORTED
 	hash = mk_hash( clear, ALG_BCRYPT );
 	printf( "\nbcrypt      -> %s", hash);

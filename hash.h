@@ -1,8 +1,8 @@
 /*
   +----------------------------------------------------------------------+
-  | hash.h: hashing functions include (hashing library for IBM DB2 )     |
+  | hash.h: hashing functions include (hashing library for IBM DB2)      |
   +----------------------------------------------------------------------+
-  | Copyright (c) 2007-2015 Helmut K. C. Tessarek                        |
+  | Copyright (c) 2007-2016 Helmut K. C. Tessarek                        |
   +----------------------------------------------------------------------+
   | Licensed under the Apache License, Version 2.0 (the "License"); you  |
   | may not use this file except in compliance with the License. You may |
@@ -54,14 +54,17 @@
 #define ALG_PHPMD5   2
 #define ALG_APMD5    3
 #define ALG_APSHA    4
-#define ALG_APSHA256 5
-#define ALG_BCRYPT   7
+#define ALG_SHA256   5
+#define ALG_SHA512   6
+#define ALG_APSHA256 7
+#define ALG_BCRYPT   8
 
 #define APR_SHA256PW_ID        "{SHA256}"
 #define APR_SHA256PW_IDLEN     8
 
 static int generate_salt(char *s, size_t size);
-void sha256_base64( const char *clear, int len, char *out );
-char* mk_hash( const char *passwd, int alg );
+void sha256_base64(const char *clear, int len, char *out);
+int supported(int alg);
+char* mk_hash(const char *passwd, int alg);
 
 #endif

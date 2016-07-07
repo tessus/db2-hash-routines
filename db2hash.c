@@ -2,7 +2,7 @@
   +----------------------------------------------------------------------+
   | db2hash.c: hashing library for IBM DB2                               |
   +----------------------------------------------------------------------+
-  | Copyright (c) 2007-2015 Helmut K. C. Tessarek                        |
+  | Copyright (c) 2007-2016 Helmut K. C. Tessarek                        |
   +----------------------------------------------------------------------+
   | Licensed under the Apache License, Version 2.0 (the "License"); you  |
   | may not use this file except in compliance with the License. You may |
@@ -193,6 +193,90 @@ void SQL_API_FN aprsha256(	SQLUDF_CHAR      *in,
 	t = mk_hash( in, ALG_APSHA256 );
 	strcpy( out, t );
 	free( t );
+
+	*outnull = 0;
+	return;
+}
+
+/*
+  +----------------------------------------------------------------------+
+  | function sha256: sha-256                                             |
+  |                                                                      |
+  |          input : varchar             (password)                      |
+  |          output: char                (hash)                          |
+  +----------------------------------------------------------------------+
+*/
+
+#ifdef __cplusplus
+extern "C"
+#endif
+void SQL_API_FN sha256(	SQLUDF_CHAR      *in,
+						SQLUDF_CHAR      out[56],
+						SQLUDF_SMALLINT  *innull,
+						SQLUDF_SMALLINT  *outnull,
+						SQLUDF_TRAIL_ARGS)
+{
+	char *t;
+
+	if( *innull != 0 )
+	{
+		*outnull = -1;
+		return;
+	}
+
+	t = mk_hash( in, ALG_SHA256 );
+	strcpy( out, t );
+	free( t );
+
+	if( strlen(out) == 0 )
+	{
+		strcpy(SQLUDF_STATE, "39702");
+		strcpy(SQLUDF_MSGTX, "The system's crypt library does not support sha-256.");
+		*outnull = 0;
+		return;
+	}
+
+	*outnull = 0;
+	return;
+}
+
+/*
+  +----------------------------------------------------------------------+
+  | function sha512: sha-512                                             |
+  |                                                                      |
+  |          input : varchar             (password)                      |
+  |          output: char                (hash)                          |
+  +----------------------------------------------------------------------+
+*/
+
+#ifdef __cplusplus
+extern "C"
+#endif
+void SQL_API_FN sha512(	SQLUDF_CHAR      *in,
+						SQLUDF_CHAR      out[99],
+						SQLUDF_SMALLINT  *innull,
+						SQLUDF_SMALLINT  *outnull,
+						SQLUDF_TRAIL_ARGS)
+{
+	char *t;
+
+	if( *innull != 0 )
+	{
+		*outnull = -1;
+		return;
+	}
+
+	t = mk_hash( in, ALG_SHA512 );
+	strcpy( out, t );
+	free( t );
+
+	if( strlen(out) == 0 )
+	{
+		strcpy(SQLUDF_STATE, "39702");
+		strcpy(SQLUDF_MSGTX, "The system's crypt library does not support sha-512.");
+		*outnull = 0;
+		return;
+	}
 
 	*outnull = 0;
 	return;

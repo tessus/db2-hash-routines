@@ -2,7 +2,7 @@
   +----------------------------------------------------------------------+
   | hash.c: hashing functions (hashing library for IBM DB2)              |
   +----------------------------------------------------------------------+
-  | Copyright (c) 2007-2015 Helmut K. C. Tessarek                        |
+  | Copyright (c) 2007-2016 Helmut K. C. Tessarek                        |
   +----------------------------------------------------------------------+
   | Licensed under the Apache License, Version 2.0 (the "License"); you  |
   | may not use this file except in compliance with the License. You may |
@@ -63,7 +63,34 @@ static int generate_salt(char *s, size_t size)
 	return 0;
 }
 
-void sha256_base64( const char *clear, int len, char *out )
+int supported(int alg)
+{
+#if APR_HAVE_CRYPT_H
+	char salt[16+3];
+	char *answer;
+
+	if (alg != ALG_SHA256 && alg != ALG_SHA512)
+		return 0;
+
+	salt[0] = '$';
+	salt[1] = alg +'0';
+	salt[2] = '$';
+	salt[3] = '\0';
+
+	strcat(salt, "tessarek");
+	answer = crypt("tessarek", salt);
+
+	if (alg == ALG_SHA256 && strcmp(answer, "$5$tessarek$qeDSegIyJHHxL8NQkuNa.MdFOcQuB7OlgASFBTWNsg9") == 0)
+		return 1;
+
+	if (alg == ALG_SHA512 && strcmp(answer, "$6$tessarek$asevmwEuZSZqp7x3tbQBR/4o/DpAFVlfDiJjoRNbm8/iTHdF7nlJeykFVmqRYw27OHp9qyH2C2yp3UL47U.4W0") == 0)
+		return 1;
+#endif
+
+	return 0;
+}
+
+void sha256_base64(const char *clear, int len, char *out)
 {
 	int l;
 	SHA256_CTX context;
@@ -79,11 +106,12 @@ void sha256_base64( const char *clear, int len, char *out )
 	out[l + APR_SHA256PW_IDLEN] = '\0';
 }
 
-char* mk_hash( const char *passwd, int alg )
+char* mk_hash(const char *passwd, int alg)
 {
 	char *result;
 	char cpw[120];
 	char salt[16];
+	char finalsalt[16+3];
 	int ret = 0;
 
 	int cost = 5;
@@ -140,6 +168,23 @@ char* mk_hash( const char *passwd, int alg )
 
 			apr_cpystrn(cpw, (char *)crypt(passwd, salt), sizeof(cpw) - 1);
 			break;
+
+		case ALG_SHA256:
+		case ALG_SHA512:
+			if (!supported(alg))
+				break;
+			ret = generate_salt(salt, 8);
+			if (ret != 0)
+				break;
+
+			finalsalt[0] = '$';
+			finalsalt[1] = alg +'0';
+			finalsalt[2] = '$';
+			finalsalt[3] = '\0';
+			strcat(finalsalt, salt);
+
+			apr_cpystrn(cpw, (char *)crypt(passwd, finalsalt), sizeof(cpw) - 1);
+			break;
 #endif
 
 		case ALG_PHPMD5:
@@ -150,7 +195,7 @@ char* mk_hash( const char *passwd, int alg )
 			apr_md5_final( digest, &context );
 			for( i = 0, r = md5str; i < APR_MD5_DIGESTSIZE; i++, r += 2 )
 			{
-			sprintf( r, "%02x", digest[i] );
+				sprintf( r, "%02x", digest[i] );
 			}
 			*r = '\0';
 
