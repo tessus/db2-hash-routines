@@ -49,6 +49,8 @@ document.body.appendChild(script);
 <ul>
 <li><a href="./man/db2-hash-routines.html">db2-hash-routines</a></li>
 <li><a href="./man/bcrypt.html">bcrypt</a></li>
+<li><a href="./man/sha256.html">sha256</a></li>
+<li><a href="./man/sha512.html">sha512</a></li>
 <li><a href="./man/apr_crypt.html">apr_crypt</a></li>
 <li><a href="./man/apr_md5.html">apr_md5</a></li>
 <li><a href="./man/apr_sha1.html">apr_sha1</a></li>
@@ -105,6 +107,15 @@ $2y$05$WCC47DM2xelWQCGDKEAeNOP9BCRE6IyuMjOtGH5hKMB392XuSWInG
 1
 ----------------------------------------------------
 {SHA256}BQF0CEQFCEafJRsQjaPfZ8YBq5Fm80WqLBr9s90f8tw=
+
+  1 record(s) selected.
+</code></pre>
+
+<pre><code>db2 =&gt; values sha256('cleartext')
+
+1
+-------------------------------------------------------
+$5$Yj7xpt8h$wkod.Gp8Uviu4OhYguPgUYq.aPGcIbWInz1fnvDC1I1
 
   1 record(s) selected.
 </code></pre>

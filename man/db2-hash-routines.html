@@ -29,6 +29,10 @@
 
        &gt;&gt;-APR_SHA256--(--expression--)--------------------------------&gt;&lt;
 
+       &gt;&gt;-SHA256--(--expression--)------------------------------------&gt;&lt;
+
+       &gt;&gt;-SHA512--(--expression--)------------------------------------&gt;&lt;
+
        &gt;&gt;-VALIDATE_PW--(--password--,--hash--)------------------------&gt;&lt;
 
        <B>Stored</B> <B>Procedures:</B>
@@ -44,6 +48,10 @@
        &gt;&gt;-APR_SHA1--(--expression--,--hash--)-------------------------&gt;&lt;
 
        &gt;&gt;-APR_SHA256--(--expression--,--hash--)-----------------------&gt;&lt;
+
+       &gt;&gt;-SHA256--(--expression--,--hash--)---------------------------&gt;&lt;
+
+       &gt;&gt;-SHA512--(--expression--,--hash--)---------------------------&gt;&lt;
 
        &gt;&gt;-VALIDATE_PW--(--password--,--hash--,--is_valid--)-----------&gt;&lt;
 
@@ -116,6 +124,30 @@
               VARCHAR not exceeding 4096 bytes.
 
               The result of the routine is <B>CHAR(52)</B>. The result can  be  null;
+              if the argument is null, the result is the null value.
+
+       <B>sha256(</B> <B>'</B><I>cleartext</I><B>'</B> <B>)</B>
+       <B>sha256(</B> <B>'</B><I>cleartext</I><B>',</B> <I>:hash</I> <B>)</B>
+              SHA256  algorithm.  The  sha256 routine returns a glibc2's crypt
+              hash. If the system's crypt does not support  sha-256,  an  SQL-
+              STATE 39702 is returned.
+
+              The  argument can be a character string that is either a CHAR or
+              VARCHAR not exceeding 4096 bytes.
+
+              The result of the routine is <B>CHAR(55)</B>. The result can  be  null;
+              if the argument is null, the result is the null value.
+
+       <B>sha512(</B> <B>'</B><I>cleartext</I><B>'</B> <B>)</B>
+       <B>sha512(</B> <B>'</B><I>cleartext</I><B>',</B> <I>:hash</I> <B>)</B>
+              SHA512  algorithm.  The  sha512 routine returns a glibc2's crypt
+              hash. If the system's crypt does not support  sha-512,  an  SQL-
+              STATE 39702 is returned.
+
+              The  argument can be a character string that is either a CHAR or
+              VARCHAR not exceeding 4096 bytes.
+
+              The result of the routine is <B>CHAR(98)</B>. The result can  be  null;
               if the argument is null, the result is the null value.
 
        <B>validate_pw(</B> <B>'</B><I>password</I><B>',</B> <B>'</B><I>hash</I><B>'</B> <B>)</B>
@@ -266,8 +298,8 @@
          Return Status = 0
 
        <B>apr_sha256</B> <B>(1):</B>
-       Inserting the user <I>test</I> and the sha1 crypted clear text <I>testpwd</I> to  the
-       table <I>users</I>.
+       Inserting the user <I>test</I> and the sha256 crypted clear  text  <I>testpwd</I>  to
+       the table <I>users</I>.
 
        INSERT INTO USERS (username, password)
          VALUES ('test', apr_sha256('testpwd'))
@@ -288,6 +320,58 @@
          --------------------------
          Parameter Name  : HASH
          Parameter Value : {SHA256}qFtqIIE8Maixs/NhjaeWJxyaopOz+AmHMFOyGuxQEIc=
+
+         Return Status = 0
+
+       <B>sha256</B> <B>(1):</B>
+       Inserting  the  user  <I>test</I> and the sha256 crypted clear text <I>testpwd</I> to
+       the table <I>users</I>.
+
+       INSERT INTO USERS (username, password)
+         VALUES ('test', sha256('testpwd'))
+
+       <B>sha256</B> <B>(2):</B>
+       SELECT sha256('testpwd') FROM SYSIBM.SYSDUMMY1
+
+       1
+       -------------------------------------------------------
+       $5$S.LqPR7Z$273zPncMdmJ0dE1WdLldWVBmaHSDUDl8/tW8At8Hc0A
+
+         1 record(s) selected.
+
+       <B>sha256</B> <B>(3):</B>
+       CALL sha256('testpwd', ?)
+
+         Value of output parameters
+         --------------------------
+         Parameter Name  : HASH
+         Parameter Value : $5$vSDCZr2d$rfh.aDopE5l3lm26AwwcIYnuVdV7/9QBACWukqYyV3/
+
+         Return Status = 0
+
+       <B>sha512</B> <B>(1):</B>
+       Inserting the user <I>test</I> and the sha512 crypted clear  text  <I>testpwd</I>  to
+       the table <I>users</I>.
+
+       INSERT INTO USERS (username, password)
+         VALUES ('test', sha512('testpwd'))
+
+       <B>sha512</B> <B>(2):</B>
+       SELECT sha512('testpwd') FROM SYSIBM.SYSDUMMY1
+
+       1
+       --------------------------------------------------------------------------------------------------
+       $6$cD33haq7$dl.RqEaLamlesTPVzSIQr4N1MY3BsVZ76VS8qNte0IOIWO2XorMg8U797KKOFGmX8dJhT3WuF6p17HmvvoQ6Q/
+
+         1 record(s) selected.
+
+       <B>sha512</B> <B>(3):</B>
+       CALL sha512('testpwd', ?)
+
+         Value of output parameters
+         --------------------------
+         Parameter Name  : HASH
+         Parameter Value : $6$1W.m9JN1$Dh.VPl7vy.igGaeDUdDWw6ZlD0xufwDWm0ukpOYknPtdjxiSM2yzWBkzHffalb/2axNHPqEi9UUzXUbSm4LGa/
 
          Return Status = 0
 
@@ -340,7 +424,7 @@
 
 
 
-db2-hash-routines 1.3              June 2015              <B>db2-hash-routines(8)</B>
+db2-hash-routines 1.7              July 2016              <B>db2-hash-routines(8)</B>
 </PRE>
 </BODY>
 </HTML>

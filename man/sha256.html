@@ -1,0 +1,88 @@
+<HTML>
+<HEAD><TITLE>sha256</TITLE></HEAD>
+<BODY>
+<PRE>
+<!-- Manpage converted by man2html 3.0.1 -->
+<B>sha256(8)</B>       DB2 User Defined Function and Stored Procedure       <B>sha256(8)</B>
+
+
+
+
+</PRE>
+<H2>NAME</H2><PRE>
+       sha256 - DB2 UDF and SP to generate an SHA256 hash
+
+
+</PRE>
+<H2>SYNOPSIS</H2><PRE>
+       &gt;&gt;-SHA256--(--expression--)------------------------------------&gt;&lt;
+
+       &gt;&gt;-SHA256--(--expression--,--hash--)---------------------------&gt;&lt;
+
+
+</PRE>
+<H2>DESCRIPTION</H2><PRE>
+       SHA256  algorithm. The sha256 routine returns a glibc2's crypt hash. If
+       the system's crypt does not  support  sha-256,  an  SQLSTATE  39702  is
+       returned.
+
+       The argument can be a character string that is either a CHAR or VARCHAR
+       not exceeding 4096 bytes.
+
+       The result of the function is <B>CHAR(55)</B>. The result can be null; if  the
+       argument is null, the result is the null value.
+
+
+</PRE>
+<H2>EXAMPLES</H2><PRE>
+       <B>Example</B> <B>1:</B>
+
+       Inserting  the  user  <I>test</I> and the sha256 crypted clear text <I>testpwd</I> to
+       the table <I>users</I>.
+
+       INSERT INTO USERS (username, password)
+         VALUES ('test', sha256('testpwd'))
+
+       <B>Example</B> <B>2:</B>
+
+       SELECT sha256('testpwd') FROM SYSIBM.SYSDUMMY1
+
+       1
+       -------------------------------------------------------
+       $5$S.LqPR7Z$273zPncMdmJ0dE1WdLldWVBmaHSDUDl8/tW8At8Hc0A
+
+         1 record(s) selected.
+
+       <B>Example</B> <B>3:</B>
+
+       CALL sha256('testpwd', ?)
+
+         Value of output parameters
+         --------------------------
+         Parameter Name  : HASH
+         Parameter Value : $5$vSDCZr2d$rfh.aDopE5l3lm26AwwcIYnuVdV7/9QBACWukqYyV3/
+
+         Return Status = 0
+
+
+</PRE>
+<H2>AUTHOR</H2><PRE>
+       Written by Helmut K. C. Tessarek.
+
+
+</PRE>
+<H2>BUGS</H2><PRE>
+       Hopefully none :-) But if you find one, please report it at:
+       https://github.com/tessus/db2-hash-routines/issues
+
+
+</PRE>
+<H2>WEB SITE</H2><PRE>
+       http://tessus.github.io/db2-hash-routines
+
+
+
+sha256                             July 2016                         <B>sha256(8)</B>
+</PRE>
+</BODY>
+</HTML>
