@@ -1,0 +1,59 @@
+.TH sha512 "8" "July 2016" "sha512" "DB2 User Defined Function and Stored Procedure"
+.SH NAME
+sha512 \- DB2 UDF and SP to generate an SHA512 hash
+.SH SYNOPSIS
+>>-SHA512--(--expression--)------------------------------------><
+.PP
+>>-SHA512--(--expression--,--hash--)---------------------------><
+.SH DESCRIPTION
+SHA512 algorithm. The sha512 routine returns a glibc2's crypt hash. If the system's crypt does not support sha-512,
+an SQLSTATE 39702 is returned.
+.PP
+The argument can be a character string that is either a CHAR or VARCHAR not exceeding 4096 bytes.
+.PP
+The result of the function is CHAR(98). The result can be null; if the argument is null, the result is the null value.
+.SH EXAMPLES
+\fBExample 1:\fR
+
+.br
+Inserting the user \fItest\fR and the sha512 crypted clear text \fItestpwd\fR to the table \fIusers\fR.
+.PP
+.nf
+INSERT INTO USERS (username, password)
+  VALUES ('test', sha512('testpwd'))
+.fi
+.PP
+\fBExample 2:\fR
+
+.br
+.nf
+SELECT sha512('testpwd') FROM SYSIBM.SYSDUMMY1
+
+1
+--------------------------------------------------------------------------------------------------
+$6$cD33haq7$dl.RqEaLamlesTPVzSIQr4N1MY3BsVZ76VS8qNte0IOIWO2XorMg8U797KKOFGmX8dJhT3WuF6p17HmvvoQ6Q/
+
+  1 record(s) selected.
+.fi
+.PP
+\fBExample 3:\fR
+
+.br
+.nf
+CALL sha512('testpwd', ?)
+
+  Value of output parameters
+  --------------------------
+  Parameter Name  : HASH
+  Parameter Value : $6$1W.m9JN1$Dh.VPl7vy.igGaeDUdDWw6ZlD0xufwDWm0ukpOYknPtdjxiSM2yzWBkzHffalb/2axNHPqEi9UUzXUbSm4LGa/
+
+  Return Status = 0
+.fi
+.SH AUTHOR
+Written by Helmut K. C. Tessarek.
+.SH "BUGS"
+Hopefully none :-) But if you find one, please report it at:
+.br
+https://github.com/tessus/db2-hash-routines/issues
+.SH "WEB SITE"
+http://tessus.github.io/db2-hash-routines

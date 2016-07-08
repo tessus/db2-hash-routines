@@ -1,0 +1,59 @@
+.TH sha256 "8" "July 2016" "sha256" "DB2 User Defined Function and Stored Procedure"
+.SH NAME
+sha256 \- DB2 UDF and SP to generate an SHA256 hash
+.SH SYNOPSIS
+>>-SHA256--(--expression--)------------------------------------><
+.PP
+>>-SHA256--(--expression--,--hash--)---------------------------><
+.SH DESCRIPTION
+SHA256 algorithm. The sha256 routine returns a glibc2's crypt hash. If the system's crypt does not support sha-256,
+an SQLSTATE 39702 is returned.
+.PP
+The argument can be a character string that is either a CHAR or VARCHAR not exceeding 4096 bytes.
+.PP
+The result of the function is CHAR(55). The result can be null; if the argument is null, the result is the null value.
+.SH EXAMPLES
+\fBExample 1:\fR
+
+.br
+Inserting the user \fItest\fR and the sha256 crypted clear text \fItestpwd\fR to the table \fIusers\fR.
+.PP
+.nf
+INSERT INTO USERS (username, password)
+  VALUES ('test', sha256('testpwd'))
+.fi
+.PP
+\fBExample 2:\fR
+
+.br
+.nf
+SELECT sha256('testpwd') FROM SYSIBM.SYSDUMMY1
+
+1
+-------------------------------------------------------
+$5$S.LqPR7Z$273zPncMdmJ0dE1WdLldWVBmaHSDUDl8/tW8At8Hc0A
+
+  1 record(s) selected.
+.fi
+.PP
+\fBExample 3:\fR
+
+.br
+.nf
+CALL sha256('testpwd', ?)
+
+  Value of output parameters
+  --------------------------
+  Parameter Name  : HASH
+  Parameter Value : $5$vSDCZr2d$rfh.aDopE5l3lm26AwwcIYnuVdV7/9QBACWukqYyV3/
+
+  Return Status = 0
+.fi
+.SH AUTHOR
+Written by Helmut K. C. Tessarek.
+.SH "BUGS"
+Hopefully none :-) But if you find one, please report it at:
+.br
+https://github.com/tessus/db2-hash-routines/issues
+.SH "WEB SITE"
+http://tessus.github.io/db2-hash-routines

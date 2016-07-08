@@ -1,4 +1,4 @@
-.TH db2-hash-routines "8" "June 2015" "db2-hash-routines 1.3" "DB2 UDFs and Stored Procedures"
+.TH db2-hash-routines "8" "July 2016" "db2-hash-routines 1.7" "DB2 UDFs and Stored Procedures"
 .SH NAME
 db2-hash-routines \- DB2 UDFs and SPs to generate and validate hashes
 .SH SYNOPSIS
@@ -16,6 +16,10 @@ db2-hash-routines \- DB2 UDFs and SPs to generate and validate hashes
 .PP
 >>-APR_SHA256--(--expression--)--------------------------------><
 .PP
+>>-SHA256--(--expression--)------------------------------------><
+.PP
+>>-SHA512--(--expression--)------------------------------------><
+.PP
 >>-VALIDATE_PW--(--password--,--hash--)------------------------><
 .PP
 \fBStored Procedures:\fR
@@ -31,6 +35,10 @@ db2-hash-routines \- DB2 UDFs and SPs to generate and validate hashes
 >>-APR_SHA1--(--expression--,--hash--)-------------------------><
 .PP
 >>-APR_SHA256--(--expression--,--hash--)-----------------------><
+.PP
+>>-SHA256--(--expression--,--hash--)---------------------------><
+.PP
+>>-SHA512--(--expression--,--hash--)---------------------------><
 .PP
 >>-VALIDATE_PW--(--password--,--hash--,--is_valid--)-----------><
 .SH DESCRIPTION
@@ -107,6 +115,32 @@ SHA256 algorithm. The apr_sha256 routine returns the identifier {SHA256} plus th
 The argument can be a character string that is either a CHAR or VARCHAR not exceeding 4096 bytes.
 .IP
 The result of the routine is CHAR(52). The result can be null; if the argument is null, the result is the null value.
+.TP
+\fBsha256( '\fR\fIcleartext\fR\fB' )\fR
+.RS 0
+\fBsha256( '\fR\fIcleartext\fR\fB', \fR\fI:hash\fR\fB )\fR
+.PD 0
+.IP
+SHA256 algorithm. The sha256 routine returns a glibc2's crypt hash. If the system's crypt does not support sha-256,
+an SQLSTATE 39702 is returned.
+.PD
+.IP
+The argument can be a character string that is either a CHAR or VARCHAR not exceeding 4096 bytes.
+.IP
+The result of the routine is CHAR(55). The result can be null; if the argument is null, the result is the null value.
+.TP
+\fBsha512( '\fR\fIcleartext\fR\fB' )\fR
+.RS 0
+\fBsha512( '\fR\fIcleartext\fR\fB', \fR\fI:hash\fR\fB )\fR
+.PD 0
+.IP
+SHA512 algorithm. The sha512 routine returns a glibc2's crypt hash. If the system's crypt does not support sha-512,
+an SQLSTATE 39702 is returned.
+.PD
+.IP
+The argument can be a character string that is either a CHAR or VARCHAR not exceeding 4096 bytes.
+.IP
+The result of the routine is CHAR(98). The result can be null; if the argument is null, the result is the null value.
 .TP
 \fBvalidate_pw( '\fR\fIpassword\fR\fB', '\fR\fIhash\fR\fB' )\fR
 .RS 0
@@ -294,7 +328,7 @@ CALL apr_sha1('testpwd', ?)
 .PP
 \fBapr_sha256 (1):\fR
 .br
-Inserting the user \fItest\fR and the sha1 crypted clear text \fItestpwd\fR to the table \fIusers\fR.
+Inserting the user \fItest\fR and the sha256 crypted clear text \fItestpwd\fR to the table \fIusers\fR.
 .PP
 .nf
 INSERT INTO USERS (username, password)
@@ -322,6 +356,74 @@ CALL apr_sha256('testpwd', ?)
   --------------------------
   Parameter Name  : HASH
   Parameter Value : {SHA256}qFtqIIE8Maixs/NhjaeWJxyaopOz+AmHMFOyGuxQEIc=
+
+  Return Status = 0
+.fi
+.PP
+\fBsha256 (1):\fR
+.br
+Inserting the user \fItest\fR and the sha256 crypted clear text \fItestpwd\fR to the table \fIusers\fR.
+.PP
+.nf
+INSERT INTO USERS (username, password)
+  VALUES ('test', sha256('testpwd'))
+.fi
+.PP
+\fBsha256 (2):\fR
+.br
+.nf
+SELECT sha256('testpwd') FROM SYSIBM.SYSDUMMY1
+
+1
+-------------------------------------------------------
+$5$S.LqPR7Z$273zPncMdmJ0dE1WdLldWVBmaHSDUDl8/tW8At8Hc0A
+
+  1 record(s) selected.
+.fi
+.PP
+\fBsha256 (3):\fR
+.br
+.nf
+CALL sha256('testpwd', ?)
+
+  Value of output parameters
+  --------------------------
+  Parameter Name  : HASH
+  Parameter Value : $5$vSDCZr2d$rfh.aDopE5l3lm26AwwcIYnuVdV7/9QBACWukqYyV3/
+
+  Return Status = 0
+.fi
+.PP
+\fBsha512 (1):\fR
+.br
+Inserting the user \fItest\fR and the sha512 crypted clear text \fItestpwd\fR to the table \fIusers\fR.
+.PP
+.nf
+INSERT INTO USERS (username, password)
+  VALUES ('test', sha512('testpwd'))
+.fi
+.PP
+\fBsha512 (2):\fR
+.br
+.nf
+SELECT sha512('testpwd') FROM SYSIBM.SYSDUMMY1
+
+1
+--------------------------------------------------------------------------------------------------
+$6$cD33haq7$dl.RqEaLamlesTPVzSIQr4N1MY3BsVZ76VS8qNte0IOIWO2XorMg8U797KKOFGmX8dJhT3WuF6p17HmvvoQ6Q/
+
+  1 record(s) selected.
+.fi
+.PP
+\fBsha512 (3):\fR
+.br
+.nf
+CALL sha512('testpwd', ?)
+
+  Value of output parameters
+  --------------------------
+  Parameter Name  : HASH
+  Parameter Value : $6$1W.m9JN1$Dh.VPl7vy.igGaeDUdDWw6ZlD0xufwDWm0ukpOYknPtdjxiSM2yzWBkzHffalb/2axNHPqEi9UUzXUbSm4LGa/
 
   Return Status = 0
 .fi
