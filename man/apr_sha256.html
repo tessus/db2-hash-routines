@@ -10,7 +10,7 @@
 
 </PRE>
 <H2>NAME</H2><PRE>
-       apr_sha256 - DB2 UDF and SP to generate an SHA1 hash
+       apr_sha256 - DB2 UDF and SP to generate an SHA256 hash
 
 
 </PRE>
@@ -36,8 +36,8 @@
 <H2>EXAMPLES</H2><PRE>
        <B>Example</B> <B>1:</B>
 
-       Inserting the user <I>test</I> and the sha256 crypted clear text <I>testpwd</I> to  the
-       table <I>users</I>.
+       Inserting the user <I>test</I> and the sha256 crypted clear  text  <I>testpwd</I>  to
+       the table <I>users</I>.
 
        INSERT INTO USERS (username, password)
          VALUES ('test', apr_sha256('testpwd'))
