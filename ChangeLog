@@ -1,3 +1,8 @@
+db2-hash-routines 1.7
+
+ - added sha-256 and sha-512 UDFs/SPs (hashes by glib2's crypt)
+ - updated man pages
+
 db2-hash-routines 1.6
 
  - additional improvements to the make scripts (makertn, maketest)
