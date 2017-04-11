@@ -1,11 +1,11 @@
-###Status [![Build Status](https://travis-ci.org/tessus/db2-hash-routines.svg?branch=master)](https://travis-ci.org/tessus/db2-hash-routines)
+### Status [![Build Status](https://travis-ci.org/tessus/db2-hash-routines.svg?branch=master)](https://travis-ci.org/tessus/db2-hash-routines)
 
-###Source
+### Source
 [db2-hash-routines-X.Y.tar.gz](https://github.com/tessus/db2-hash-routines/releases/latest)
 <br>
 signing key [0xC11F128D](http://sks.pkqs.net/pks/lookup?op=get&search=0xF7832007C11F128D)
 
-###Documentation
+### Documentation
 
 [Manual](http://tessus.github.io/documentation/db2-hash-routines.pdf) (PDF)
 <br>
@@ -15,7 +15,7 @@ signing key [0xC11F128D](http://sks.pkqs.net/pks/lookup?op=get&search=0xF7832007
 <br>
 [ChangeLog](ChangeLog)
 
-#####man pages
+##### man pages
 
 [db2-hash-routines](http://tessus.github.io/db2-hash-routines/man/db2-hash-routines.html)
 <br>
