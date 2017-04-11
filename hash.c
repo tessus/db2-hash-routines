@@ -203,8 +203,8 @@ char* mk_hash(const char *passwd, int alg)
 			break;
 	}
 
-	result = (char*)malloc(strlen(cpw)*sizeof(char));
-	strcpy( result, cpw );
+	result = (char*)malloc((strlen(cpw)+1)*sizeof(char));
+	apr_cpystrn(result, cpw, sizeof(cpw));
 	memset(cpw, '\0', strlen(cpw));
 
 	return result;
