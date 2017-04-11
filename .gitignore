@@ -22,6 +22,8 @@
 
 # my local make files
 mymake*
+maketest.linux
+maketest.osx
 
 # html
 *.html
