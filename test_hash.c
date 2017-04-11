@@ -20,39 +20,45 @@ int main( int argc, char *argv[] )
 
 	hash = mk_hash( clear, ALG_PHPMD5 );
 	printf( "\nphp_md5     -> %s", hash);
+	free(hash);
 
 	hash = mk_hash( clear, ALG_APMD5 );
 	printf( "\napr_md5     -> %s", hash);
+	free(hash);
 
 	hash = mk_hash( clear, ALG_CRYPT );
 	printf( "\napr_crypt   -> %s", hash);
+	free(hash);
 
 	hash = mk_hash( clear, ALG_APSHA );
 	printf( "\napr_sha1    -> %s", hash);
+	free(hash);
 
 	hash = mk_hash( clear, ALG_APSHA256 );
 	printf( "\napr_sha256  -> %s", hash);
+	free(hash);
 
 	if (supported(ALG_SHA256))
 	{
 		hash = mk_hash( clear, ALG_SHA256 );
 		printf( "\nsha256      -> %s", hash);
+		free(hash);
 	}
 
 	if (supported(ALG_SHA256))
 	{
 		hash = mk_hash( clear, ALG_SHA512 );
 		printf( "\nsha512      -> %s", hash);
+		free(hash);
 	}
 
 #if BCRYPT_ALGO_SUPPORTED
 	hash = mk_hash( clear, ALG_BCRYPT );
 	printf( "\nbcrypt      -> %s", hash);
+	free(hash);
 #endif
 
 	printf("\n\n");
-
-	free(hash);
 
 	return 0;
 }
