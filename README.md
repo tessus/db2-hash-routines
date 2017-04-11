@@ -3,7 +3,7 @@
 ### Source
 [db2-hash-routines-X.Y.tar.gz](https://github.com/tessus/db2-hash-routines/releases/latest)
 <br>
-signing key [0xC11F128D](http://sks.pkqs.net/pks/lookup?op=get&search=0xF7832007C11F128D)
+signing key [0xC11F128D](https://sks-keyservers.net/pks/lookup?op=get&search=0xF7832007C11F128D)
 
 ### Documentation
 
