@@ -106,7 +106,7 @@ void sha256_base64(const char *clear, int len, char *out)
 	out[l + APR_SHA256PW_IDLEN] = '\0';
 }
 
-char* mk_hash(const char *passwd, int alg)
+char* mk_hash(int alg, const char *passwd)
 {
 	char *result;
 	char cpw[120];

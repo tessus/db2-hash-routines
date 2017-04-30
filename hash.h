@@ -65,6 +65,6 @@
 static int generate_salt(char *s, size_t size);
 void sha256_base64(const char *clear, int len, char *out);
 int supported(int alg);
-char* mk_hash(const char *passwd, int alg);
+char* mk_hash(int alg, const char *passwd);
 
 #endif

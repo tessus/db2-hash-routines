@@ -53,7 +53,7 @@ void SQL_API_FN phpmd5(	SQLUDF_CHAR      *in,
 		return;
 	}
 
-	t = mk_hash( in, ALG_PHPMD5 );
+	t = mk_hash( ALG_PHPMD5, in );
 	strcpy( out, t );
 	free( t );
 
@@ -87,7 +87,7 @@ void SQL_API_FN aprmd5(	SQLUDF_CHAR      *in,
 		return;
 	}
 
-	t = mk_hash( in, ALG_APMD5 );
+	t = mk_hash( ALG_APMD5, in );
 	strcpy( out, t );
 	free( t );
 
@@ -121,7 +121,7 @@ void SQL_API_FN aprcrypt(	SQLUDF_CHAR      *in,
 		return;
 	}
 
-	t = mk_hash( in, ALG_CRYPT );
+	t = mk_hash( ALG_CRYPT, in );
 	strcpy( out, t );
 	free( t );
 
@@ -155,7 +155,7 @@ void SQL_API_FN aprsha1(	SQLUDF_CHAR      *in,
 		return;
 	}
 
-	t = mk_hash( in, ALG_APSHA );
+	t = mk_hash( ALG_APSHA, in );
 	strcpy( out, t );
 	free( t );
 
@@ -190,7 +190,7 @@ void SQL_API_FN aprsha256(	SQLUDF_CHAR      *in,
 		return;
 	}
 
-	t = mk_hash( in, ALG_APSHA256 );
+	t = mk_hash( ALG_APSHA256, in );
 	strcpy( out, t );
 	free( t );
 
@@ -224,7 +224,7 @@ void SQL_API_FN sha256(	SQLUDF_CHAR      *in,
 		return;
 	}
 
-	t = mk_hash( in, ALG_SHA256 );
+	t = mk_hash( ALG_SHA256, in );
 	strcpy( out, t );
 	free( t );
 
@@ -266,7 +266,7 @@ void SQL_API_FN sha512(	SQLUDF_CHAR      *in,
 		return;
 	}
 
-	t = mk_hash( in, ALG_SHA512 );
+	t = mk_hash( ALG_SHA512, in );
 	strcpy( out, t );
 	free( t );
 
@@ -309,7 +309,7 @@ void SQL_API_FN bcrypt(	SQLUDF_CHAR      *in,
 		return;
 	}
 
-	t = mk_hash( in, ALG_BCRYPT );
+	t = mk_hash( ALG_BCRYPT, in );
 	strcpy( out, t );
 	free( t );
 
