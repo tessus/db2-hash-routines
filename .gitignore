@@ -27,6 +27,7 @@ maketest.osx
 
 # html
 *.html
+html/
 
 # binaries
 hash
