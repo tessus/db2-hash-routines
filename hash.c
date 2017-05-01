@@ -63,6 +63,17 @@ static int generate_salt(char *s, size_t size)
 	return 0;
 }
 
+int is_valid_salt(const char *salt)
+{
+	while (*salt)
+	{
+		if (!((*salt >= 'a' && *salt <= 'z') || (*salt >= 'A' && *salt <= 'Z') || (*salt >= '0' && *salt <= '9') || *salt == '.' || *salt == '/'))
+			return FALSE;
+		salt++;
+	}
+	return TRUE;
+}
+
 int supported(int alg)
 {
 #if APR_HAVE_CRYPT_H
@@ -70,7 +81,7 @@ int supported(int alg)
 	char *answer;
 
 	if (alg != ALG_SHA256 && alg != ALG_SHA512)
-		return 0;
+		return FALSE;
 
 	salt[0] = '$';
 	salt[1] = alg +'0';
@@ -81,13 +92,13 @@ int supported(int alg)
 	answer = crypt("tessarek", salt);
 
 	if (alg == ALG_SHA256 && strcmp(answer, "$5$tessarek$qeDSegIyJHHxL8NQkuNa.MdFOcQuB7OlgASFBTWNsg9") == 0)
-		return 1;
+		return TRUE;
 
 	if (alg == ALG_SHA512 && strcmp(answer, "$6$tessarek$asevmwEuZSZqp7x3tbQBR/4o/DpAFVlfDiJjoRNbm8/iTHdF7nlJeykFVmqRYw27OHp9qyH2C2yp3UL47U.4W0") == 0)
-		return 1;
+		return TRUE;
 #endif
 
-	return 0;
+	return FALSE;
 }
 
 void sha256_base64(const char *clear, int len, char *out)

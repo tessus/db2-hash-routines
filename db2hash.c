@@ -272,7 +272,15 @@ void SQL_API_FN sha256s(	SQLUDF_CHAR      *in,
 	if( *saltnull == 0 && strlen(salt) != 8 )
 	{
 		strcpy(SQLUDF_STATE, "39703");
-		strcpy(SQLUDF_MSGTX, "The salt must be exactly 8 characters long.");
+		strcpy(SQLUDF_MSGTX, "salt must be exactly 8 characters long");
+		*outnull = 0;
+		return;
+	}
+
+	if( !is_valid_salt(salt) )
+	{
+		strcpy(SQLUDF_STATE, "39704");
+		strcpy(SQLUDF_MSGTX, "salt must be chosen from the set [a–zA–Z0–9./]");
 		*outnull = 0;
 		return;
 	}
@@ -367,7 +375,15 @@ void SQL_API_FN sha512s(	SQLUDF_CHAR      *in,
 	if( *saltnull == 0 && strlen(salt) != 8 )
 	{
 		strcpy(SQLUDF_STATE, "39703");
-		strcpy(SQLUDF_MSGTX, "The salt must be exactly 8 characters long.");
+		strcpy(SQLUDF_MSGTX, "salt must be exactly 8 characters long");
+		*outnull = 0;
+		return;
+	}
+
+	if( !is_valid_salt(salt) )
+	{
+		strcpy(SQLUDF_STATE, "39704");
+		strcpy(SQLUDF_MSGTX, "salt must be chosen from the set [a–zA–Z0–9./]");
 		*outnull = 0;
 		return;
 	}
@@ -379,7 +395,7 @@ void SQL_API_FN sha512s(	SQLUDF_CHAR      *in,
 	if( strlen(out) == 0 )
 	{
 		strcpy(SQLUDF_STATE, "39702");
-		strcpy(SQLUDF_MSGTX, "The system's crypt library does not support sha-256.");
+		strcpy(SQLUDF_MSGTX, "The system's crypt library does not support sha-512.");
 		*outnull = 0;
 		return;
 	}

@@ -20,6 +20,11 @@ int main( int argc, char *argv[] )
 	if (argc >= 3 && strlen(argv[2]) == 8)
 	{
 		salt = argv[2];
+		if( !is_valid_salt(salt) )
+		{
+			printf("Error: salt must be a string chosen from the set [a–zA–Z0–9./].\n");
+			exit(1);
+		}
 	}
 	if (argc >= 3 && strlen(argv[2]) != 8)
 	{

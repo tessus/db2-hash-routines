@@ -62,9 +62,17 @@
 #define APR_SHA256PW_ID        "{SHA256}"
 #define APR_SHA256PW_IDLEN     8
 
+#ifndef FALSE                  // FALSE
+#define FALSE 0
+#endif
+#ifndef TRUE                   // TRUE
+#define TRUE (!FALSE)
+#endif
+
 static int generate_salt(char *s, size_t size);
-void sha256_base64(const char *clear, int len, char *out);
+int is_valid_salt(const char *salt);
 int supported(int alg);
+void sha256_base64(const char *clear, int len, char *out);
 char* mk_hash(int alg, const char *passwd, const char *mysalt);
 
 #endif
