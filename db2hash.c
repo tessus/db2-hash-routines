@@ -2,7 +2,7 @@
   +----------------------------------------------------------------------+
   | db2hash.c: hashing library for IBM DB2                               |
   +----------------------------------------------------------------------+
-  | Copyright (c) 2007-2016 Helmut K. C. Tessarek                        |
+  | Copyright (c) 2007-2017 Helmut K. C. Tessarek                        |
   +----------------------------------------------------------------------+
   | Licensed under the Apache License, Version 2.0 (the "License"); you  |
   | may not use this file except in compliance with the License. You may |
@@ -53,7 +53,7 @@ void SQL_API_FN phpmd5(	SQLUDF_CHAR      *in,
 		return;
 	}
 
-	t = mk_hash( ALG_PHPMD5, in );
+	t = mk_hash( ALG_PHPMD5, in, NULL );
 	strcpy( out, t );
 	free( t );
 
@@ -87,7 +87,7 @@ void SQL_API_FN aprmd5(	SQLUDF_CHAR      *in,
 		return;
 	}
 
-	t = mk_hash( ALG_APMD5, in );
+	t = mk_hash( ALG_APMD5, in, NULL );
 	strcpy( out, t );
 	free( t );
 
@@ -121,7 +121,7 @@ void SQL_API_FN aprcrypt(	SQLUDF_CHAR      *in,
 		return;
 	}
 
-	t = mk_hash( ALG_CRYPT, in );
+	t = mk_hash( ALG_CRYPT, in, NULL );
 	strcpy( out, t );
 	free( t );
 
@@ -155,7 +155,7 @@ void SQL_API_FN aprsha1(	SQLUDF_CHAR      *in,
 		return;
 	}
 
-	t = mk_hash( ALG_APSHA, in );
+	t = mk_hash( ALG_APSHA, in, NULL );
 	strcpy( out, t );
 	free( t );
 
@@ -190,7 +190,7 @@ void SQL_API_FN aprsha256(	SQLUDF_CHAR      *in,
 		return;
 	}
 
-	t = mk_hash( ALG_APSHA256, in );
+	t = mk_hash( ALG_APSHA256, in, NULL );
 	strcpy( out, t );
 	free( t );
 
@@ -224,7 +224,60 @@ void SQL_API_FN sha256(	SQLUDF_CHAR      *in,
 		return;
 	}
 
-	t = mk_hash( ALG_SHA256, in );
+	t = mk_hash( ALG_SHA256, in, NULL );
+	strcpy( out, t );
+	free( t );
+
+	if( strlen(out) == 0 )
+	{
+		strcpy(SQLUDF_STATE, "39702");
+		strcpy(SQLUDF_MSGTX, "The system's crypt library does not support sha-256.");
+		*outnull = 0;
+		return;
+	}
+
+	*outnull = 0;
+	return;
+}
+
+/*
+  +----------------------------------------------------------------------+
+  | function sha256s: sha-256 with salt                                  |
+  |                                                                      |
+  |          input : varchar             (password)                      |
+  |          input : varchar             (salt)                          |
+  |          output: char                (hash)                          |
+  +----------------------------------------------------------------------+
+*/
+
+#ifdef __cplusplus
+extern "C"
+#endif
+void SQL_API_FN sha256s(	SQLUDF_CHAR      *in,
+							SQLUDF_CHAR      *salt,
+							SQLUDF_CHAR      out[56],
+							SQLUDF_SMALLINT  *innull,
+							SQLUDF_SMALLINT  *saltnull,
+							SQLUDF_SMALLINT  *outnull,
+							SQLUDF_TRAIL_ARGS)
+{
+	char *t;
+
+	if( *innull != 0 || *saltnull != 0 )
+	{
+		*outnull = -1;
+		return;
+	}
+
+	if( *saltnull == 0 && strlen(salt) != 8 )
+	{
+		strcpy(SQLUDF_STATE, "39703");
+		strcpy(SQLUDF_MSGTX, "The salt must be exactly 8 characters long.");
+		*outnull = 0;
+		return;
+	}
+
+	t = mk_hash( ALG_SHA256, in, salt );
 	strcpy( out, t );
 	free( t );
 
@@ -266,7 +319,7 @@ void SQL_API_FN sha512(	SQLUDF_CHAR      *in,
 		return;
 	}
 
-	t = mk_hash( ALG_SHA512, in );
+	t = mk_hash( ALG_SHA512, in, NULL );
 	strcpy( out, t );
 	free( t );
 
@@ -274,6 +327,59 @@ void SQL_API_FN sha512(	SQLUDF_CHAR      *in,
 	{
 		strcpy(SQLUDF_STATE, "39702");
 		strcpy(SQLUDF_MSGTX, "The system's crypt library does not support sha-512.");
+		*outnull = 0;
+		return;
+	}
+
+	*outnull = 0;
+	return;
+}
+
+/*
+  +----------------------------------------------------------------------+
+  | function sha512s: sha-512 with salt                                  |
+  |                                                                      |
+  |          input : varchar             (password)                      |
+  |          input : varchar             (salt)                          |
+  |          output: char                (hash)                          |
+  +----------------------------------------------------------------------+
+*/
+
+#ifdef __cplusplus
+extern "C"
+#endif
+void SQL_API_FN sha512s(	SQLUDF_CHAR      *in,
+							SQLUDF_CHAR      *salt,
+							SQLUDF_CHAR      out[99],
+							SQLUDF_SMALLINT  *innull,
+							SQLUDF_SMALLINT  *saltnull,
+							SQLUDF_SMALLINT  *outnull,
+							SQLUDF_TRAIL_ARGS)
+{
+	char *t;
+
+	if( *innull != 0 || *saltnull != 0 )
+	{
+		*outnull = -1;
+		return;
+	}
+
+	if( *saltnull == 0 && strlen(salt) != 8 )
+	{
+		strcpy(SQLUDF_STATE, "39703");
+		strcpy(SQLUDF_MSGTX, "The salt must be exactly 8 characters long.");
+		*outnull = 0;
+		return;
+	}
+
+	t = mk_hash( ALG_SHA512, in, salt );
+	strcpy( out, t );
+	free( t );
+
+	if( strlen(out) == 0 )
+	{
+		strcpy(SQLUDF_STATE, "39702");
+		strcpy(SQLUDF_MSGTX, "The system's crypt library does not support sha-256.");
 		*outnull = 0;
 		return;
 	}
@@ -309,7 +415,7 @@ void SQL_API_FN bcrypt(	SQLUDF_CHAR      *in,
 		return;
 	}
 
-	t = mk_hash( ALG_BCRYPT, in );
+	t = mk_hash( ALG_BCRYPT, in, NULL );
 	strcpy( out, t );
 	free( t );
 
@@ -361,7 +467,7 @@ SQL_API_RC SQL_API_FN validate(	SQLUDF_CHAR      *password,
 
 	if( !strncmp( hash, APR_SHA256PW_ID, APR_SHA256PW_IDLEN ) )
 	{
-		tmphash = mk_hash( password, ALG_APSHA256 );
+		tmphash = mk_hash( ALG_APSHA256, password, NULL );
 
 		if( strcmp( hash, tmphash ) == 0 )
 			*out = 1;
@@ -376,7 +482,7 @@ SQL_API_RC SQL_API_FN validate(	SQLUDF_CHAR      *password,
 
 	if( strlen(hash) == 32 && (hash[0] != '$') )
 	{
-		phpmd5 = mk_hash( password, ALG_PHPMD5 );
+		phpmd5 = mk_hash( ALG_PHPMD5, password, NULL );
 
 		if( apr_strnatcmp( hash, phpmd5 ) == 0 )
 		{

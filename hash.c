@@ -2,7 +2,7 @@
   +----------------------------------------------------------------------+
   | hash.c: hashing functions (hashing library for IBM DB2)              |
   +----------------------------------------------------------------------+
-  | Copyright (c) 2007-2016 Helmut K. C. Tessarek                        |
+  | Copyright (c) 2007-2017 Helmut K. C. Tessarek                        |
   +----------------------------------------------------------------------+
   | Licensed under the Apache License, Version 2.0 (the "License"); you  |
   | may not use this file except in compliance with the License. You may |
@@ -106,7 +106,7 @@ void sha256_base64(const char *clear, int len, char *out)
 	out[l + APR_SHA256PW_IDLEN] = '\0';
 }
 
-char* mk_hash(int alg, const char *passwd)
+char* mk_hash(int alg, const char *passwd, const char *mysalt)
 {
 	char *result;
 	char cpw[120];
@@ -122,7 +122,14 @@ char* mk_hash(int alg, const char *passwd)
 	int i;
 	char *r;
 
+	int MYSALT = 0;
+
 	cpw[0] = '\0';
+
+	if (mysalt != NULL && strlen(mysalt) == 8)
+	{
+		MYSALT = 1;
+	}
 
 	switch (alg)
 	{
@@ -133,8 +140,8 @@ char* mk_hash(int alg, const char *passwd)
 			if (ret != 0)
 				break;
 
-			ret = apr_bcrypt_encode(passwd, cost, (unsigned char*)salt, 16,
-								   cpw, sizeof(cpw));
+			ret = apr_bcrypt_encode(passwd, cost, (unsigned char*)salt, 16, cpw, sizeof(cpw));
+
 			if (ret != 0)
 				break;
 
@@ -181,7 +188,14 @@ char* mk_hash(int alg, const char *passwd)
 			finalsalt[1] = alg +'0';
 			finalsalt[2] = '$';
 			finalsalt[3] = '\0';
-			strcat(finalsalt, salt);
+			if (MYSALT)
+			{
+				strcat(finalsalt, mysalt);
+			}
+			else
+			{
+				strcat(finalsalt, salt);
+			}
 
 			apr_cpystrn(cpw, (char *)crypt(passwd, finalsalt), sizeof(cpw) - 1);
 			break;

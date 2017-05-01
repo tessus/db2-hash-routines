@@ -2,7 +2,7 @@
   +----------------------------------------------------------------------+
   | hash.h: hashing functions include (hashing library for IBM DB2)      |
   +----------------------------------------------------------------------+
-  | Copyright (c) 2007-2016 Helmut K. C. Tessarek                        |
+  | Copyright (c) 2007-2017 Helmut K. C. Tessarek                        |
   +----------------------------------------------------------------------+
   | Licensed under the Apache License, Version 2.0 (the "License"); you  |
   | may not use this file except in compliance with the License. You may |
@@ -65,6 +65,6 @@
 static int generate_salt(char *s, size_t size);
 void sha256_base64(const char *clear, int len, char *out);
 int supported(int alg);
-char* mk_hash(int alg, const char *passwd);
+char* mk_hash(int alg, const char *passwd, const char *mysalt);
 
 #endif
