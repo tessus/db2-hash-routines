@@ -130,6 +130,9 @@ char* mk_hash(int alg, const char *passwd, const char *mysalt)
 	unsigned char digest[APR_MD5_DIGESTSIZE];
 	apr_md5_ctx_t context;
 	char md5str[33];
+	SHA256_CTX context256;
+	apr_byte_t digest256[SHA256_DIGEST_LENGTH];
+	char sha256str[65];
 	int i;
 	char *r;
 
@@ -225,6 +228,23 @@ char* mk_hash(int alg, const char *passwd, const char *mysalt)
 			*r = '\0';
 
 			apr_cpystrn(cpw, md5str, sizeof(md5str));
+			memset(md5str, '\0', strlen(md5str));
+			break;
+
+		case ALG_SHA256HEX:
+			sha256str[0] = '\0';
+
+			apr__SHA256_Init( &context256 );
+			apr__SHA256_Update( &context256, passwd, strlen(passwd) );
+			apr__SHA256_Final( digest256, &context256 );
+			for( i = 0, r = sha256str; i < SHA256_DIGEST_LENGTH; i++, r += 2 )
+			{
+				sprintf( r, "%02x", digest256[i] );
+			}
+			*r = '\0';
+
+			apr_cpystrn(cpw, sha256str, sizeof(sha256str));
+			memset(sha256str, '\0', strlen(sha256str));
 			break;
 	}
 

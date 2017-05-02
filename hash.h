@@ -45,19 +45,20 @@
 #endif
 
 #if APU_MAJOR_VERSION == 1 && APU_MINOR_VERSION >= 5
-#define BCRYPT_ALGO_SUPPORTED 1
+#define BCRYPT_ALGO_SUPPORTED  1
 #else
-#define BCRYPT_ALGO_SUPPORTED 0
+#define BCRYPT_ALGO_SUPPORTED  0
 #endif
 
-#define ALG_CRYPT    1
-#define ALG_PHPMD5   2
-#define ALG_APMD5    3
-#define ALG_APSHA    4
-#define ALG_SHA256   5
-#define ALG_SHA512   6
-#define ALG_APSHA256 7
-#define ALG_BCRYPT   8
+#define ALG_CRYPT              1
+#define ALG_PHPMD5             2
+#define ALG_APMD5              3
+#define ALG_APSHA              4
+#define ALG_SHA256             5
+#define ALG_SHA512             6
+#define ALG_APSHA256           7
+#define ALG_BCRYPT             8
+#define ALG_SHA256HEX          9
 
 #define APR_SHA256PW_ID        "{SHA256}"
 #define APR_SHA256PW_IDLEN     8

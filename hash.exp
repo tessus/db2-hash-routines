@@ -6,6 +6,7 @@ aprsha256
 bcrypt
 sha256
 sha256s
+sha256hex
 sha512
 sha512s
 validate
