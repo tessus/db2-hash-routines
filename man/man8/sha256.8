@@ -1,17 +1,24 @@
-.TH sha256 "8" "July 2016" "sha256" "DB2 User Defined Function and Stored Procedure"
+.TH sha256 "8" "May 2017" "sha256" "DB2 User Defined Function and Stored Procedure"
 .SH NAME
 sha256 \- DB2 UDF and SP to generate an SHA256 hash
 .SH SYNOPSIS
->>-SHA256--(--expression--)------------------------------------><
+.nf
+>>-SHA256--(--expression--+---------+--)-----------------------><
+                          '-,--salt-'
+.fi
 .PP
->>-SHA256--(--expression--,--hash--)---------------------------><
+.nf
+>>-SHA256--(--expression--+---------+--,--hash--)--------------><
+                          '-,--salt-'
+.fi
 .SH DESCRIPTION
 SHA256 algorithm. The sha256 routine returns a glibc2's crypt hash. If the system's crypt does not support sha-256,
 an SQLSTATE 39702 is returned.
 .PP
 The argument can be a character string that is either a CHAR or VARCHAR not exceeding 4096 bytes.
+An optional salt can be specified, which must be a eight-character string chosen from the set [a\(enzA\(enZ0\(en9./]. If the salt is not exactly eight characters long, an SQLSTATE 39703 is returned. If the salt contains invalid characters, an SQLSTATE 39704 is returned.
 .PP
-The result of the function is CHAR(55). The result can be null; if the argument is null, the result is the null value.
+The result of the function is CHAR(55). The result can be null; if one of the arguments is null, the result is the null value.
 .SH EXAMPLES
 \fBExample 1:\fR
 
@@ -46,6 +53,33 @@ CALL sha256('testpwd', ?)
   --------------------------
   Parameter Name  : HASH
   Parameter Value : $5$vSDCZr2d$rfh.aDopE5l3lm26AwwcIYnuVdV7/9QBACWukqYyV3/
+
+  Return Status = 0
+.fi
+.PP
+\fBExample 4:\fR
+
+.br
+.nf
+SELECT sha256('testpwd', '12345678') FROM SYSIBM.SYSDUMMY1
+
+1
+-------------------------------------------------------
+$5$12345678$.oVAnOr/.FK8fYNiFPvoXPQvEOT9Calecygw6K9wIb9
+
+  1 record(s) selected.
+.fi
+.PP
+\fBExample 5:\fR
+
+.br
+.nf
+CALL sha256('testpwd', '12345678', ?)
+
+  Value of output parameters
+  --------------------------
+  Parameter Name  : HASH
+  Parameter Value : $5$12345678$.oVAnOr/.FK8fYNiFPvoXPQvEOT9Calecygw6K9wIb9
 
   Return Status = 0
 .fi

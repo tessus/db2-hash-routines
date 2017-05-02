@@ -1,17 +1,24 @@
-.TH sha512 "8" "July 2016" "sha512" "DB2 User Defined Function and Stored Procedure"
+.TH sha512 "8" "May 2017" "sha512" "DB2 User Defined Function and Stored Procedure"
 .SH NAME
 sha512 \- DB2 UDF and SP to generate an SHA512 hash
 .SH SYNOPSIS
->>-SHA512--(--expression--)------------------------------------><
+.nf
+>>-SHA512--(--expression--+---------+--)-----------------------><
+                          '-,--salt-'
+.fi
 .PP
->>-SHA512--(--expression--,--hash--)---------------------------><
+.nf
+>>-SHA512--(--expression--+---------+--,--hash--)--------------><
+                          '-,--salt-'
+.fi
 .SH DESCRIPTION
 SHA512 algorithm. The sha512 routine returns a glibc2's crypt hash. If the system's crypt does not support sha-512,
 an SQLSTATE 39702 is returned.
 .PP
 The argument can be a character string that is either a CHAR or VARCHAR not exceeding 4096 bytes.
+An optional salt can be specified, which must be a eight-character string chosen from the set [a\(enzA\(enZ0\(en9./]. If the salt is not exactly eight characters long, an SQLSTATE 39703 is returned. If the salt contains invalid characters, an SQLSTATE 39704 is returned.
 .PP
-The result of the function is CHAR(98). The result can be null; if the argument is null, the result is the null value.
+The result of the function is CHAR(98). The result can be null; if one the arguments is null, the result is the null value.
 .SH EXAMPLES
 \fBExample 1:\fR
 
@@ -46,6 +53,33 @@ CALL sha512('testpwd', ?)
   --------------------------
   Parameter Name  : HASH
   Parameter Value : $6$1W.m9JN1$Dh.VPl7vy.igGaeDUdDWw6ZlD0xufwDWm0ukpOYknPtdjxiSM2yzWBkzHffalb/2axNHPqEi9UUzXUbSm4LGa/
+
+  Return Status = 0
+.fi
+.PP
+\fBExample 4:\fR
+
+.br
+.nf
+SELECT sha512('testpwd', '12345678') FROM SYSIBM.SYSDUMMY1
+
+1
+--------------------------------------------------------------------------------------------------
+$6$12345678$tlHrypdWTz6FqubBpgL/ePlxr4lZuQ8OK1zfV6zWUmGJSz.5kGWwQGjg69Qm1Bm3.DvILruqA61o3EHsxSoko1
+
+  1 record(s) selected.
+.fi
+.PP
+\fBExample 5:\fR
+
+.br
+.nf
+CALL sha512('testpwd', '12345678', ?)
+
+  Value of output parameters
+  --------------------------
+  Parameter Name  : HASH
+  Parameter Value : $6$12345678$tlHrypdWTz6FqubBpgL/ePlxr4lZuQ8OK1zfV6zWUmGJSz.5kGWwQGjg69Qm1Bm3.DvILruqA61o3EHsxSoko1
 
   Return Status = 0
 .fi
