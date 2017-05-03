@@ -15,9 +15,11 @@
 
 </PRE>
 <H2>SYNOPSIS</H2><PRE>
-       &gt;&gt;-SHA256--(--expression--)------------------------------------&gt;&lt;
+       &gt;&gt;-SHA256--(--expression--+---------+--)-----------------------&gt;&lt;
+                                 '-,--salt-'
 
-       &gt;&gt;-SHA256--(--expression--,--hash--)---------------------------&gt;&lt;
+       &gt;&gt;-SHA256--(--expression--+---------+--,--hash--)--------------&gt;&lt;
+                                 '-,--salt-'
 
 
 </PRE>
@@ -27,10 +29,14 @@
        returned.
 
        The argument can be a character string that is either a CHAR or VARCHAR
-       not exceeding 4096 bytes.
+       not exceeding 4096 bytes.  An optional salt  can  be  specified,  which
+       must  be a eight-character string chosen from the set [a-zA-Z0-9./]. If
+       the salt is not exactly eight characters long,  an  SQLSTATE  39703  is
+       returned. If the salt contains invalid characters, an SQLSTATE 39704 is
+       returned.
 
-       The result of the function is <B>CHAR(55)</B>. The result can be null; if  the
-       argument is null, the result is the null value.
+       The result of the function is <B>CHAR(55)</B>. The result can be null; if  one
+       of the arguments is null, the result is the null value.
 
 
 </PRE>
@@ -64,6 +70,27 @@
 
          Return Status = 0
 
+       <B>Example</B> <B>4:</B>
+
+       SELECT sha256('testpwd', '12345678') FROM SYSIBM.SYSDUMMY1
+
+       1
+       -------------------------------------------------------
+       $5$12345678$.oVAnOr/.FK8fYNiFPvoXPQvEOT9Calecygw6K9wIb9
+
+         1 record(s) selected.
+
+       <B>Example</B> <B>5:</B>
+
+       CALL sha256('testpwd', '12345678', ?)
+
+         Value of output parameters
+         --------------------------
+         Parameter Name  : HASH
+         Parameter Value : $5$12345678$.oVAnOr/.FK8fYNiFPvoXPQvEOT9Calecygw6K9wIb9
+
+         Return Status = 0
+
 
 </PRE>
 <H2>AUTHOR</H2><PRE>
@@ -82,7 +109,7 @@
 
 
 
-sha256                             July 2016                         <B>sha256(8)</B>
+sha256                             May 2017                          <B>sha256(8)</B>
 </PRE>
 </BODY>
 </HTML>

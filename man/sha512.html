@@ -15,9 +15,11 @@
 
 </PRE>
 <H2>SYNOPSIS</H2><PRE>
-       &gt;&gt;-SHA512--(--expression--)------------------------------------&gt;&lt;
+       &gt;&gt;-SHA512--(--expression--+---------+--)-----------------------&gt;&lt;
+                                 '-,--salt-'
 
-       &gt;&gt;-SHA512--(--expression--,--hash--)---------------------------&gt;&lt;
+       &gt;&gt;-SHA512--(--expression--+---------+--,--hash--)--------------&gt;&lt;
+                                 '-,--salt-'
 
 
 </PRE>
@@ -27,10 +29,14 @@
        returned.
 
        The argument can be a character string that is either a CHAR or VARCHAR
-       not exceeding 4096 bytes.
+       not exceeding 4096 bytes.  An optional salt  can  be  specified,  which
+       must  be a eight-character string chosen from the set [a-zA-Z0-9./]. If
+       the salt is not exactly eight characters long,  an  SQLSTATE  39703  is
+       returned. If the salt contains invalid characters, an SQLSTATE 39704 is
+       returned.
 
-       The result of the function is <B>CHAR(98)</B>. The result can be null; if  the
-       argument is null, the result is the null value.
+       The result of the function is <B>CHAR(98)</B>. The result can be null; if  one
+       the arguments is null, the result is the null value.
 
 
 </PRE>
@@ -64,6 +70,27 @@
 
          Return Status = 0
 
+       <B>Example</B> <B>4:</B>
+
+       SELECT sha512('testpwd', '12345678') FROM SYSIBM.SYSDUMMY1
+
+       1
+       --------------------------------------------------------------------------------------------------
+       $6$12345678$tlHrypdWTz6FqubBpgL/ePlxr4lZuQ8OK1zfV6zWUmGJSz.5kGWwQGjg69Qm1Bm3.DvILruqA61o3EHsxSoko1
+
+         1 record(s) selected.
+
+       <B>Example</B> <B>5:</B>
+
+       CALL sha512('testpwd', '12345678', ?)
+
+         Value of output parameters
+         --------------------------
+         Parameter Name  : HASH
+         Parameter Value : $6$12345678$tlHrypdWTz6FqubBpgL/ePlxr4lZuQ8OK1zfV6zWUmGJSz.5kGWwQGjg69Qm1Bm3.DvILruqA61o3EHsxSoko1
+
+         Return Status = 0
+
 
 </PRE>
 <H2>AUTHOR</H2><PRE>
@@ -82,7 +109,7 @@
 
 
 
-sha512                             July 2016                         <B>sha512(8)</B>
+sha512                             May 2017                          <B>sha512(8)</B>
 </PRE>
 </BODY>
 </HTML>
