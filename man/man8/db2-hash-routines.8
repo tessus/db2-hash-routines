@@ -16,6 +16,8 @@ db2-hash-routines \- DB2 UDFs and SPs to generate and validate hashes
 .PP
 >>-APR_SHA256--(--expression--)--------------------------------><
 .PP
+>>-SHA256_HEX--(--expression--)--------------------------------><
+.PP
 .nf
 >>-SHA256--(--expression--+---------+--)-----------------------><
                           '-,--salt-'
@@ -41,6 +43,8 @@ db2-hash-routines \- DB2 UDFs and SPs to generate and validate hashes
 >>-APR_SHA1--(--expression--,--hash--)-------------------------><
 .PP
 >>-APR_SHA256--(--expression--,--hash--)-----------------------><
+.PP
+>>-SHA256_HEX--(--expression--,--hash--)-----------------------><
 .PP
 .nf
 >>-SHA256--(--expression--+---------+--,--hash--)--------------><
@@ -127,6 +131,18 @@ SHA256 algorithm. The apr_sha256 routine returns the identifier {SHA256} plus th
 The argument can be a character string that is either a CHAR or VARCHAR not exceeding 4096 bytes.
 .IP
 The result of the routine is CHAR(52). The result can be null; if the argument is null, the result is the null value.
+.TP
+\fBsha256_hex( '\fR\fIcleartext\fR\fB' )\fR
+.RS 0
+\fBsha256_hex( '\fR\fIcleartext\fR\fB', \fR\fI:hash\fR\fB )\fR
+.PD 0
+.IP
+SHA256 algorithm. The sha256_hex routine returns a 64-character hexadecimal hash.
+.PD
+.IP
+The argument can be a character string that is either a CHAR or VARCHAR not exceeding 4096 bytes.
+.IP
+The result of the routine is CHAR(64). The result can be null; if the argument is null, the result is the null value.
 .TP
 \fBsha256( '\fR\fIcleartext\fR\fB' [, '\fR\fIsalt\fR\fB'] )\fR
 .RS 0
@@ -370,6 +386,40 @@ CALL apr_sha256('testpwd', ?)
   --------------------------
   Parameter Name  : HASH
   Parameter Value : {SHA256}qFtqIIE8Maixs/NhjaeWJxyaopOz+AmHMFOyGuxQEIc=
+
+  Return Status = 0
+.fi
+.PP
+\fBsha256_hex(1):\fR
+.br
+Inserting the user \fItest\fR and the sha256 crypted clear text \fItestpwd\fR to the table \fIusers\fR.
+.PP
+.nf
+INSERT INTO USERS (username, password)
+  VALUES ('test', sha256_hex('testpwd'))
+.fi
+.PP
+\fBsha256_hex(2):\fR
+.br
+.nf
+SELECT sha256_hex('testpwd') FROM SYSIBM.SYSDUMMY1
+
+1
+----------------------------------------------------------------
+a85b6a20813c31a8b1b3f3618da796271c9aa293b3f809873053b21aec501087
+
+  1 record(s) selected.
+.fi
+.PP
+\fBsha256_hex(3):\fR
+.br
+.nf
+CALL sha256_hex('testpwd', ?)
+
+  Value of output parameters
+  --------------------------
+  Parameter Name  : HASH
+  Parameter Value : a85b6a20813c31a8b1b3f3618da796271c9aa293b3f809873053b21aec501087
 
   Return Status = 0
 .fi
