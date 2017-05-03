@@ -34,7 +34,7 @@ Furthermore you need to add the compiler and linker flags for APR (see makertn).
 
 You have to connect to the database first.
 
-db2 -tvf register.ddl
+db2 -td@ -f register.ddl
 
 +----------------------------------------------------------------------+
 | 3. Install the man pages                                             |
