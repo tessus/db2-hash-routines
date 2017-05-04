@@ -18,8 +18,9 @@ This library delivers the following functions as UDFs and SPs:
 function in library          UDF / SP
 
 bcrypt                       bcrypt
-sha256                       sha256
-sha512                       sha512
+sha256hex                    sha256_hex
+sha256 sha256s               sha256
+sha512 sha512s               sha512
 phpmd5                       php_md5
 aprmd5                       apr_md5
 aprcrypt                     apr_crypt
@@ -27,13 +28,14 @@ aprsha1                      apr_sha1
 aprsha256                    apr_sha256
 validate                     validate_pw
 
-The phpmd5 function is compatible to the PHP md5 function.
-The aprmd5, aprcrypt, aprsha1, bcrypt functions are compatible to the
-functions used in Apache's htpasswd utility.
-The aprsha256 routine returns the identifier {SHA256} plus the base64
+The php_md5 routine is compatible to the PHP md5 function.
+The sha256_hex routine returns a sha256 64-character hexadecimal hash.
+The apr_md5, apr_crypt, apr_sha1 and bcrypt routines are compatible to the
+functions used in Apache’s htpasswd utility.
+The apr_sha256 routine returns the identifier {SHA256} plus the base64
 encoded sha256 hash.
-The sha256 and sha512 functions return glib2's crypt hashes (if supported).
-The validate function validates a password against a hash.
+The sha256 and sha512 functions return glib2’s crypt hashes (if supported).
+validate_pw validates a password against a hash.
 
 In win32 environments apr_crypt returns the output of bcrypt, if available.
 If bcrypt is not available, the output of apr_md5 is returned.

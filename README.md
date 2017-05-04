@@ -21,6 +21,8 @@ signing key [0xC11F128D](https://sks-keyservers.net/pks/lookup?op=get&search=0xF
 <br>
 [bcrypt](http://tessus.github.io/db2-hash-routines/man/bcrypt.html)
 <br>
+[sha256_hex](http://tessus.github.io/db2-hash-routines/man/sha256_hex.html)
+<br>
 [sha256](http://tessus.github.io/db2-hash-routines/man/sha256.html)
 <br>
 [sha512](http://tessus.github.io/db2-hash-routines/man/sha512.html)
