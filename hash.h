@@ -75,5 +75,6 @@ int is_valid_salt(const char *salt);
 int supported(int alg);
 void sha256_base64(const char *clear, int len, char *out);
 char* mk_hash(int alg, const char *passwd, const char *mysalt);
+int validate_hash(const char *password, const char *hash);
 
 #endif

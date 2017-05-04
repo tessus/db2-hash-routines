@@ -107,13 +107,13 @@ void sha256_base64(const char *clear, int len, char *out)
 	SHA256_CTX context;
 	apr_byte_t digest[SHA256_DIGEST_LENGTH];
 
-	apr__SHA256_Init( &context );
-	apr__SHA256_Update( &context, (const unsigned char *)clear, len );
-	apr__SHA256_Final( digest, &context );
+	apr__SHA256_Init(&context);
+	apr__SHA256_Update(&context, (const unsigned char *)clear, len);
+	apr__SHA256_Final(digest, &context);
 
-	apr_cpystrn( out, APR_SHA256PW_ID, APR_SHA256PW_IDLEN + 1 );
+	apr_cpystrn(out, APR_SHA256PW_ID, APR_SHA256PW_IDLEN + 1);
 
-	l = apr_base64_encode_binary( out + APR_SHA256PW_IDLEN, digest, sizeof(digest) );
+	l = apr_base64_encode_binary(out + APR_SHA256PW_IDLEN, digest, sizeof(digest));
 	out[l + APR_SHA256PW_IDLEN] = '\0';
 }
 
@@ -218,12 +218,12 @@ char* mk_hash(int alg, const char *passwd, const char *mysalt)
 		case ALG_PHPMD5:
 			md5str[0] = '\0';
 
-			apr_md5_init( &context );
-			apr_md5_update( &context, passwd, strlen(passwd) );
-			apr_md5_final( digest, &context );
-			for( i = 0, r = md5str; i < APR_MD5_DIGESTSIZE; i++, r += 2 )
+			apr_md5_init(&context);
+			apr_md5_update(&context, passwd, strlen(passwd));
+			apr_md5_final(digest, &context);
+			for (i = 0, r = md5str; i < APR_MD5_DIGESTSIZE; i++, r += 2)
 			{
-				sprintf( r, "%02x", digest[i] );
+				sprintf(r, "%02x", digest[i]);
 			}
 			*r = '\0';
 
@@ -234,12 +234,12 @@ char* mk_hash(int alg, const char *passwd, const char *mysalt)
 		case ALG_SHA256HEX:
 			sha256str[0] = '\0';
 
-			apr__SHA256_Init( &context256 );
-			apr__SHA256_Update( &context256, passwd, strlen(passwd) );
-			apr__SHA256_Final( digest256, &context256 );
-			for( i = 0, r = sha256str; i < SHA256_DIGEST_LENGTH; i++, r += 2 )
+			apr__SHA256_Init(&context256);
+			apr__SHA256_Update(&context256, passwd, strlen(passwd));
+			apr__SHA256_Final(digest256, &context256);
+			for (i = 0, r = sha256str; i < SHA256_DIGEST_LENGTH; i++, r += 2)
 			{
-				sprintf( r, "%02x", digest256[i] );
+				sprintf(r, "%02x", digest256[i]);
 			}
 			*r = '\0';
 
@@ -253,4 +253,87 @@ char* mk_hash(int alg, const char *passwd, const char *mysalt)
 	memset(cpw, '\0', strlen(cpw));
 
 	return result;
+}
+
+int validate_hash(const char *password, const char *hash)
+{
+	apr_status_t status;
+	char *tmphash, *result;
+
+	if (!strncmp(hash, APR_SHA256PW_ID, APR_SHA256PW_IDLEN))
+	{
+		tmphash = mk_hash(ALG_APSHA256, password, NULL);
+
+		if (apr_strnatcmp(hash, tmphash) == 0)
+		{
+			free(tmphash);
+			return TRUE;
+		}
+		else
+		{
+			free(tmphash);
+			return FALSE;
+		}
+	}
+
+	if (strlen(hash) == 32 && (hash[0] != '$'))
+	{
+		tmphash = mk_hash(ALG_PHPMD5, password, NULL);
+
+		if (apr_strnatcmp(hash, tmphash) == 0)
+		{
+			free(tmphash);
+			return TRUE;
+		}
+		else
+		{
+			free(tmphash);
+			return FALSE;
+		}
+	}
+
+	if (strlen(hash) == 64 && (hash[0] != '$'))
+	{
+		tmphash = mk_hash(ALG_SHA256HEX, password, NULL);
+
+		if (apr_strnatcmp(hash, tmphash) == 0)
+		{
+			free(tmphash);
+			return TRUE;
+		}
+		else
+		{
+			free(tmphash);
+			return FALSE;
+		}
+	}
+
+	status = apr_password_validate(password, hash);
+
+	if (status == APR_SUCCESS)
+	{
+		return TRUE;
+	}
+#ifndef WIN32
+	else
+	{
+		// maybe a different encrypted password (glibc2 crypt)?
+		result = crypt(password, hash);
+		if (result != NULL)
+		{
+			if (strcmp(hash, result) == 0)
+			{
+				return TRUE;
+			}
+			else
+			{
+				return FALSE;
+			}
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+#endif
 }

@@ -495,9 +495,6 @@ SQL_API_RC SQL_API_FN validate(	SQLUDF_CHAR      *password,
 								SQLUDF_SMALLINT  *outNullInd,
 								SQLUDF_TRAIL_ARGS)
 {
-	apr_status_t status;
-	char *tmphash, *result;
-
 	*out = -1;
 	*outNullInd = -1;
 
@@ -515,91 +512,14 @@ SQL_API_RC SQL_API_FN validate(	SQLUDF_CHAR      *password,
 		return(0);
 	}
 
-	if( !strncmp( hash, APR_SHA256PW_ID, APR_SHA256PW_IDLEN ) )
-	{
-		tmphash = mk_hash( ALG_APSHA256, password, NULL );
-
-		if( apr_strnatcmp( hash, tmphash ) == 0 )
-		{
-			*out = 1;
-		}
-		else
-		{
-			*out = 0;
-		}
-
-		free(tmphash);
-
-		*outNullInd = 0;
-		return(0);
-	}
-
-	if( strlen(hash) == 32 && (hash[0] != '$') )
-	{
-		tmphash = mk_hash( ALG_PHPMD5, password, NULL );
-
-		if( apr_strnatcmp( hash, tmphash ) == 0 )
-		{
-			*out = 1;
-		}
-		else
-		{
-			*out = 0;
-		}
-
-		free(tmphash);
-
-		*outNullInd = 0;
-		return(0);
-	}
-
-	if( strlen(hash) == 64 && (hash[0] != '$') )
-	{
-		tmphash = mk_hash( ALG_SHA256HEX, password, NULL );
-
-		if( apr_strnatcmp( hash, tmphash ) == 0 )
-		{
-			*out = 1;
-		}
-		else
-		{
-			*out = 0;
-		}
-
-		free(tmphash);
-
-		*outNullInd = 0;
-		return(0);
-	}
-
-	status = apr_password_validate( password, hash );
-
-	if( status == APR_SUCCESS )
+	if( validate_hash(password, hash) )
 	{
 		*out = 1;
 	}
-#ifndef WIN32
 	else
 	{
-		// maybe a different encrypted password (glibc2 crypt)?
-		result = crypt( password, hash );
-		if( result != NULL )
-		{
-			if( strcmp( hash, result ) == 0 )
-			{
-				*out = 1;
-			}
-			else
-			{
-				*out = 0;
-			}
-		}
-		else
-		{
-			*out = 0;
-		}
+		*out = 0;
 	}
-#endif
 
 	*outNullInd = 0;
 	return(0);
