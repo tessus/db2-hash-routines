@@ -39,23 +39,23 @@
 #ifdef __cplusplus
 extern "C"
 #endif
-void SQL_API_FN phpmd5(	SQLUDF_CHAR      *in,
-						SQLUDF_CHAR      out[33],
-						SQLUDF_SMALLINT  *innull,
-						SQLUDF_SMALLINT  *outnull,
-						SQLUDF_TRAIL_ARGS)
+void SQL_API_FN phpmd5(SQLUDF_CHAR      *in,
+                       SQLUDF_CHAR      out[33],
+                       SQLUDF_SMALLINT  *innull,
+                       SQLUDF_SMALLINT  *outnull,
+                       SQLUDF_TRAIL_ARGS)
 {
 	char *t;
 
-	if( *innull != 0 )
+	if (*innull != 0)
 	{
 		*outnull = -1;
 		return;
 	}
 
-	t = mk_hash( ALG_PHPMD5, in, NULL );
-	strcpy( out, t );
-	free( t );
+	t = mk_hash(ALG_PHPMD5, in, NULL);
+	strcpy(out, t);
+	free(t);
 
 	*outnull = 0;
 	return;
@@ -73,23 +73,23 @@ void SQL_API_FN phpmd5(	SQLUDF_CHAR      *in,
 #ifdef __cplusplus
 extern "C"
 #endif
-void SQL_API_FN aprmd5(	SQLUDF_CHAR      *in,
-						SQLUDF_CHAR      out[38],
-						SQLUDF_SMALLINT  *innull,
-						SQLUDF_SMALLINT  *outnull,
-						SQLUDF_TRAIL_ARGS)
+void SQL_API_FN aprmd5(SQLUDF_CHAR      *in,
+                       SQLUDF_CHAR      out[38],
+                       SQLUDF_SMALLINT  *innull,
+                       SQLUDF_SMALLINT  *outnull,
+                       SQLUDF_TRAIL_ARGS)
 {
 	char *t;
 
-	if( *innull != 0 )
+	if (*innull != 0)
 	{
 		*outnull = -1;
 		return;
 	}
 
-	t = mk_hash( ALG_APMD5, in, NULL );
-	strcpy( out, t );
-	free( t );
+	t = mk_hash(ALG_APMD5, in, NULL);
+	strcpy(out, t);
+	free(t);
 
 	*outnull = 0;
 	return;
@@ -107,23 +107,23 @@ void SQL_API_FN aprmd5(	SQLUDF_CHAR      *in,
 #ifdef __cplusplus
 extern "C"
 #endif
-void SQL_API_FN aprcrypt(	SQLUDF_CHAR      *in,
-							SQLUDF_CHAR      out[14],
-							SQLUDF_SMALLINT  *innull,
-							SQLUDF_SMALLINT  *outnull,
-							SQLUDF_TRAIL_ARGS)
+void SQL_API_FN aprcrypt(SQLUDF_CHAR      *in,
+                         SQLUDF_CHAR      out[14],
+                         SQLUDF_SMALLINT  *innull,
+                         SQLUDF_SMALLINT  *outnull,
+                         SQLUDF_TRAIL_ARGS)
 {
 	char *t;
 
-	if( *innull != 0 )
+	if (*innull != 0)
 	{
 		*outnull = -1;
 		return;
 	}
 
-	t = mk_hash( ALG_CRYPT, in, NULL );
-	strcpy( out, t );
-	free( t );
+	t = mk_hash(ALG_CRYPT, in, NULL);
+	strcpy(out, t);
+	free(t);
 
 	*outnull = 0;
 	return;
@@ -141,23 +141,23 @@ void SQL_API_FN aprcrypt(	SQLUDF_CHAR      *in,
 #ifdef __cplusplus
 extern "C"
 #endif
-void SQL_API_FN aprsha1(	SQLUDF_CHAR      *in,
-							SQLUDF_CHAR      out[34],
-							SQLUDF_SMALLINT  *innull,
-							SQLUDF_SMALLINT  *outnull,
-							SQLUDF_TRAIL_ARGS)
+void SQL_API_FN aprsha1(SQLUDF_CHAR      *in,
+                        SQLUDF_CHAR      out[34],
+                        SQLUDF_SMALLINT  *innull,
+                        SQLUDF_SMALLINT  *outnull,
+                        SQLUDF_TRAIL_ARGS)
 {
 	char *t;
 
-	if( *innull != 0 )
+	if (*innull != 0)
 	{
 		*outnull = -1;
 		return;
 	}
 
-	t = mk_hash( ALG_APSHA, in, NULL );
-	strcpy( out, t );
-	free( t );
+	t = mk_hash(ALG_APSHA, in, NULL);
+	strcpy(out, t);
+	free(t);
 
 	*outnull = 0;
 	return;
@@ -176,23 +176,23 @@ void SQL_API_FN aprsha1(	SQLUDF_CHAR      *in,
 #ifdef __cplusplus
 extern "C"
 #endif
-void SQL_API_FN aprsha256(	SQLUDF_CHAR      *in,
-							SQLUDF_CHAR      out[53],
-							SQLUDF_SMALLINT  *innull,
-							SQLUDF_SMALLINT  *outnull,
-							SQLUDF_TRAIL_ARGS)
+void SQL_API_FN aprsha256(SQLUDF_CHAR      *in,
+                          SQLUDF_CHAR      out[53],
+                          SQLUDF_SMALLINT  *innull,
+                          SQLUDF_SMALLINT  *outnull,
+                          SQLUDF_TRAIL_ARGS)
 {
 	char *t;
 
-	if( *innull != 0 )
+	if (*innull != 0)
 	{
 		*outnull = -1;
 		return;
 	}
 
-	t = mk_hash( ALG_APSHA256, in, NULL );
-	strcpy( out, t );
-	free( t );
+	t = mk_hash(ALG_APSHA256, in, NULL);
+	strcpy(out, t);
+	free(t);
 
 	*outnull = 0;
 	return;
@@ -210,25 +210,25 @@ void SQL_API_FN aprsha256(	SQLUDF_CHAR      *in,
 #ifdef __cplusplus
 extern "C"
 #endif
-void SQL_API_FN sha256(	SQLUDF_CHAR      *in,
-						SQLUDF_CHAR      out[56],
-						SQLUDF_SMALLINT  *innull,
-						SQLUDF_SMALLINT  *outnull,
-						SQLUDF_TRAIL_ARGS)
+void SQL_API_FN sha256(SQLUDF_CHAR      *in,
+                       SQLUDF_CHAR      out[56],
+                       SQLUDF_SMALLINT  *innull,
+                       SQLUDF_SMALLINT  *outnull,
+                       SQLUDF_TRAIL_ARGS)
 {
 	char *t;
 
-	if( *innull != 0 )
+	if (*innull != 0)
 	{
 		*outnull = -1;
 		return;
 	}
 
-	t = mk_hash( ALG_SHA256, in, NULL );
-	strcpy( out, t );
-	free( t );
+	t = mk_hash(ALG_SHA256, in, NULL);
+	strcpy(out, t);
+	free(t);
 
-	if( strlen(out) == 0 )
+	if (strlen(out) == 0)
 	{
 		strcpy(SQLUDF_STATE, "39702");
 		strcpy(SQLUDF_MSGTX, "The system's crypt library does not support sha-256.");
@@ -253,23 +253,23 @@ void SQL_API_FN sha256(	SQLUDF_CHAR      *in,
 #ifdef __cplusplus
 extern "C"
 #endif
-void SQL_API_FN sha256s(	SQLUDF_CHAR      *in,
-							SQLUDF_CHAR      *salt,
-							SQLUDF_CHAR      out[56],
-							SQLUDF_SMALLINT  *innull,
-							SQLUDF_SMALLINT  *saltnull,
-							SQLUDF_SMALLINT  *outnull,
-							SQLUDF_TRAIL_ARGS)
+void SQL_API_FN sha256s(SQLUDF_CHAR      *in,
+                        SQLUDF_CHAR      *salt,
+                        SQLUDF_CHAR      out[56],
+                        SQLUDF_SMALLINT  *innull,
+                        SQLUDF_SMALLINT  *saltnull,
+                        SQLUDF_SMALLINT  *outnull,
+                        SQLUDF_TRAIL_ARGS)
 {
 	char *t;
 
-	if( *innull != 0 || *saltnull != 0 )
+	if (*innull != 0 || *saltnull != 0)
 	{
 		*outnull = -1;
 		return;
 	}
 
-	if( *saltnull == 0 && strlen(salt) != 8 )
+	if (*saltnull == 0 && strlen(salt) != 8)
 	{
 		strcpy(SQLUDF_STATE, "39703");
 		strcpy(SQLUDF_MSGTX, "salt must be exactly 8 characters long");
@@ -277,7 +277,7 @@ void SQL_API_FN sha256s(	SQLUDF_CHAR      *in,
 		return;
 	}
 
-	if( !is_valid_salt(salt) )
+	if (!is_valid_salt(salt))
 	{
 		strcpy(SQLUDF_STATE, "39704");
 		strcpy(SQLUDF_MSGTX, "salt must be chosen from the set [a–zA–Z0–9./]");
@@ -285,11 +285,11 @@ void SQL_API_FN sha256s(	SQLUDF_CHAR      *in,
 		return;
 	}
 
-	t = mk_hash( ALG_SHA256, in, salt );
-	strcpy( out, t );
-	free( t );
+	t = mk_hash(ALG_SHA256, in, salt);
+	strcpy(out, t);
+	free(t);
 
-	if( strlen(out) == 0 )
+	if (strlen(out) == 0)
 	{
 		strcpy(SQLUDF_STATE, "39702");
 		strcpy(SQLUDF_MSGTX, "The system's crypt library does not support sha-256.");
@@ -313,23 +313,23 @@ void SQL_API_FN sha256s(	SQLUDF_CHAR      *in,
 #ifdef __cplusplus
 extern "C"
 #endif
-void SQL_API_FN sha256hex(	SQLUDF_CHAR      *in,
-							SQLUDF_CHAR      out[65],
-							SQLUDF_SMALLINT  *innull,
-							SQLUDF_SMALLINT  *outnull,
-							SQLUDF_TRAIL_ARGS)
+void SQL_API_FN sha256hex(SQLUDF_CHAR      *in,
+                          SQLUDF_CHAR      out[65],
+                          SQLUDF_SMALLINT  *innull,
+                          SQLUDF_SMALLINT  *outnull,
+                          SQLUDF_TRAIL_ARGS)
 {
 	char *t;
 
-	if( *innull != 0 )
+	if (*innull != 0)
 	{
 		*outnull = -1;
 		return;
 	}
 
-	t = mk_hash( ALG_SHA256HEX, in, NULL );
-	strcpy( out, t );
-	free( t );
+	t = mk_hash(ALG_SHA256HEX, in, NULL);
+	strcpy(out, t);
+	free(t);
 
 	*outnull = 0;
 	return;
@@ -347,25 +347,25 @@ void SQL_API_FN sha256hex(	SQLUDF_CHAR      *in,
 #ifdef __cplusplus
 extern "C"
 #endif
-void SQL_API_FN sha512(	SQLUDF_CHAR      *in,
-						SQLUDF_CHAR      out[99],
-						SQLUDF_SMALLINT  *innull,
-						SQLUDF_SMALLINT  *outnull,
-						SQLUDF_TRAIL_ARGS)
+void SQL_API_FN sha512(SQLUDF_CHAR      *in,
+                       SQLUDF_CHAR      out[99],
+                       SQLUDF_SMALLINT  *innull,
+                       SQLUDF_SMALLINT  *outnull,
+                       SQLUDF_TRAIL_ARGS)
 {
 	char *t;
 
-	if( *innull != 0 )
+	if (*innull != 0)
 	{
 		*outnull = -1;
 		return;
 	}
 
-	t = mk_hash( ALG_SHA512, in, NULL );
-	strcpy( out, t );
-	free( t );
+	t = mk_hash(ALG_SHA512, in, NULL);
+	strcpy(out, t);
+	free(t);
 
-	if( strlen(out) == 0 )
+	if (strlen(out) == 0)
 	{
 		strcpy(SQLUDF_STATE, "39702");
 		strcpy(SQLUDF_MSGTX, "The system's crypt library does not support sha-512.");
@@ -390,23 +390,23 @@ void SQL_API_FN sha512(	SQLUDF_CHAR      *in,
 #ifdef __cplusplus
 extern "C"
 #endif
-void SQL_API_FN sha512s(	SQLUDF_CHAR      *in,
-							SQLUDF_CHAR      *salt,
-							SQLUDF_CHAR      out[99],
-							SQLUDF_SMALLINT  *innull,
-							SQLUDF_SMALLINT  *saltnull,
-							SQLUDF_SMALLINT  *outnull,
-							SQLUDF_TRAIL_ARGS)
+void SQL_API_FN sha512s(SQLUDF_CHAR      *in,
+                        SQLUDF_CHAR      *salt,
+                        SQLUDF_CHAR      out[99],
+                        SQLUDF_SMALLINT  *innull,
+                        SQLUDF_SMALLINT  *saltnull,
+                        SQLUDF_SMALLINT  *outnull,
+                        SQLUDF_TRAIL_ARGS)
 {
 	char *t;
 
-	if( *innull != 0 || *saltnull != 0 )
+	if (*innull != 0 || *saltnull != 0)
 	{
 		*outnull = -1;
 		return;
 	}
 
-	if( *saltnull == 0 && strlen(salt) != 8 )
+	if (*saltnull == 0 && strlen(salt) != 8)
 	{
 		strcpy(SQLUDF_STATE, "39703");
 		strcpy(SQLUDF_MSGTX, "salt must be exactly 8 characters long");
@@ -414,7 +414,7 @@ void SQL_API_FN sha512s(	SQLUDF_CHAR      *in,
 		return;
 	}
 
-	if( !is_valid_salt(salt) )
+	if (!is_valid_salt(salt))
 	{
 		strcpy(SQLUDF_STATE, "39704");
 		strcpy(SQLUDF_MSGTX, "salt must be chosen from the set [a–zA–Z0–9./]");
@@ -422,11 +422,11 @@ void SQL_API_FN sha512s(	SQLUDF_CHAR      *in,
 		return;
 	}
 
-	t = mk_hash( ALG_SHA512, in, salt );
-	strcpy( out, t );
-	free( t );
+	t = mk_hash(ALG_SHA512, in, salt);
+	strcpy(out, t);
+	free(t);
 
-	if( strlen(out) == 0 )
+	if (strlen(out) == 0)
 	{
 		strcpy(SQLUDF_STATE, "39702");
 		strcpy(SQLUDF_MSGTX, "The system's crypt library does not support sha-512.");
@@ -451,23 +451,23 @@ void SQL_API_FN sha512s(	SQLUDF_CHAR      *in,
 #ifdef __cplusplus
 extern "C"
 #endif
-void SQL_API_FN bcrypt(	SQLUDF_CHAR      *in,
-						SQLUDF_CHAR      out[61],
-						SQLUDF_SMALLINT  *innull,
-						SQLUDF_SMALLINT  *outnull,
-						SQLUDF_TRAIL_ARGS)
+void SQL_API_FN bcrypt(SQLUDF_CHAR      *in,
+                       SQLUDF_CHAR      out[61],
+                       SQLUDF_SMALLINT  *innull,
+                       SQLUDF_SMALLINT  *outnull,
+                       SQLUDF_TRAIL_ARGS)
 {
 	char *t;
 
-	if( *innull != 0 )
+	if (*innull != 0)
 	{
 		*outnull = -1;
 		return;
 	}
 
-	t = mk_hash( ALG_BCRYPT, in, NULL );
-	strcpy( out, t );
-	free( t );
+	t = mk_hash(ALG_BCRYPT, in, NULL);
+	strcpy(out, t);
+	free(t);
 
 	*outnull = 0;
 	return;
@@ -487,32 +487,32 @@ void SQL_API_FN bcrypt(	SQLUDF_CHAR      *in,
 #ifdef __cplusplus
 extern "C"
 #endif
-SQL_API_RC SQL_API_FN validate(	SQLUDF_CHAR      *password,
-								SQLUDF_CHAR      *hash,
-								SQLUDF_INTEGER	 *out,
-								SQLUDF_SMALLINT  *passwordNullInd,
-								SQLUDF_SMALLINT  *hashNullInd,
-								SQLUDF_SMALLINT  *outNullInd,
-								SQLUDF_TRAIL_ARGS)
+SQL_API_RC SQL_API_FN validate(SQLUDF_CHAR      *password,
+                               SQLUDF_CHAR      *hash,
+                               SQLUDF_INTEGER   *out,
+                               SQLUDF_SMALLINT  *passwordNullInd,
+                               SQLUDF_SMALLINT  *hashNullInd,
+                               SQLUDF_SMALLINT  *outNullInd,
+                               SQLUDF_TRAIL_ARGS)
 {
 	*out = -1;
 	*outNullInd = -1;
 
-	if( *passwordNullInd != 0 || *hashNullInd != 0 )
+	if (*passwordNullInd != 0 || *hashNullInd != 0)
 	{
 		*outNullInd = -1;
-		return(0);
+		return (0);
 	}
 
-	if( strlen(hash) == 0 )
+	if (strlen(hash) == 0)
 	{
 		strcpy(SQLUDF_STATE, "39701");
 		strcpy(SQLUDF_MSGTX, "The second parameter (hash) must not be empty.");
 		*outNullInd = 0;
-		return(0);
+		return (0);
 	}
 
-	if( validate_hash(password, hash) )
+	if (validate_hash(password, hash))
 	{
 		*out = 1;
 	}
@@ -522,5 +522,5 @@ SQL_API_RC SQL_API_FN validate(	SQLUDF_CHAR      *password,
 	}
 
 	*outNullInd = 0;
-	return(0);
+	return (0);
 }
