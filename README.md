@@ -3,7 +3,7 @@
 ### Source
 [db2-hash-routines-X.Y.tar.gz](https://github.com/tessus/db2-hash-routines/releases/latest)
 <br>
-signing key [0xC11F128D](https://sks-keyservers.net/pks/lookup?op=get&search=0xF7832007C11F128D)
+signing key [0xF7832007C11F128D](https://sks-keyservers.net/pks/lookup?op=get&search=0x28A316664FE8D72CCFD58B23F7832007C11F128D)
 
 ### Documentation
 
@@ -22,6 +22,8 @@ signing key [0xC11F128D](https://sks-keyservers.net/pks/lookup?op=get&search=0xF
 [bcrypt](http://tessus.github.io/db2-hash-routines/man/bcrypt.html)
 <br>
 [sha256_hex](http://tessus.github.io/db2-hash-routines/man/sha256_hex.html)
+<br>
+[sha1_hex](http://tessus.github.io/db2-hash-routines/man/sha1_hex.html)
 <br>
 [sha256](http://tessus.github.io/db2-hash-routines/man/sha256.html)
 <br>

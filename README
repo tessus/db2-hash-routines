@@ -19,6 +19,7 @@ function in library          UDF / SP
 
 bcrypt                       bcrypt
 sha256hex                    sha256_hex
+sha1hex                      sha1_hex
 sha256 sha256s               sha256
 sha512 sha512s               sha512
 phpmd5                       php_md5
@@ -30,6 +31,7 @@ validate                     validate_pw
 
 The php_md5 routine is compatible to the PHP md5 function.
 The sha256_hex routine returns a sha256 64-character hexadecimal hash.
+The sha1_hex routine returns a sha1 40-character hexadecimal hash.
 The apr_md5, apr_crypt, apr_sha1 and bcrypt routines are compatible to the
 functions used in Apache’s htpasswd utility.
 The apr_sha256 routine returns the identifier {SHA256} plus the base64
