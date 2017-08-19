@@ -31,6 +31,8 @@
 
        &gt;&gt;-SHA256_HEX--(--expression--)--------------------------------&gt;&lt;
 
+       &gt;&gt;-SHA1_HEX--(--expression--)----------------------------------&gt;&lt;
+
        &gt;&gt;-SHA256--(--expression--+---------+--)-----------------------&gt;&lt;
                                  '-,--salt-'
 
@@ -54,6 +56,8 @@
        &gt;&gt;-APR_SHA256--(--expression--,--hash--)-----------------------&gt;&lt;
 
        &gt;&gt;-SHA256_HEX--(--expression--,--hash--)-----------------------&gt;&lt;
+
+       &gt;&gt;-SHA1_HEX--(--expression--,--hash--)-------------------------&gt;&lt;
 
        &gt;&gt;-SHA256--(--expression--+---------+--,--hash--)--------------&gt;&lt;
                                  '-,--salt-'
@@ -145,57 +149,68 @@
               The  result  of the routine is <B>CHAR(64)</B>. The result can be null;
               if the argument is null, the result is the null value.
 
+       <B>sha1_hex(</B> <B>'</B><I>cleartext</I><B>'</B> <B>)</B>
+       <B>sha1_hex(</B> <B>'</B><I>cleartext</I><B>',</B> <I>:hash</I> <B>)</B>
+              SHA1 algorithm. The  sha1_hex  routine  returns  a  40-character
+              hexadecimal hash.
+
+              The  argument can be a character string that is either a CHAR or
+              VARCHAR not exceeding 4096 bytes.
+
+              The result of the routine is <B>CHAR(40)</B>. The result can  be  null;
+              if the argument is null, the result is the null value.
+
        <B>sha256(</B> <B>'</B><I>cleartext</I><B>'</B> <B>[,</B> <B>'</B><I>salt</I><B>']</B> <B>)</B>
        <B>sha256(</B> <B>'</B><I>cleartext</I><B>'</B> <B>[,</B> <B>'</B><I>salt</I><B>'],</B> <I>:hash</I> <B>)</B>
-              SHA256 algorithm. The sha256 routine returns  a  glibc2's  crypt
-              hash.  If  the  system's crypt does not support sha-256, an SQL-
+              SHA256  algorithm.  The  sha256 routine returns a glibc2's crypt
+              hash. If the system's crypt does not support  sha-256,  an  SQL-
               STATE 39702 is returned.
 
-              The argument can be a character string that is either a CHAR  or
+              The  argument can be a character string that is either a CHAR or
               VARCHAR not exceeding 4096 bytes.  An optional salt can be spec-
-              ified, which must be a eight-character string  chosen  from  the
-              set  [a-zA-Z0-9./].  If the salt is not exactly eight characters
-              long, an SQLSTATE  39703  is  returned.  If  the  salt  contains
+              ified,  which  must  be a eight-character string chosen from the
+              set [a-zA-Z0-9./]. If the salt is not exactly  eight  characters
+              long,  an  SQLSTATE  39703  is  returned.  If  the salt contains
               invalid characters, an SQLSTATE 39704 is returned.
 
-              The  result of the function is <B>CHAR(55)</B>. The result can be null;
+              The result of the function is <B>CHAR(55)</B>. The result can be  null;
               if one of the arguments is null, the result is the null value.
 
        <B>sha512(</B> <B>'</B><I>cleartext</I><B>'</B> <B>[,</B> <B>'</B><I>salt</I><B>']</B> <B>)</B>
        <B>sha512(</B> <B>'</B><I>cleartext</I><B>'</B> <B>[,</B> <B>'</B><I>salt</I><B>'],</B> <I>:hash</I> <B>)</B>
-              SHA512 algorithm. The sha512 routine returns  a  glibc2's  crypt
-              hash.  If  the  system's crypt does not support sha-512, an SQL-
+              SHA512  algorithm.  The  sha512 routine returns a glibc2's crypt
+              hash. If the system's crypt does not support  sha-512,  an  SQL-
               STATE 39702 is returned.
 
-              The argument can be a character string that is either a CHAR  or
+              The  argument can be a character string that is either a CHAR or
               VARCHAR not exceeding 4096 bytes.  An optional salt can be spec-
-              ified, which must be a eight-character string  chosen  from  the
-              set  [a-zA-Z0-9./].  If the salt is not exactly eight characters
-              long, an SQLSTATE  39703  is  returned.  If  the  salt  contains
+              ified,  which  must  be a eight-character string chosen from the
+              set [a-zA-Z0-9./]. If the salt is not exactly  eight  characters
+              long,  an  SQLSTATE  39703  is  returned.  If  the salt contains
               invalid characters, an SQLSTATE 39704 is returned.
 
-              The  result  of the routine is <B>CHAR(98)</B>. The result can be null;
+              The result of the routine is <B>CHAR(98)</B>. The result can  be  null;
               if one of the arguments is null, the result is the null value.
 
        <B>validate_pw(</B> <B>'</B><I>password</I><B>',</B> <B>'</B><I>hash</I><B>'</B> <B>)</B>
        <B>validate_pw(</B> <B>'</B><I>password</I><B>',</B> <B>'</B><I>hash</I><B>',</B> <I>:is</I><B>_</B><I>valid</I> <B>)</B>
-              This routine can be used to validate a password against a  hash.
+              This  routine can be used to validate a password against a hash.
 
               The two input arguments can be character strings that are either
-              a CHAR or VARCHAR not exceeding 4096 bytes  (password)  and  120
-              bytes  (hash).  The  second  parameter (hash) must not be empty,
+              a  CHAR  or  VARCHAR not exceeding 4096 bytes (password) and 120
+              bytes (hash). The second parameter (hash)  must  not  be  empty,
               otherwise an SQLSTATE 39701 is returned.
 
-              The result of the routine is an  INTEGER.  If  the  password  is
-              valid,  1  is  returned.  If  the  password  is  not valid, 0 is
-              returned. The result can be null; if the argument is  null,  the
+              The  result  of  the  routine  is an INTEGER. If the password is
+              valid, 1 is returned.  If  the  password  is  not  valid,  0  is
+              returned.  The  result can be null; if the argument is null, the
               result is the null value.
 
 
 </PRE>
 <H2>EXAMPLES</H2><PRE>
        <B>bcrypt</B> <B>(1):</B>
-       Inserting  the user <I>test</I> and the sha1 crypted clear text <I>testpwd</I> to the
+       Inserting the user <I>test</I> and the sha1 crypted clear text <I>testpwd</I> to  the
        table <I>users</I>.
 
        INSERT INTO USERS (username, password)
@@ -221,7 +236,7 @@
          Return Status = 0
 
        <B>php_md5</B> <B>(1)</B>
-       Inserting the user <I>test</I> and the md5 hash of the clear text  <I>testpwd</I>  to
+       Inserting  the  user <I>test</I> and the md5 hash of the clear text <I>testpwd</I> to
        the table <I>users</I>.
 
        INSERT INTO USERS (username, password)
@@ -299,7 +314,7 @@
          Return Status = 0
 
        <B>apr_sha1</B> <B>(1)</B>
-       Inserting the user <I>test</I> and the sha1 crypted clear text <I>testpwd</I> to  the
+       Inserting  the user <I>test</I> and the sha1 crypted clear text <I>testpwd</I> to the
        table <I>users</I>.
 
        INSERT INTO USERS (username, password)
@@ -325,7 +340,7 @@
          Return Status = 0
 
        <B>apr_sha256</B> <B>(1):</B>
-       Inserting  the  user  <I>test</I> and the sha256 crypted clear text <I>testpwd</I> to
+       Inserting the user <I>test</I> and the sha256 crypted clear  text  <I>testpwd</I>  to
        the table <I>users</I>.
 
        INSERT INTO USERS (username, password)
@@ -351,7 +366,7 @@
          Return Status = 0
 
        <B>sha256_hex(1):</B>
-       Inserting the user <I>test</I> and the sha256 crypted clear  text  <I>testpwd</I>  to
+       Inserting  the  user  <I>test</I> and the sha256 crypted clear text <I>testpwd</I> to
        the table <I>users</I>.
 
        INSERT INTO USERS (username, password)
@@ -373,6 +388,32 @@
          --------------------------
          Parameter Name  : HASH
          Parameter Value : a85b6a20813c31a8b1b3f3618da796271c9aa293b3f809873053b21aec501087
+
+         Return Status = 0
+
+       <B>sha1_hex(1):</B>
+       Inserting the user <I>test</I> and the sha1 crypted clear text <I>testpwd</I> to  the
+       table <I>users</I>.
+
+       INSERT INTO USERS (username, password)
+         VALUES ('test', sha1_hex('testpwd'))
+
+       <B>sha1_hex(2):</B>
+       SELECT sha1_hex('testpwd') FROM SYSIBM.SYSDUMMY1
+
+       1
+       ----------------------------------------
+       98ef0758e6aac6f9a9e1197548c8190b72c9581d
+
+         1 record(s) selected.
+
+       <B>sha1_hex(3):</B>
+       CALL sha1_hex('testpwd', ?)
+
+         Value of output parameters
+         --------------------------
+         Parameter Name  : HASH
+         Parameter Value : 98ef0758e6aac6f9a9e1197548c8190b72c9581d
 
          Return Status = 0
 
@@ -515,7 +556,7 @@
 
 
 
-db2-hash-routines 1.8              May 2017               <B>db2-hash-routines(8)</B>
+db2-hash-routines 1.8             August 2017             <B>db2-hash-routines(8)</B>
 </PRE>
 </BODY>
 </HTML>
