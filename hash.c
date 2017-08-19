@@ -130,9 +130,15 @@ char* mk_hash(int alg, const char *passwd, const char *mysalt)
 	unsigned char digest[APR_MD5_DIGESTSIZE];
 	apr_md5_ctx_t context;
 	char md5str[33];
+
 	SHA256_CTX context256;
 	apr_byte_t digest256[SHA256_DIGEST_LENGTH];
 	char sha256str[65];
+
+	apr_sha1_ctx_t context1;
+	apr_byte_t digest1[APR_SHA1_DIGESTSIZE];
+	char sha1str[41];
+
 	int i;
 	char *r;
 
@@ -235,7 +241,7 @@ char* mk_hash(int alg, const char *passwd, const char *mysalt)
 			sha256str[0] = '\0';
 
 			apr__SHA256_Init(&context256);
-			apr__SHA256_Update(&context256, passwd, strlen(passwd));
+			apr__SHA256_Update(&context256, (const apr_byte_t *)passwd, strlen(passwd));
 			apr__SHA256_Final(digest256, &context256);
 			for (i = 0, r = sha256str; i < SHA256_DIGEST_LENGTH; i++, r += 2)
 			{
@@ -245,6 +251,22 @@ char* mk_hash(int alg, const char *passwd, const char *mysalt)
 
 			apr_cpystrn(cpw, sha256str, sizeof(sha256str));
 			memset(sha256str, '\0', strlen(sha256str));
+			break;
+
+		case ALG_SHA1HEX:
+			sha1str[0] = '\0';
+
+			apr_sha1_init(&context1);
+			apr_sha1_update(&context1, passwd, strlen(passwd));
+			apr_sha1_final(digest1, &context1);
+			for (i = 0, r = sha1str; i < APR_SHA1_DIGESTSIZE; i++, r += 2)
+			{
+				sprintf(r, "%02x", digest1[i]);
+			}
+			*r = '\0';
+
+			apr_cpystrn(cpw, sha1str, sizeof(sha1str));
+			memset(sha1str, '\0', strlen(sha1str));
 			break;
 	}
 
@@ -295,6 +317,22 @@ int validate_hash(const char *password, const char *hash)
 	if (strlen(hash) == 64 && (hash[0] != '$'))
 	{
 		tmphash = mk_hash(ALG_SHA256HEX, password, NULL);
+
+		if (apr_strnatcmp(hash, tmphash) == 0)
+		{
+			free(tmphash);
+			return TRUE;
+		}
+		else
+		{
+			free(tmphash);
+			return FALSE;
+		}
+	}
+
+	if (strlen(hash) == 40 && (hash[0] != '$'))
+	{
+		tmphash = mk_hash(ALG_SHA1HEX, password, NULL);
 
 		if (apr_strnatcmp(hash, tmphash) == 0)
 		{

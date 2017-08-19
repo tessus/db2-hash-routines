@@ -72,6 +72,10 @@ int main( int argc, char *argv[] )
 	printf( "\nsha256_hex  -> %s", hash);
 	free(hash);
 
+	hash = mk_hash( ALG_SHA1HEX, clear, NULL );
+	printf( "\nsha1_hex    -> %s", hash);
+	free(hash);
+
 #if BCRYPT_ALGO_SUPPORTED
 	hash = mk_hash( ALG_BCRYPT, clear, NULL );
 	printf( "\nbcrypt      -> %s", hash);

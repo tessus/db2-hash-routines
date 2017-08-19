@@ -59,6 +59,7 @@
 #define ALG_APSHA256           7
 #define ALG_BCRYPT             8
 #define ALG_SHA256HEX          9
+#define ALG_SHA1HEX            10
 
 #define APR_SHA256PW_ID        "{SHA256}"
 #define APR_SHA256PW_IDLEN     8

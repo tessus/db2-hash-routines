@@ -337,6 +337,40 @@ void SQL_API_FN sha256hex(SQLUDF_CHAR      *in,
 
 /*
   +----------------------------------------------------------------------+
+  | function sha1hex: sha-1 40-character hex output (no salt)            |
+  |                                                                      |
+  |          input : varchar             (password)                      |
+  |          output: char                (hash)                          |
+  +----------------------------------------------------------------------+
+*/
+
+#ifdef __cplusplus
+extern "C"
+#endif
+void SQL_API_FN sha1hex(SQLUDF_CHAR      *in,
+                        SQLUDF_CHAR      out[41],
+                        SQLUDF_SMALLINT  *innull,
+                        SQLUDF_SMALLINT  *outnull,
+                        SQLUDF_TRAIL_ARGS)
+{
+	char *t;
+
+	if (*innull != 0)
+	{
+		*outnull = -1;
+		return;
+	}
+
+	t = mk_hash(ALG_SHA1HEX, in, NULL);
+	strcpy(out, t);
+	free(t);
+
+	*outnull = 0;
+	return;
+}
+
+/*
+  +----------------------------------------------------------------------+
   | function sha512: sha-512                                             |
   |                                                                      |
   |          input : varchar             (password)                      |
