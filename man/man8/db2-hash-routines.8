@@ -1,4 +1,4 @@
-.TH db2-hash-routines "8" "May 2017" "db2-hash-routines 1.8" "DB2 UDFs and Stored Procedures"
+.TH db2-hash-routines "8" "August 2017" "db2-hash-routines 1.8" "DB2 UDFs and Stored Procedures"
 .SH NAME
 db2-hash-routines \- DB2 UDFs and SPs to generate and validate hashes
 .SH SYNOPSIS
@@ -17,6 +17,8 @@ db2-hash-routines \- DB2 UDFs and SPs to generate and validate hashes
 >>-APR_SHA256--(--expression--)--------------------------------><
 .PP
 >>-SHA256_HEX--(--expression--)--------------------------------><
+.PP
+>>-SHA1_HEX--(--expression--)----------------------------------><
 .PP
 .nf
 >>-SHA256--(--expression--+---------+--)-----------------------><
@@ -45,6 +47,8 @@ db2-hash-routines \- DB2 UDFs and SPs to generate and validate hashes
 >>-APR_SHA256--(--expression--,--hash--)-----------------------><
 .PP
 >>-SHA256_HEX--(--expression--,--hash--)-----------------------><
+.PP
+>>-SHA1_HEX--(--expression--,--hash--)-------------------------><
 .PP
 .nf
 >>-SHA256--(--expression--+---------+--,--hash--)--------------><
@@ -143,6 +147,18 @@ SHA256 algorithm. The sha256_hex routine returns a 64-character hexadecimal hash
 The argument can be a character string that is either a CHAR or VARCHAR not exceeding 4096 bytes.
 .IP
 The result of the routine is CHAR(64). The result can be null; if the argument is null, the result is the null value.
+.TP
+\fBsha1_hex( '\fR\fIcleartext\fR\fB' )\fR
+.RS 0
+\fBsha1_hex( '\fR\fIcleartext\fR\fB', \fR\fI:hash\fR\fB )\fR
+.PD 0
+.IP
+SHA1 algorithm. The sha1_hex routine returns a 40-character hexadecimal hash.
+.PD
+.IP
+The argument can be a character string that is either a CHAR or VARCHAR not exceeding 4096 bytes.
+.IP
+The result of the routine is CHAR(40). The result can be null; if the argument is null, the result is the null value.
 .TP
 \fBsha256( '\fR\fIcleartext\fR\fB' [, '\fR\fIsalt\fR\fB'] )\fR
 .RS 0
@@ -420,6 +436,40 @@ CALL sha256_hex('testpwd', ?)
   --------------------------
   Parameter Name  : HASH
   Parameter Value : a85b6a20813c31a8b1b3f3618da796271c9aa293b3f809873053b21aec501087
+
+  Return Status = 0
+.fi
+.PP
+\fBsha1_hex(1):\fR
+.br
+Inserting the user \fItest\fR and the sha1 crypted clear text \fItestpwd\fR to the table \fIusers\fR.
+.PP
+.nf
+INSERT INTO USERS (username, password)
+  VALUES ('test', sha1_hex('testpwd'))
+.fi
+.PP
+\fBsha1_hex(2):\fR
+.br
+.nf
+SELECT sha1_hex('testpwd') FROM SYSIBM.SYSDUMMY1
+
+1
+----------------------------------------
+98ef0758e6aac6f9a9e1197548c8190b72c9581d
+
+  1 record(s) selected.
+.fi
+.PP
+\fBsha1_hex(3):\fR
+.br
+.nf
+CALL sha1_hex('testpwd', ?)
+
+  Value of output parameters
+  --------------------------
+  Parameter Name  : HASH
+  Parameter Value : 98ef0758e6aac6f9a9e1197548c8190b72c9581d
 
   Return Status = 0
 .fi
