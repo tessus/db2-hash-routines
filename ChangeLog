@@ -1,3 +1,8 @@
+db2-hash-routines 1.9
+
+ - added sha1_hex UDF/SP - 40-character hexadecimal hash
+ - updated man pages
+
 db2-hash-routines 1.8
 
  - allow 8 character long salt for sha256 and sha512 UDFs and SPs
