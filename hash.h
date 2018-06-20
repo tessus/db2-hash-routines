@@ -2,7 +2,7 @@
   +----------------------------------------------------------------------+
   | hash.h: hashing functions include (hashing library for IBM DB2)      |
   +----------------------------------------------------------------------+
-  | Copyright (c) 2007-2017 Helmut K. C. Tessarek                        |
+  | Copyright (c) 2007-2018 Helmut K. C. Tessarek                        |
   +----------------------------------------------------------------------+
   | Licensed under the Apache License, Version 2.0 (the "License"); you  |
   | may not use this file except in compliance with the License. You may |
