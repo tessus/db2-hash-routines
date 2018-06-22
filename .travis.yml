@@ -37,6 +37,7 @@ before_install:
   # Install DB2 and creates an instance (Response file)
   - sudo ./db2setup -r ${TRAVIS_BUILD_DIR}/tests/travis/db2.rsp || cat /tmp/db2setup.log
   - sudo chsh -s /bin/bash db2inst1
+  - id db2inst1 ; sudo usermod -a -G travis db2inst1 ; id db2inst1
   # Creates the database
   - sudo su - db2inst1 -c "db2 create db hash"
   - echo "db2inst1:db2inst1" | sudo chpasswd
