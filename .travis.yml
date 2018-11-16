@@ -19,7 +19,7 @@ before_install:
   - tar zxvf db2unit.tar.gz
 
   # Retrieves the apr
-  - cd /tmp ; wget http://www.us.apache.org/dist/apr/apr-1.6.3.tar.gz ; tar zxf apr-1.6.3.tar.gz ; cd apr-1.6.3 ;
+  - cd /tmp ; wget http://www.us.apache.org/dist/apr/apr-1.6.5.tar.gz ; tar zxf apr-1.6.5.tar.gz ; cd apr-1.6.5 ;
   - cd /tmp ; wget http://www.us.apache.org/dist/apr/apr-util-1.6.1.tar.gz ; tar zxf apr-util-1.6.1.tar.gz ; cd apr-util-1.6.1 ;
 
   # INSTALL
@@ -29,7 +29,7 @@ before_install:
   - sudo apt-get install libaio1 lib32stdc++6 -y
   - sudo apt-get install -qq libpam-ldap:i386
   - sudo ln -s /lib/i386-linux-gnu/libpam.so.0 /lib/libpam.so.0
-  - cd /tmp/apr-1.6.3 ; ./configure --prefix=/usr/local/apr CFLAGS=-I/usr/local/include LDFLAGS=-L/usr/local/lib ; sudo make ; sudo make install
+  - cd /tmp/apr-1.6.5 ; ./configure --prefix=/usr/local/apr CFLAGS=-I/usr/local/include LDFLAGS=-L/usr/local/lib ; sudo make ; sudo make install
   - cd /tmp/apr-util-1.6.1 ; ./configure --prefix=/usr/local/apr-util --with-apr=/usr/local/apr ; sudo make ; sudo make install
 
   # Checks the prerequisites
