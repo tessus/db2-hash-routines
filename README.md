@@ -5,7 +5,7 @@
 
 ### Documentation
 
-[Manual](http://tessus.github.io/documentation/db2-hash-routines.pdf) (PDF)
+[Manual](http://tessus.github.io/documentation/pdf/db2-hash-routines.pdf) (PDF)
 <br>
 [README](README)
 <br>
